@@ -4,11 +4,13 @@
 -- ex. SELECT * FROM "user";
 -- Otherwise you will have errors!
 --user table
+--user table
 CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
     "username" VARCHAR (80) UNIQUE NOT NULL,
     "password" VARCHAR (1000) NOT NULL,
     "phone_number" VARCHAR (20),
+    "email_address" VARCHAR (50),
     "profile_phone_url" VARCHAR (1000),
     "account_balance" INT,
     "admin" BOOL
@@ -40,9 +42,7 @@ CREATE TABLE "waitlist" (
     "user_id" INT REFERENCES "user",
     "reservation_name" VARCHAR (100),
     "party_size" INT,
-    "quote_date" DATE,
-    "quote_time" TIME,
-    "buy_now_price" INT,
+    "quote_time" INT,
     "join_waitlist_time" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     "status_code" INT REFERENCES "waitlist_status"
 );
@@ -63,12 +63,21 @@ CREATE TABLE "offer" (
 );
 
 --customer rating table
+
 CREATE TABLE "customer_rating" (
 	"id" SERIAL PRIMARY KEY,
 	"offer_id" INT REFERENCES "offer",
 	"user_id" INT REFERENCES "user",
 	"given_by" INT REFERENCES "user",
 	"rating" INT
+);
+
+-- feedback table
+CREATE TABLE "customer_feedback" (
+	"id" SERIAL PRIMARY KEY,
+	"email_address" VARCHAR (50),
+	"description" VARCHAR (2000),
+	"feedback_date" DATE DEFAULT CURRENT_DATE
 );
 
 --insert dummy data to restaurant table
