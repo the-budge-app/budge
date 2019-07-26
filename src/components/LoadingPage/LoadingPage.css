@@ -1,0 +1,137 @@
+
+#loadingPage #logoWrapper {
+    text-align: center;
+}
+#loadingPage #logoWrapper div{
+    display: inline-block;
+    margin: 10px;
+    position: relative;
+}
+#loadingPage h1 {
+    font-family: helvetica, sans-serif;
+    display: inline-block;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 3.45rem;
+    line-height: 55px;   
+    margin: 0;
+}
+#loadingPage #leftDot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: #222;
+    animation: budgeBackSlow 3.5s ease-in-out;
+    position: absolute;
+    left: 195px;
+    bottom: 10px;
+    z-index: 10;
+}
+#loadingPage #rightDot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: green;
+    animation: budgeForwardSlow 3.5s ease-in-out;
+    position: absolute;
+    left: -15px;
+    bottom: 10px;
+    z-index: 10;
+}
+#loadingPage #buttonWrapper {
+    display: inline-block;
+}
+#loadingPage #buttonWrapper p {
+    font-family: helvetica, sans-serif;
+    border: 1px solid rgba(34, 34, 34, .75);
+    padding: 15px 30px;
+    border-radius: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 0px 2px 5px 0px rgba(34, 34, 34, .5);
+}
+#loadingPage textarea {
+    width: 100%;
+    border: 1px solid rgba(34, 34, 34, .25);
+    border-radius: 5px;
+    padding: 5px;
+}
+/* Animation Keyframes */
+
+@keyframes budgeForwardSlow {
+    0% {
+        left: 195px;
+        opacity: 1;
+    }
+    18% {
+        left: 195px;
+        opacity: 0;
+    }
+    36% {
+        left: 195px;
+        opacity: 1;
+    }
+    54% {
+        left: 195px;
+        opacity: 0;
+    }
+    72% {
+        left: 195px;
+        opacity: 1;
+    }
+    75% {
+        left: 198px;
+    }
+    85% {
+       left: -20px;
+    }
+    90% {
+        left: -13px
+    }
+    95% {
+        left: -17px;
+    }
+    100% {
+        left: -15px;
+    }
+}
+
+@keyframes budgeBackSlow {
+    0% {
+        left: -15px;
+        opacity: 1;
+    }
+    18% {
+        left: -15px;
+        opacity: 0;
+    }
+    36% {
+        left: -15px;
+        opacity: 1;
+    }
+    54% {
+        left: -15px;
+        opacity: 0;
+    }
+    72% {
+        left: -15px;
+        opacity: 1;
+    }
+    75% {
+        left: -18px;
+    }
+    85% {
+        left: 200px;
+    }
+    90% {
+        left: 192px;
+    }
+    95% {
+        left: 197px;
+    }
+    100% {
+        left: 195px;
+    }
+}
+
