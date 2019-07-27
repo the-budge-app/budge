@@ -17,6 +17,8 @@ import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
 
+import HomeMap from '../HomeMap/HomeMap'
+
 import SemanticPlayground from '../SemanticPlayground'
 
 import './App.css';
@@ -42,6 +44,7 @@ class App extends Component {
               component={AboutPage}
             />
             <Route exact path="/semantic-playground" component={SemanticPlayground} />
+            <Route exact path="/map" component={HomeMap} />
             {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/home will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
