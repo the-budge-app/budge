@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   HashRouter as Router,
   Route,
@@ -6,7 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
@@ -17,26 +17,36 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import UserPage from '../UserPage/UserPage';
 
 
+import HomeMap from '../HomeMap/HomeMap'
+import LoadingPage from '../LoadingPage/LoadingPage'
+
 import SemanticPlayground from '../SemanticPlayground'
 
 import './App.css';
 
 class App extends Component {
-  componentDidMount () {
-    this.props.dispatch({type: 'FETCH_USER'})
+  componentDidMount() {
+    this.props.dispatch({ type: 'FETCH_USER' })
   }
 
   render() {
     return (
       <Router>
         <div>
-          <Nav />
+          {/* only show the nav component on every route except the loading route */}
+          <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Nav {...routerProps} />} />
           <Switch>
-            {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
-            <Redirect exact from="/" to="/home" />
-            {/* Visiting localhost:3000/about will show the about page.
-            This is a route anyone can see, no login necessary */}
+            {/* Visiting localhost:3000 will redirect to localhost:3000/loading */}
+            <Redirect exact from="/" to="/loading" />
+
+            {/* loading page component */}
+            <Route exact path="/loading" component={LoadingPage} />
+
+            {/* route to test any semantic ui components on */}
             <Route exact path="/semantic-playground" component={SemanticPlayground} />
+
+            {/* route for the map component  */}
+            <Route exact path="/map" component={HomeMap} />
             {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/home will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
@@ -51,10 +61,12 @@ class App extends Component {
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />
           </Switch>
-          <Footer />
+          {/* only show the footer component on every route except the loading route */}
+          <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Footer {...routerProps} />} />
         </div>
       </Router>
-  )}
+    )
+  }
 }
 
 export default connect()(App);
