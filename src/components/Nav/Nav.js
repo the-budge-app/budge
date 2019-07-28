@@ -1,40 +1,59 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import LogOutButton from '../LogOutButton/LogOutButton';
+//import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
+import { Sidebar, Menu, Icon, Button } from 'semantic-ui-react';
 
-const Nav = (props) => (
-  <div className="nav">
-    <Link to="/home">
-      <h2 className="nav-title">Prime Solo Project</h2>
-    </Link>
-    <div className="nav-right">
-      <Link className="nav-link" to="/home">
-        {/* Show this link if they are logged in or not,
-        but call this link 'Home' if they are logged in,
-        and call this link 'Login / Register' if they are not */}
-        {props.user.id ? 'Home' : 'Login / Register'}
+class Nav extends Component {
+  state = {
+    visible: false,
+  }
+
+  toggleVisible = () => {
+    this.setState({
+      visible: !this.state.visible
+    })
+  }
+
+  render() {
+    return (
+      <div className="nav">
+        <Sidebar
+          as={Menu}
+          animation='overlay'
+          icon='labeled'
+          inverted
+          vertical
+          visible={this.state.visible}
+          width='thin'
+        >
+          <Menu.Item as='a'>
+          <Button primary onClick={this.toggleVisible}>Close</Button>
+            </Menu.Item>
+          <Menu.Item as='a'>
+            <Icon name='map marker alternate' />
+            Map
+            </Menu.Item>
+            <Menu.Item as='a'>
+            <Icon name='user' />
+            Profile
+            </Menu.Item>
+          <Menu.Item as='a'>
+            <Icon name='dollar sign' />
+            Payment
+            </Menu.Item>
+        </Sidebar>
+        <Icon name='list' primary onClick={this.toggleVisible}/>
+        <div className="nav-right">
+          <Link className="nav-link" to="/semantic-playground">
+            Semantic
       </Link>
-      {/* Show the link to the info page and the logout button if the user is logged in */}
-      {props.user.id && (
-        <>
-          <Link className="nav-link" to="/info">
-            Info Page
-          </Link>
-          <LogOutButton className="nav-link"/>
-        </>
-      )}
-      {/* Always show this link since the about page is not protected */}
-      <Link className="nav-link" to="/about">
-        About
-      </Link>
-      <Link className="nav-link" to="/semantic-playground">
-        Semantic
-      </Link>
-    </div>
-  </div>
-);
+        </div>
+      </div>
+    )
+  }
+}
 
 // Instead of taking everything from state, we just want the user
 // object to determine if they are logged in
