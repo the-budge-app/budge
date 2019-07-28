@@ -14,7 +14,6 @@ class HomeMap extends Component {
     render() {
         return (
             <>
-                <h1 onClick={()=> {this.setState({...this.state, locationError: true, locationErrorMsg: 'Testing'})}}>Home Map Page</h1>
                 <div className="mapContainer">
                     <MapComponent
                         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=AIzaSyDdBV39IhRmDGVLRAB0h3-757S9XAvU684&v=3.exp&libraries=geometry,drawing,places`}

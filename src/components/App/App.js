@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   HashRouter as Router,
   Route,
@@ -6,7 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
 import Footer from '../Footer/Footer';
@@ -25,19 +25,19 @@ import SemanticPlayground from '../SemanticPlayground'
 import './App.css';
 
 class App extends Component {
-  componentDidMount () {
-    this.props.dispatch({type: 'FETCH_USER'})
+  componentDidMount() {
+    this.props.dispatch({ type: 'FETCH_USER' })
   }
 
   render() {
     return (
       <Router>
         <div>
-          <Nav />
+          <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Nav {...routerProps} />} />
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
-            {/* <Redirect exact from="/" to="/home" /> */}
-            <Route exact path="/" component={LoadingPage} />
+            <Redirect exact from="/" to="/loading" />
+            <Route exact path="/loading" component={LoadingPage} />
             {/* Visiting localhost:3000/about will show the about page.
             This is a route anyone can see, no login necessary */}
             <Route
@@ -66,10 +66,11 @@ class App extends Component {
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />
           </Switch>
-          <Footer />
+          <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Footer {...routerProps} />} />
         </div>
       </Router>
-  )}
+    )
+  }
 }
 
 export default connect()(App);

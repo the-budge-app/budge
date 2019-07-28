@@ -3,7 +3,7 @@
 }
 
 #logoContainer {
-    min-height: 50vh;
+    min-height: calc(100vh - 60px);
 }
 #loadingPage #logoWrapper {
     text-align: center;
@@ -60,6 +60,12 @@
     border: 1px solid rgba(34, 34, 34, .25);
     border-radius: 5px;
     padding: 5px;
+}
+
+#loadingPage button {
+    position: absolute;
+    left: calc(50vw - 75px);
+    bottom: 50px;
 }
 /* Animation Keyframes */
 

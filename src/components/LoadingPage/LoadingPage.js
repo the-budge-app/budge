@@ -93,7 +93,7 @@ class LoadingPage extends Component {
                     <Grid.Row verticalAlign="middle">
                         <Grid.Column width={12} textAlign="center">
                             <div id="logoWrapper">
-                                <h1>Budge</h1>
+                                <h1 onClick={()=> {this.setState({...this.state, locationError: true, locationErrorMsg: 'Testing'})}}>Budge</h1>
                                 <span id="leftDot"></span>
                                 <span id="rightDot"></span>
                             </div>
@@ -101,11 +101,7 @@ class LoadingPage extends Component {
                     </Grid.Row>
                 </Grid>
 
-                <Grid centered>
-                    <Grid.Column width={12} textAlign="center">
-                        <Button color='green' basic size="big" loading={!this.props.user.latitude} onClick={() => this.props.history.push('/map')}>Let's Budge!</Button>
-                    </Grid.Column>
-                </Grid>
+                <Button color='green' basic size="big" disabled={!this.props.user.latitude} loading={!this.props.user.latitude} onClick={() => this.props.history.push('/map')}>Get Budging!</Button>
 
                 {/* Below is the dialog for error on getting user location */}
                 <Modal
