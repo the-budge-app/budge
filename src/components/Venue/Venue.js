@@ -11,4 +11,7 @@ class Venue extends Component {
     }
 }
 
-export default connect(Venue);
+const mapStateToProps = reduxState => ({
+    reduxState
+});
+export default connect(mapStateToProps)(Venue);

@@ -11,4 +11,7 @@ class PaymentPage extends Component {
     }
 }
 
-export default connect(PaymentPage);
+const mapStateToProps = reduxState => ({
+    reduxState
+});
+export default connect(mapStateToProps)(PaymentPage);

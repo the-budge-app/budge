@@ -11,4 +11,7 @@ class Contact extends Component {
     }
 }
 
-export default connect(Contact);
+const mapStateToProps = reduxState => ({
+    reduxState
+});
+export default connect(mapStateToProps)(Contact);

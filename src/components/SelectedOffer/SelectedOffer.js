@@ -11,4 +11,7 @@ class SelectedOffer extends Component {
     }
 }
 
-export default connect(SelectedOffer);
+const mapStateToProps = reduxState => ({
+    reduxState
+});
+export default connect(mapStateToProps)(SelectedOffer);
