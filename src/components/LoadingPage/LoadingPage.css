@@ -1,8 +1,12 @@
+.ui.grid {
+    margin: 0;
+}
 
+#logoContainer {
+    min-height: 50vh;
+}
 #loadingPage #logoWrapper {
     text-align: center;
-}
-#loadingPage #logoWrapper div{
     display: inline-block;
     margin: 10px;
     position: relative;

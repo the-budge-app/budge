@@ -7,7 +7,7 @@ import { Grid, Modal, Button, Icon, Header } from 'semantic-ui-react'
 import './LoadingPage.css'
 
 class LoadingPage extends Component {
-    
+
     state = {
         locationErrorMsg: '',
         locationError: false,
@@ -44,8 +44,8 @@ class LoadingPage extends Component {
 
     }
 
-     // set local state error data if there was an error with retrieving location
-     setPositionError = (error) => {
+    // set local state error data if there was an error with retrieving location
+    setPositionError = (error) => {
         switch (error.code) {
             case 1:
                 this.setState({
@@ -89,15 +89,23 @@ class LoadingPage extends Component {
     render() {
         return (
             <div id="loadingPage">
-                <div id="logoWrapper">
-                    <div>
-                        <h1>Budge</h1>
-                        <span id="leftDot"></span>
-                        <span id="rightDot"></span>
-                    </div>
-                </div>
+                <Grid id="logoContainer" centered>
+                    <Grid.Row verticalAlign="middle">
+                        <Grid.Column width={12} textAlign="center">
+                            <div id="logoWrapper">
+                                <h1>Budge</h1>
+                                <span id="leftDot"></span>
+                                <span id="rightDot"></span>
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
 
-                { this.props.user.latitude && <button onClick={() => this.props.history.push('/map')}>Let's Budge!</button>}
+                <Grid centered>
+                    <Grid.Column width={12} textAlign="center">
+                        <Button color='green' basic size="big" loading={!this.props.user.latitude} onClick={() => this.props.history.push('/map')}>Let's Budge!</Button>
+                    </Grid.Column>
+                </Grid>
 
                 {/* Below is the dialog for error on getting user location */}
                 <Modal
