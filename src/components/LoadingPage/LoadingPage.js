@@ -78,7 +78,7 @@ class LoadingPage extends Component {
         }
     }
 
-    handleModalClose = () => {
+    handleErrorModalClose = () => {
         this.setState({
             ...this.state,
             locationError: false,
@@ -106,7 +106,7 @@ class LoadingPage extends Component {
                 {/* Below is the dialog for error on getting user location */}
                 <Modal
                     open={this.state.locationError}
-                    onClose={this.handleModalClose}
+                    onClose={this.handleErrorModalClose}
                     basic
                     size='small'
                 >
@@ -116,7 +116,7 @@ class LoadingPage extends Component {
                         <h3>Please enable location in your browser.</h3>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button color='green' onClick={this.handleModalClose} inverted>
+                        <Button color='green' onClick={this.handleErrorModalClose} inverted>
                             <Icon name='checkmark' />Ok
                         </Button>
                     </Modal.Actions>
