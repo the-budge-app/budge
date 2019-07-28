@@ -97,6 +97,7 @@ class LoadingPage extends Component {
                                 <span id="leftDot"></span>
                                 <span id="rightDot"></span>
                             </div>
+                            <p>click the logo to test the location services error modal</p>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
