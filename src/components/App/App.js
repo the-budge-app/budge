@@ -33,14 +33,19 @@ class App extends Component {
     return (
       <Router>
         <div>
+          {/* only show the nav component on every route except the loading route */}
           <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Nav {...routerProps} />} />
           <Switch>
-            {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
+            {/* Visiting localhost:3000 will redirect to localhost:3000/loading */}
             <Redirect exact from="/" to="/loading" />
+
+            {/* loading page component */}
             <Route exact path="/loading" component={LoadingPage} />
-            {/* Visiting localhost:3000/about will show the about page.
-            This is a route anyone can see, no login necessary */}
+
+            {/* route to test any semantic ui components on */}
             <Route exact path="/semantic-playground" component={SemanticPlayground} />
+
+            {/* route for the map component  */}
             <Route exact path="/map" component={HomeMap} />
             {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/home will show the UserPage if the user is logged in.
@@ -56,6 +61,7 @@ class App extends Component {
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />
           </Switch>
+          {/* only show the footer component on every route except the loading route */}
           <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Footer {...routerProps} />} />
         </div>
       </Router>
