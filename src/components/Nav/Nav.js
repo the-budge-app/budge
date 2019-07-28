@@ -44,7 +44,7 @@ class Nav extends Component {
             Payment
             </Menu.Item>
         </Sidebar>
-        <Icon name='list' primary onClick={this.toggleVisible}/>
+        <Icon name='list' className='menuIcon' primary onClick={this.toggleVisible}/>
         <div className="nav-right">
           <Link className="nav-link" to="/semantic-playground">
             Semantic
