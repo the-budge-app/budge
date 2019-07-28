@@ -11,4 +11,7 @@ class BuyerConfirm extends Component {
     }
 }
 
-export default connect(BuyerConfirm);
+const mapStateToProps = reduxState => ({
+    reduxState
+});
+export default connect(mapStateToProps)(BuyerConfirm);
