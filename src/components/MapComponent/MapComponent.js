@@ -7,35 +7,30 @@ import {
     Marker,
     InfoWindow,
 } from 'react-google-maps'
+import { Grid, Button } from 'semantic-ui-react'
+
+const styles = {
+    infoWindow: {
+        gridColumn: {
+            padding: '0',
+        },
+        pTag: {
+            margin: '0',
+        },
+        h4Tag: {
+            margin: '5px',
+            textAlign: 'center',
+            fontSize: '1.25rem',
+        }
+
+    }
+}
 
 class Map extends Component {
 
     state = {
-        lat: null,
-        long: null,
-        // venueList: [
-        //     {
-        //         latitude: 44.983550,
-        //         longitude: -93.269526,
-        //     },
-        //     {
-        //         latitude: 44.983616,
-        //         longitude: -93.271683,
-        //     },
-        //     {
-        //         latitude: 44.987640,
-        //         longitude: -93.276965,
-        //     },
-        //     {
-        //         latitude: 44.986472,
-        //         longitude: -93.275365,
-        //     },
-        //     {
-        //         latitude: 44.984033,
-        //         longitude: -93.254192,
-        //     }
-        // ],
         selectedVenue: {
+            id: null,
             latitude: null,
             longitude: null,
         }
@@ -46,10 +41,7 @@ class Map extends Component {
         // move this to redux later
         this.setState({
             ...this.state,
-            selectedVenue: {
-                latitude: venue.latitude,
-                longitude: venue.longitude,
-            }
+            selectedVenue: venue,
         })
         console.log('venue is selected', venue)
         // set distance away from venue when user clicks venue marker
@@ -64,11 +56,12 @@ class Map extends Component {
     closeInfoWindow = () => {
         this.setState({
             ...this.state,
-            selectedVenue: {
-                latitude: null,
-                longitude: null
-            }
+            selectedVenue: {},
         })
+    }
+
+    viewVenue = () => {
+        this.props.history.push(`/venue/${this.state.selectedVenue.id}`);
     }
 
     render() {
@@ -80,15 +73,15 @@ class Map extends Component {
                             streetViewControl: false,
                             fullscreenControl: false,
                             controlSize: 20,
-                            minZoom: 3.25,
+                            minZoom: 12,
                         }}
-                        defaultZoom={10.75}
+                        defaultZoom={14.25}
                         defaultCenter={{ lat: this.props.defaultLat, lng: this.props.defaultLong }}
                     >
                         {/* map through the list of venues in redux and put a marker on the map for each one */}
-                        {this.props.venues && this.props.venues.map((venue, index) => (
+                        {this.props.venues && this.props.venues.map(venue => (
                             <Marker
-                                key={index}
+                                key={venue.id}
                                 position={{
                                     lat: Number(venue.latitude),
                                     lng: Number(venue.longitude),
@@ -107,9 +100,21 @@ class Map extends Component {
                                 onCloseClick={this.closeInfoWindow}
 
                             >
-                            <>
-                                { this.props.user.distance && <h4>You are {this.props.user.distance} meters away.</h4>}
-                            </>
+                                <Grid>
+                                    <Grid.Column style={styles.infoWindow.gridColumn} width={16}>
+                                        <h4 style={styles.infoWindow.h4Tag}>{this.state.selectedVenue.restaurant_name}</h4>
+                                    </Grid.Column>
+                                    <Grid.Column style={styles.infoWindow.gridColumn} width={16}>
+                                        <p style={styles.infoWindow.pTag}>{this.state.selectedVenue.address}</p>
+                                        <p style={styles.infoWindow.pTag}>{this.state.selectedVenue.city}</p>
+                                        {/* format phone number to be pretty later */}
+                                        <p style={styles.infoWindow.pTag}>{this.state.selectedVenue.phone_number}</p>
+                                    </Grid.Column>
+                                    <Grid.Column style={{...styles.infoWindow.gridColumn, textAlign: 'center', paddingTop: '10px'}} width={16}>
+                                        <Button onClick={this.viewVenue} size="mini">View</Button>
+                                    </Grid.Column>
+                                </Grid>
+
                             </InfoWindow>
                         }
                     </GoogleMap>
