@@ -58,7 +58,7 @@ class Map extends Component {
 
     viewVenue = () => {
         this.props.dispatch({type: 'SET_SELECTED_VENUE', payload: this.state.selectedVenue});
-        this.props.history.push(`/venue?${this.state.selectedVenue.id}`);
+        this.props.history.push(`/venue/${this.state.selectedVenue.id}`);
     }
 
     render() {
