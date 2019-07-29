@@ -3,7 +3,15 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 //import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
-import { Sidebar, Menu, Icon, Button } from 'semantic-ui-react';
+import { Sidebar, Menu, Icon, Button, Grid } from 'semantic-ui-react';
+
+const styles = {
+  closeIcon: {
+    position: 'absolute',
+    right: '10px',
+    top: '10px',
+  }
+}
 
 class Nav extends Component {
   state = {
@@ -18,7 +26,15 @@ class Nav extends Component {
 
   render() {
     return (
-      <div className="nav">
+      <>
+        <Grid className="nav">
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column width={2}>
+              <Icon name='bars' size='large' className='menuIcon' onClick={this.toggleVisible} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
         <Sidebar
           as={Menu}
           animation='overlay'
@@ -28,29 +44,28 @@ class Nav extends Component {
           visible={this.state.visible}
           width='thin'
         >
-          <Menu.Item as='a'>
-          <Button primary onClick={this.toggleVisible}>Close</Button>
-            </Menu.Item>
-          <Menu.Item as='a'>
-            <Icon name='map marker alternate' />
-            Map
-            </Menu.Item>
-            <Menu.Item as='a'>
-            <Icon name='user' />
-            Profile
-            </Menu.Item>
-          <Menu.Item as='a'>
-            <Icon name='dollar sign' />
-            Payment
-            </Menu.Item>
+          <Menu.Item style={{ height: '44px' }}>
+            <Icon style={styles.closeIcon} inverted size="large" onClick={this.toggleVisible} name='close' />
+          </Menu.Item>
+          <Menu.Item>
+            <Link onClick={this.toggleVisible} to='/home'>
+              <Icon name='home' />
+              Home
+            </Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link onClick={this.toggleVisible} to="/semantic-playground">
+              Semantic
+            </Link>
+          </Menu.Item>
+          <Menu.Item>
+            <Link to="/loading">
+              <Icon onClick={this.toggleVisible} name='log out' />
+              Log Out
+            </Link>
+          </Menu.Item>
         </Sidebar>
-        <Icon name='list' className='menuIcon' primary onClick={this.toggleVisible}/>
-        <div className="nav-right">
-          <Link className="nav-link" to="/semantic-playground">
-            Semantic
-      </Link>
-        </div>
-      </div>
+      </>
     )
   }
 }

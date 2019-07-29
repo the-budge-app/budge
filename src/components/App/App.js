@@ -54,7 +54,7 @@ class App extends Component {
             <Route exact path="/semantic-playground" component={SemanticPlayground} />
 
             {/* route for the map component  */}
-            <Route exact path="/map" component={HomeMap} />
+            <Route exact path="/home" component={HomeMap} />
 
             <Route exact path="/contact" component={Contact} />
             <Route exact path="/venue" component={Venue} />
