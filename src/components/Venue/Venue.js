@@ -26,9 +26,13 @@ class Venue extends Component {
                 {this.props.venueInfo.map(venue => 
                 <table>
                     <tbody>
-                        <tr>
+                        <tr key={venue.id}>
                             <td>{venue.party_size} persons</td>
                             <td>{venue.quote_time} min</td>
+                            {venue.offer_status_code?
+                            <td>$ {venue.offer_price}</td>
+                            :
+                            <td>NA</td>}
                         </tr>
                     </tbody>
 
