@@ -13,6 +13,18 @@ router.get('/', (req, res) => {
         })   
 })
 
+// get request to get the single restaurant info that the user clicked to view
+router.get('/selected/:id', (req, res) => {
+    // console.log('Getting info for restaurant', req.params.id);
+    pool.query(`SELECT * from "restaurant" WHERE "id" = $1 LIMIT 1;`, [req.params.id])
+        .then(result => {
+            res.send(result.rows[0]);
+        })
+        .catch( error => {
+            console.log('Error in SELECT query from selected route.', error);
+        })
+})
+
 //get request to get the single restaurant + waitlist information that the user selected
 router.get('/:restaurant_id', (req, res) => {
     console.log(req.params.restaurant_id);
