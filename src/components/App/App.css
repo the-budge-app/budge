@@ -22,6 +22,18 @@ body {
   background-color: #008183;
 }
 
+#loginPage h1, #registerPage h1 {
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+#loginPage div.ui.label, #registerPage div.ui.label {
+    width: 100px;
+    text-align: center;
+    font-weight: 300;
+
+}
+
 /* This line makes the "Register" and "Login" buttons look like links */
 .link-button {
     background:none;

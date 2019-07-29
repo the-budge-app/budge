@@ -36,7 +36,7 @@ class LoginPage extends Component {
 
   render() {
     return (
-      <div>
+      <div id="loginPage">
         {this.props.errors.loginMessage && (
           <h2
             className="alert"
@@ -45,8 +45,8 @@ class LoginPage extends Component {
             {this.props.errors.loginMessage}
           </h2>
         )}
-        <Grid centered style={{ marginTop: '15vh' }}>
-          <Grid.Row style={{ marginBotom: '25px' }}>
+        <Grid centered style={{ marginTop: '10vh' }}>
+          <Grid.Row>
             <Grid.Column width={12} textAlign="center" >
               <h1>Login</h1>
             </Grid.Column>
@@ -60,7 +60,7 @@ class LoginPage extends Component {
           </Grid.Column>
 
           <Grid.Column width={14} textAlign="center">
-            <Button onClick={this.login} type='submit' name='submit'>Log In</Button>
+            <Button primary size="large"  onClick={this.login} type='submit' name='submit'>Log In</Button>
           </Grid.Column>
 
           <Grid.Column width={14} textAlign="center">
@@ -69,7 +69,7 @@ class LoginPage extends Component {
               className="link-button"
               onClick={() => { this.props.dispatch({ type: 'SET_TO_REGISTER_MODE' }) }}
             >
-              Register
+              Register Form
           </button>
           </Grid.Column>
 
@@ -87,11 +87,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(LoginPage);
-
-
-
-// <Input type='text' placeholder='Search...' action>
-//   <input />
-//   <Select compact options={options} defaultValue='articles' />
-//   <Button type='submit'>Search</Button>
-// </Input>
