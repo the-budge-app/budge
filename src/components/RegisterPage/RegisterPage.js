@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+
+//import Semantic UI Components 
+import { Grid, Input, Button } from 'semantic-ui-react'
 
 class RegisterPage extends Component {
   state = {
@@ -19,7 +22,7 @@ class RegisterPage extends Component {
         },
       });
     } else {
-      this.props.dispatch({type: 'REGISTRATION_INPUT_ERROR'});
+      this.props.dispatch({ type: 'REGISTRATION_INPUT_ERROR' });
     }
   } // end registerUser
 
@@ -31,7 +34,7 @@ class RegisterPage extends Component {
 
   render() {
     return (
-      <div>
+      <div id="registerPage">
         {this.props.errors.registrationMessage && (
           <h2
             className="alert"
@@ -40,48 +43,43 @@ class RegisterPage extends Component {
             {this.props.errors.registrationMessage}
           </h2>
         )}
-        <form onSubmit={this.registerUser}>
-          <h1>Register User</h1>
-          <div>
-            <label htmlFor="username">
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleInputChangeFor('username')}
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Password:
-              <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
-              />
-            </label>
-          </div>
-          <div>
-            <input
-              className="register"
-              type="submit"
-              name="submit"
-              value="Register"
-            />
-          </div>
-        </form>
-        <center>
-          <button
-            type="button"
-            className="link-button"
-            onClick={() => {this.props.dispatch({type: 'SET_TO_LOGIN_MODE'})}}
-          >
-            Login
+        <Grid centered style={{ marginTop: '10vh' }}>
+          <Grid.Row>
+            <Grid.Column width={12} textAlign="center" >
+              <h1>Register</h1>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Column width={14}>
+            <Input onChange={this.handleInputChangeFor('username')} label='Username' />
+          </Grid.Column>
+
+          <Grid.Column width={14}>
+            <Input onChange={this.handleInputChangeFor('password')} label='Password' />
+          </Grid.Column>
+
+          <Grid.Column width={14}>
+            <Input onChange={this.handleInputChangeFor('email')} label='Email' />
+          </Grid.Column>
+
+          <Grid.Column width={14}>
+            <Input onChange={this.handleInputChangeFor('phone')} label='Phone' />
+          </Grid.Column>
+
+          <Grid.Column width={14} textAlign="center">
+            <Button primary size="large" onClick={this.registerUser} type='submit' name='submit'>Register</Button>
+          </Grid.Column>
+
+          <Grid.Column width={14} textAlign="center">
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => { this.props.dispatch({ type: 'SET_TO_LOGIN_MODE' }) }}
+            >
+              Login Form
           </button>
-        </center>
+          </Grid.Column>
+
+        </Grid>
       </div>
     );
   }
