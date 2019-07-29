@@ -13,5 +13,17 @@ router.get('/', (req, res) => {
         })   
 })
 
-
+//get request to get the single restaurant + waitlist information that the user selected
+router.get('/:restaurant_id', (req, res) => {
+    pool.query(`SELECT *, "waitlist"."id" AS "waitlist_id" FROM "restaurant"
+        JOIN "waitlist" ON "restaurant"."id" = "waitlist"."restaurant_id"
+        WHERE "restaurant"."id" = $1;`, [req.params.restaurant_id])
+        .then(result => {
+            res.send(result.rows);
+        })
+        .catch( error => {
+            console.log('error with getting one restaurant', error);
+            res.sendStatus(500);
+        })
+})
 module.exports = router;
