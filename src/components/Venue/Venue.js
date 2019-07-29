@@ -22,6 +22,11 @@ class Venue extends Component {
             type: 'FETCH_VENUE_INFO',
             payload: { restaurant_id: this.props.match.params.id }
         })
+
+        this.props.dispatch({
+            type:'FETCH_SELECTED_VENUE',
+            payload: this.props.match.params.id,
+        })
     }
 
     toggleButton = () => {
@@ -29,34 +34,14 @@ class Venue extends Component {
             active: !this.state.active
         })
     }
-    handleClick = () => {
+    handleClick = (waitlist_id) => {
         console.log('button test');
-
+        this.props.history.push(`/selected-offer/${waitlist_id}`);
     }
     render() {
         const { active } = this.state
         return (
-            <>
-                {/* waitlist information to be rendered on DOM - currently in table format
-            - to be updated with semantic UI*/}
-                <table>
-                    {this.props.venueInfo.map(venue =>
-                        <tbody>
-                            <tr key={venue.waitlist_id}>
-                                <td>{venue.party_size} persons</td>
-                                <td>{venue.quote_time} min</td>
-                                {venue.rejected_price[0] ?
-                                    <td>$ {venue.rejected_price[0]}</td>
-                                    :
-                                    <td>NA</td>}
-                            </tr>
-                        </tbody>
-                    )}
-                </table>
-
                 <div style={styles.mainDiv}>
-                    {JSON.stringify(this.props.selectedVenue)}
-
                     <h3>{this.props.selectedVenue.restaurant_name}</h3>
                     <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
                     <h4>{this.props.selectedVenue.address}</h4>
@@ -72,7 +57,7 @@ class Venue extends Component {
                     <br />
                     {this.props.venueInfo.map(venue =>
                         <>
-                            <Button key={venue.waitlist_id} fluid onClick={this.handleClick}>
+                            <Button key={venue.waitlist_id} fluid onClick={()=>this.handleClick(venue.waitlist_id)}>
                                 <Icon name="user" />{venue.party_size}
                                 <Icon name="clock" />{venue.quote_time}
                                 <Icon name="dont" />
@@ -88,7 +73,6 @@ class Venue extends Component {
                         <Button fluid toggle active={active} onClick={this.toggleButton}>Leave Waitlist</Button>
                     }
                 </div>
-            </>
         )
     }
 }
