@@ -31,6 +31,7 @@ import PaymentPage from '../PaymentPage/PaymentPage';
 import Profile from '../Profile/Profile';
 import RateUser from '../RateUser/RateUser';
 import SelectedOffer from '../SelectedOffer/SelectedOffer';
+import ErrorPage from '../ErrorPage/ErrorPage'
 
 class App extends Component {
   componentDidMount() {
@@ -79,7 +80,7 @@ class App extends Component {
             {/* This works the same as the other protected route, except that if the user is logged in,
             they will see the info page instead. */}
             {/* If none of the other routes matched, we will show a 404. */}
-            <Route render={() => <h1>404</h1>} />
+            <Route component={ErrorPage} />
           </Switch>
           {/* only show the footer component on every route except the loading route */}
           <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Footer {...routerProps} />} />
