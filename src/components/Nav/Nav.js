@@ -32,14 +32,14 @@ class Nav extends Component {
             <Grid.Column width={2}>
               <Icon name='bars' size='big' className='menuIcon' onClick={this.toggleVisible} />
             </Grid.Column>
-            <Grid.Column width={8} textAlign="center">
+            <Grid.Column width={10} textAlign="center">
               <div id="logoWrapper">
                 <h2>Budge</h2>
               </div>
             </Grid.Column>
             <Grid.Column width={2} textAlign="right">
               <div>
-                <h2>${45}</h2>
+                <h2>${this.props.user.account_balance}</h2>
               </div>
             </Grid.Column>
           </Grid.Row>
