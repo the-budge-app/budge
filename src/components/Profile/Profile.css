@@ -1,0 +1,29 @@
+#editMode {
+    float: right;
+    /* padding-top: 10px;
+    margin-right: 10px; */
+}
+
+#editMode:active {
+    float: right;
+    padding-top: 3px;
+    /* margin-right: 10px; */
+    opacity: .80;
+}
+.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100%;
+    position: relative;
+    flex-wrap: wrap;
+}
+
+.profileCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+}
