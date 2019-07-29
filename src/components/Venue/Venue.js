@@ -24,36 +24,36 @@ class Venue extends Component {
         })
     }
 
-        toggleButton = () => {
-            this.setState({
-                active: !this.state.active
-            })
-        }
-        handleClick = () => {
-            console.log('button test');
+    toggleButton = () => {
+        this.setState({
+            active: !this.state.active
+        })
+    }
+    handleClick = () => {
+        console.log('button test');
 
-        }
-        render() {
-            const { active } = this.state
-            return (
-                <>
-                <ul>
-                    {this.props.venueInfo.map(venue => 
-                    <table>
+    }
+    render() {
+        const { active } = this.state
+        return (
+            <>
+            {/* waitlist information to be rendered on DOM - currently in table format
+            - to be updated with semantic UI*/}
+                <table>
+                    {this.props.venueInfo.map(venue =>
                         <tbody>
-                            <tr key={venue.id}>
+                            <tr key={venue.waitlist_id}>
                                 <td>{venue.party_size} persons</td>
                                 <td>{venue.quote_time} min</td>
-                                {venue.rejected_price[0]?
-                                <td>$ {venue.rejected_price[0]}</td>
-                                :
-                                <td>NA</td>}
+                                {venue.rejected_price[0] ?
+                                    <td>$ {venue.rejected_price[0]}</td>
+                                    :
+                                    <td>NA</td>}
                             </tr>
                         </tbody>
+                    )}
+                </table>
 
-                    </table>)}
-                </ul>
-            
                 <div style={styles.mainDiv}>
 
                     <h3>{this.props.venueInfo.length && this.props.venueInfo[0].restaurant_name}</h3>
@@ -76,12 +76,12 @@ class Venue extends Component {
                         <Button fluid toggle active={active} onClick={this.toggleButton}>Leave Waitlist</Button>
                     }
                 </div>
-                </>
-            )
-        }
+            </>
+        )
     }
+}
 
-    const mapStateToProps = reduxState => ({
-        venueInfo: reduxState.venueInfo
-    });
-    export default connect(mapStateToProps)(Venue);
+const mapStateToProps = reduxState => ({
+    venueInfo: reduxState.venueInfo
+});
+export default connect(mapStateToProps)(Venue);
