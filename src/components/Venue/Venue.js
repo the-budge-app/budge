@@ -14,15 +14,34 @@ class Venue extends Component {
             <>
             <h1>Venue Page</h1>
             <Logout />
-            <pre>
-                {JSON.stringify(this.props.reduxState.venueInfo, null, 2)}
-            </pre>
+            {/* <pre>
+                {JSON.stringify(this.props.venueInfo, null, 2)}
+            </pre> */}
+            {this.props.venueInfo.length && 
+            <>
+            <h2>{this.props.venueInfo[0].restaurant_name}</h2>
+            <h2>{this.props.venueInfo[0].address}</h2>
+            <h2>{this.props.venueInfo[0].phone_number}</h2>
+            <ul>
+                {this.props.venueInfo.map(venue => 
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>{venue.party_size} persons</td>
+                            <td>{venue.quote_time} min</td>
+                        </tr>
+                    </tbody>
+
+                </table>)}
+            </ul>
+            </>
+            }
             </>
         )
     }
 }
 
 const mapStateToProps = reduxState => ({
-    reduxState
+    venueInfo: reduxState.venueInfo
 });
 export default connect(mapStateToProps)(Venue);
