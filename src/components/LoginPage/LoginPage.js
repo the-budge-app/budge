@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+
+// import Semantic UI components
+import { Grid, Input, Button } from 'semantic-ui-react'
+
+
 class LoginPage extends Component {
   state = {
     username: '',
@@ -40,48 +45,35 @@ class LoginPage extends Component {
             {this.props.errors.loginMessage}
           </h2>
         )}
-        <form onSubmit={this.login}>
-          <h1>Login</h1>
-          <div>
-            <label htmlFor="username">
-              Username:
-              <input
-                type="text"
-                name="username"
-                value={this.state.username}
-                onChange={this.handleInputChangeFor('username')}
-              />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="password">
-              Password:
-              <input
-                type="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.handleInputChangeFor('password')}
-              />
-            </label>
-          </div>
-          <div>
-            <input
-              className="log-in"
-              type="submit"
-              name="submit"
-              value="Log In"
-            />
-          </div>
-        </form>
-        <center>
-          <button
-            type="button"
-            className="link-button"
-            onClick={() => {this.props.dispatch({type: 'SET_TO_REGISTER_MODE'})}}
-          >
-            Register
+        <Grid centered style={{ marginTop: '15vh' }}>
+          <Grid.Row style={{ marginBotom: '25px' }}>
+            <Grid.Column width={12} textAlign="center" >
+              <h1>Login</h1>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Column width={14}>
+            <Input onChange={this.handleInputChangeFor('username')} label='Username' />
+          </Grid.Column>
+
+          <Grid.Column width={14}>
+            <Input onChange={this.handleInputChangeFor('password')} label='Password' />
+          </Grid.Column>
+
+          <Grid.Column width={14} textAlign="center">
+            <Button onClick={this.login} type='submit' name='submit'>Log In</Button>
+          </Grid.Column>
+
+          <Grid.Column width={14} textAlign="center">
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => { this.props.dispatch({ type: 'SET_TO_REGISTER_MODE' }) }}
+            >
+              Register
           </button>
-        </center>
+          </Grid.Column>
+
+        </Grid>
       </div>
     );
   }
@@ -89,9 +81,17 @@ class LoginPage extends Component {
 
 // Instead of taking everything from state, we just want the error messages.
 // if you wanted you could write this code like this:
-// const mapStateToProps = ({errors}) => ({ errors });
+// const mapStateToProps = ({errors}) => ({errors});
 const mapStateToProps = state => ({
   errors: state.errors,
 });
 
 export default connect(mapStateToProps)(LoginPage);
+
+
+
+// <Input type='text' placeholder='Search...' action>
+//   <input />
+//   <Select compact options={options} defaultValue='articles' />
+//   <Button type='submit'>Search</Button>
+// </Input>
