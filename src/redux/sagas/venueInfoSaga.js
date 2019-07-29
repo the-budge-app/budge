@@ -3,7 +3,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 
 function* fetchVenueInfo(action) {
     try {
-        const venueInfoResponse = yield axios.get(`/api/venues/1`);
+        const venueInfoResponse = yield axios.get(`/api/venues/${action.payload.restaurant_id}`);
         console.log(venueInfoResponse);
         yield put({type: 'SET_VENUE_INFO', payload: venueInfoResponse.data})
     } catch (error) {
