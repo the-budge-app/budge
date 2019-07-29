@@ -58,7 +58,7 @@ class App extends Component {
             <Route exact path="/home" component={HomeMap} />
 
             <Route exact path="/contact" component={Contact} />
-            <Route exact path="/venue" component={Venue} />
+            <Route exact path="/venue/:id" component={Venue} />
             {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/home will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
