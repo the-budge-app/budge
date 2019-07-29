@@ -20,7 +20,7 @@ class Venue extends Component {
     componentDidMount() {
         this.props.dispatch({
             type: 'FETCH_VENUE_INFO',
-            payload: { restaurant_id: 1 }
+            payload: { restaurant_id: this.props.match.params.id }
         })
     }
 
@@ -55,10 +55,12 @@ class Venue extends Component {
                 </table>
 
                 <div style={styles.mainDiv}>
+                    {JSON.stringify(this.props.selectedVenue)}
 
-                    <h3>{this.props.venueInfo.length && this.props.venueInfo[0].restaurant_name}</h3>
-                    <h4>phone number</h4>
-                    <h4>Address</h4>
+                    <h3>{this.props.selectedVenue.restaurant_name}</h3>
+                    <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
+                    <h4>{this.props.selectedVenue.address}</h4>
+                    <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
 
                     <h3>Waitlist</h3>
 
@@ -82,6 +84,7 @@ class Venue extends Component {
 }
 
 const mapStateToProps = reduxState => ({
-    venueInfo: reduxState.venueInfo
+    venueInfo: reduxState.venueInfo,
+    selectedVenue: reduxState.selectedVenue,
 });
 export default connect(mapStateToProps)(Venue);
