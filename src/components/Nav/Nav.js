@@ -54,22 +54,34 @@ class Nav extends Component {
           visible={this.state.visible}
           width='thin'
         >
-          <Menu.Item style={{ height: '44px' }}>
+          <Menu.Item style={{ height: '44px'}}>
             <Icon style={styles.closeIcon} inverted size="large" onClick={this.toggleVisible} name='close' />
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item style={{textAlign: 'left'}}>
             <Link onClick={this.toggleVisible} to='/home'>
-              <Icon name='home' />
-              Home
+            <Icon name='map marker alternate' />
+              Home/Map
             </Link>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item style={{textAlign: 'left'}}>
+            <Link onClick={this.toggleVisible} to='/profile'>
+            <Icon name='user' />  
+            Profile
+            </Link>
+          </Menu.Item>
+          <Menu.Item style={{textAlign: 'left'}}>
+            <Link onClick={this.toggleVisible} to='/payment'>
+            <Icon name='dollar sign' />  
+            Payments
+            </Link>
+          </Menu.Item>
+          <Menu.Item style={{textAlign: 'left'}}>
             <Link onClick={this.toggleVisible} to="/semantic-playground">
               Semantic
             </Link>
           </Menu.Item>
-          <Menu.Item>
-            <Link to="/loading">
+          <Menu.Item style={{textAlign: 'left'}}>
+            <Link to="/loading" onClick={() => this.props.dispatch({ type: 'LOGOUT' })}>
               <Icon onClick={this.toggleVisible} name='log out' />
               Log Out
             </Link>
