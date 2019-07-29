@@ -9,8 +9,8 @@
 .nav {
   overflow: hidden;
   background-color: #00acb0;
+  min-height: 60px;
 }
-
 .nav-link {
   float: left;
   color: #f2f2f2;

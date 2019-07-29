@@ -102,7 +102,7 @@ class LoadingPage extends Component {
                     </Grid.Row>
                 </Grid>
 
-                <Button color='green' basic size="big" disabled={!this.props.user.latitude} loading={!this.props.user.latitude} onClick={() => this.props.history.push('/map')}>Get Budging!</Button>
+                <Button color='green' basic size="big" disabled={!this.props.user.latitude} loading={!this.props.user.latitude} onClick={() => this.props.history.push('/home')}>Get Budging!</Button>
 
                 {/* Below is the dialog for error on getting user location */}
                 <Modal

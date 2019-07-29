@@ -13,28 +13,28 @@ class Map extends Component {
     state = {
         lat: null,
         long: null,
-        venueList: [
-            {
-                latitude: 44.983550,
-                longitude: -93.269526,
-            },
-            {
-                latitude: 44.983616,
-                longitude: -93.271683,
-            },
-            {
-                latitude: 44.987640,
-                longitude: -93.276965,
-            },
-            {
-                latitude: 44.986472,
-                longitude: -93.275365,
-            },
-            {
-                latitude: 44.984033,
-                longitude: -93.254192,
-            }
-        ],
+        // venueList: [
+        //     {
+        //         latitude: 44.983550,
+        //         longitude: -93.269526,
+        //     },
+        //     {
+        //         latitude: 44.983616,
+        //         longitude: -93.271683,
+        //     },
+        //     {
+        //         latitude: 44.987640,
+        //         longitude: -93.276965,
+        //     },
+        //     {
+        //         latitude: 44.986472,
+        //         longitude: -93.275365,
+        //     },
+        //     {
+        //         latitude: 44.984033,
+        //         longitude: -93.254192,
+        //     }
+        // ],
         selectedVenue: {
             latitude: null,
             longitude: null,
@@ -86,7 +86,7 @@ class Map extends Component {
                         defaultCenter={{ lat: this.props.defaultLat, lng: this.props.defaultLong }}
                     >
                         {/* map through the list of venues in redux and put a marker on the map for each one */}
-                        {this.state.venueList && this.state.venueList.map((venue, index) => (
+                        {this.props.venues && this.props.venues.map((venue, index) => (
                             <Marker
                                 key={index}
                                 position={{
@@ -121,6 +121,7 @@ class Map extends Component {
 
 const mapReduxStateToProps = (reduxState) => ({
     user: reduxState.user,
+    venues: reduxState.venues,
 })
 
 const MapComponent = withScriptjs(withGoogleMap(Map));
