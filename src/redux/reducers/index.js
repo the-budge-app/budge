@@ -3,6 +3,7 @@ import errors from './errorsReducer';
 import loginMode from './loginModeReducer';
 import user from './userReducer';
 import venues from './venueReducer'
+import venueInfo from './venueInfoReducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   loginMode, // will have a value of 'login' or 'registration' to control which screen is shown
   user, // will have an id, username, most recent location, and distance from selected venue if someone is logged in
   venues, // contains array of participating venues from the database
+  venueInfo, //venue info + waitlist for this venue
 });
 
 export default rootReducer;
