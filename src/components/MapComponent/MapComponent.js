@@ -29,11 +29,7 @@ const styles = {
 class Map extends Component {
 
     state = {
-        selectedVenue: {
-            id: null,
-            latitude: null,
-            longitude: null,
-        }
+        selectedVenue: {}
     }
 
     setSelectedVenue = (venue) => {
@@ -61,6 +57,7 @@ class Map extends Component {
     }
 
     viewVenue = () => {
+        this.props.dispatch({type: 'SET_SELECTED_VENUE', payload: this.state.selectedVenue});
         this.props.history.push(`/venue?${this.state.selectedVenue.id}`);
     }
 
