@@ -37,7 +37,7 @@ class Venue extends Component {
         const { active } = this.state
         return (
             <>
-            {/* waitlist information to be rendered on DOM - currently in table format
+                {/* waitlist information to be rendered on DOM - currently in table format
             - to be updated with semantic UI*/}
                 <table>
                     {this.props.venueInfo.map(venue =>
@@ -70,8 +70,18 @@ class Venue extends Component {
                     <br />
                     <br />
                     <br />
-                    <Button fluid onClick={this.handleClick}><Icon name="user" />Party Size  <Icon name="clock" />Quoted Time<Icon name="dont" />Last rejected Offer</Button>
-                    <br />
+                    {this.props.venueInfo.map(venue =>
+                        <>
+                            <Button key={venue.waitlist_id} fluid onClick={this.handleClick}>
+                                <Icon name="user" />{venue.party_size}
+                                <Icon name="clock" />{venue.quote_time}
+                                <Icon name="dont" />
+                                    $ {venue.rejected_price[0]}
+                                
+                            </Button>
+                            <br />
+                        </>
+                    )}
                     {this.state.active ?
                         <Button fluid toggle active={active} onClick={this.toggleButton}>Join Waitlist</Button>
                         :
