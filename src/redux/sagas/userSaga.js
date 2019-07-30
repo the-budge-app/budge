@@ -23,9 +23,18 @@ function* editProfile(action) {
   }
 }
 
+function* deleteAccount(action) {
+  try {
+    yield axios.delete('/api/user/' + action.payload, action.payload);
+  }catch (error) {
+    console.log('error deleting account', error)
+  }
+}
+
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
   yield takeLatest('EDIT_PROFILE', editProfile);
+  yield takeLatest('DELETE_ACCOUNT', deleteAccount);
 }
 
 export default userSaga;
