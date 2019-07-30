@@ -25,8 +25,35 @@ router.get('/selected/:id', (req, res) => {
         })
 })
 
-//get request to get the single restaurant + waitlist information that the user selected
-router.get('/:restaurant_id', (req, res) => {
+//get request to get only the budgable waitlist
+router.get('/budgable/:restaurant_id', (req, res) => {
+    console.log('in budgable wl', req.params.restaurant_id);
+    pool.query(`SELECT "party_size" FROM "waitlist"
+        WHERE "user_id" = $1;`, [req.user.id])
+        .then(
+            result => {
+                console.log(result.rows[0].party_size);
+                pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", 
+                ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price"
+                FROM  "waitlist"
+                LEFT JOIN (SELECT * FROM "offer" WHERE "offer"."status_code" = 2) AS "rejected_offer" 
+                ON "rejected_offer"."waitlist_id" = "waitlist"."id"
+                WHERE "waitlist"."status_code" = 1
+                AND "waitlist"."restaurant_id" = $1
+                AND "waitlist"."party_size" = $2
+                GROUP BY "waitlist"."id";`, [req.params.restaurant_id,result.rows[0].party_size ])
+                    .then(result => res.send(result.rows)) 
+            }
+        )
+        .catch( error => {
+            console.log('error with getting one restaurant', error);
+            res.sendStatus(500);
+        })
+})
+
+
+//get request to get waitlist information for the restaurant that the user selected
+router.get('/waitlist/:restaurant_id', (req, res) => {
     console.log(req.params.restaurant_id);
     pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price"
     FROM  "waitlist"
@@ -43,4 +70,5 @@ router.get('/:restaurant_id', (req, res) => {
             res.sendStatus(500);
         })
 })
+
 module.exports = router;

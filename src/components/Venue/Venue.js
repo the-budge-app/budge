@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Sidebar, Menu, Card, Icon, Image, Rating, Checkbox } from 'semantic-ui-react';
+import { Button, Icon, Checkbox } from 'semantic-ui-react';
 
 const styles = {
     mainDiv: {
@@ -15,28 +15,51 @@ class Venue extends Component {
 
     state = {
         active: true,
+        showAll: false,
     }
 
     componentDidMount() {
+        //fetch WL info
         this.props.dispatch({
-            type: 'FETCH_VENUE_INFO',
+            type: 'FETCH_BUDGABLE_WAITLIST',
             payload: { restaurant_id: this.props.match.params.id }
         })
-
+        //fetch venue info
         this.props.dispatch({
             type: 'FETCH_SELECTED_VENUE',
             payload: this.props.match.params.id,
         })
     }
-
+    //function to toggle between join/leave WL
     toggleButton = () => {
         this.setState({
             active: !this.state.active
         })
+        
     }
     handleClick = (waitlist_id) => {
         console.log('button test');
         this.props.history.push(`/selected-offer/${waitlist_id}`);
+    }
+    //function to toggle between showing all spots or only budgable spots
+    handleSwitch = () => {
+        console.log('in switch');
+        
+        if(!this.state.showAll) {
+            this.props.dispatch({
+                type: 'FETCH_WAITLIST',
+                payload: { restaurant_id: this.props.match.params.id, }
+            })
+        } else {
+            this.props.dispatch({
+                type: 'FETCH_BUDGABLE_WAITLIST',
+                payload: { restaurant_id: this.props.match.params.id, }
+            })
+        }
+
+        this.setState({
+            showAll: !this.state.showAll,
+        })
     }
     render() {
         const { active } = this.state
@@ -46,11 +69,10 @@ class Venue extends Component {
                 <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
                 <h4>{this.props.selectedVenue.address}</h4>
                 <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
-
                 <h3>Waitlist</h3>
 
                 <label>Budgable</label>
-                <Checkbox toggle></Checkbox>
+                <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
                 <label>All Parties</label>
                 <br />
                 <br />
