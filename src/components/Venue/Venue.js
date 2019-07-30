@@ -14,15 +14,15 @@ const styles = {
 class Venue extends Component {
 
     state = {
-        active: true,
-        showAll: false,
+        active: true, //store the on/off states between join/leave WL
+        showAll: true, //store the on/off states between all spots vs. budgable spots
     }
 
     componentDidMount() {
-        //fetch WL info
+        //fetch WL info - default show all WL
         this.props.dispatch({
-            type: 'FETCH_BUDGABLE_WAITLIST',
-            payload: { restaurant_id: this.props.match.params.id }
+            type: 'FETCH_WAITLIST',
+            payload: { restaurant_id: this.props.match.params.id, }
         })
         //fetch venue info
         this.props.dispatch({
@@ -37,14 +37,13 @@ class Venue extends Component {
         })
         
     }
+    //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
     handleClick = (waitlist_id) => {
-        console.log('button test');
         this.props.history.push(`/selected-offer/${waitlist_id}`);
     }
+
     //function to toggle between showing all spots or only budgable spots
-    handleSwitch = () => {
-        console.log('in switch');
-        
+    handleSwitch = () => {        
         if(!this.state.showAll) {
             this.props.dispatch({
                 type: 'FETCH_WAITLIST',
@@ -70,10 +69,18 @@ class Venue extends Component {
                 <h4>{this.props.selectedVenue.address}</h4>
                 <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
                 <h3>Waitlist</h3>
-
-                <label>Budgable</label>
-                <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
-                <label>All Parties</label>
+                {/* conditional rendering - non log in user will not see the toggle button */}
+                {this.props.user.id?
+                    <>
+                        <label>All Parties</label>
+                        <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
+                        <label>Budgable</label>
+                    </>
+                    :
+                    <>
+                    </>
+                }
+                
                 <br />
                 <br />
                 <br />
