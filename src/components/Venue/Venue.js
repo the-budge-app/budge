@@ -29,10 +29,13 @@ class Venue extends Component {
             payload: this.props.match.params.id,
         })
         //fetch user's WL to check if the user has joined the WL in this restaurant
-        this.props.dispatch({
+        //only run the code if user is logged in
+        if(this.props.user.id) {
+            this.props.dispatch({
             type: 'FETCH_USER_WAITLIST',
             payload: this.props.match.params.id,
         })
+    }
     }
     //function to toggle between join/leave WL
     leaveWL = () => {
@@ -44,7 +47,7 @@ class Venue extends Component {
     }
     //function to join waitlist
     joinWL = () => {
-        this.props.history.push(`/join-restaurant/${this.props.match.params.id}`)
+        this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
         //need to check if this user has successfully joined the WL
         //then update the local state
         this.setState({
@@ -53,7 +56,11 @@ class Venue extends Component {
     }
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
     handleSelectSpot = (waitlist_id) => {
-        this.props.history.push(`/selected-offer/${waitlist_id}`);
+        if(!this.props.user.id || this.props.userWaitlist.id) {
+            this.props.history.push(`/selected-offer/${waitlist_id}`);
+        } else {
+            this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
+        }
     }
 
     //function to toggle between showing all spots or only budgable spots
@@ -83,8 +90,8 @@ class Venue extends Component {
                 <h4>{this.props.selectedVenue.address}</h4>
                 <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
                 <h3>Waitlist</h3>
-                {/* conditional rendering - non log in user will not see the toggle button */}
-                {this.props.user.id?
+                {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
+                {this.props.user.id && this.props.userWaitlist.id ?
                     <>
                         <label>All Parties</label>
                         <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
@@ -138,5 +145,6 @@ const mapStateToProps = reduxState => ({
     venueInfo: reduxState.venueInfo,
     selectedVenue: reduxState.selectedVenue,
     user: reduxState.user,
+    userWaitlist: reduxState.userWaitlist,
 });
 export default connect(mapStateToProps)(Venue);
