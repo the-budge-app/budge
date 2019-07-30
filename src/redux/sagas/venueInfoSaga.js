@@ -23,9 +23,21 @@ function* fetchBudgableWaitlist(action) {
     }
 }
 
+// function* fetchUserWaitlist(action) {
+//     try {
+//         const userWaitList = yield axios.get(`/api/venues/budgable/${action.payload.restaurant_id}`);
+//         console.log(waitlistResponse);
+//         yield put({type: 'SET_VENUE_INFO', payload: waitlistResponse.data})
+//     } catch (error) {
+//         // add error handling for issue with fetching venue info
+//         console.log(error);
+//     }
+// }
+
 function* venueInfoSaga() {
     yield takeLatest('FETCH_WAITLIST', fetchWaitlist);
     yield takeLatest('FETCH_BUDGABLE_WAITLIST', fetchBudgableWaitlist);
+    yield takeLatest('FETCH_USER_WAITLIST', fetchUserWaitlist);
 }
 
 export default venueInfoSaga

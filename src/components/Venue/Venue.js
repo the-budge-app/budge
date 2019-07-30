@@ -28,6 +28,11 @@ class Venue extends Component {
             type: 'FETCH_SELECTED_VENUE',
             payload: this.props.match.params.id,
         })
+        //fetch user's WL to check if the user has joined the WL in this restaurant
+        this.props.dispatch({
+            type: 'FETCH_USER_WAITLIST',
+            payload: this.props.match.params.id,
+        })
     }
     //function to toggle between join/leave WL
     leaveWL = () => {
