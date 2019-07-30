@@ -54,4 +54,15 @@ router.put('/profile/:id', rejectUnauthenticated, (req, res) => {
     res.sendStatus(500);
   });
 });
+
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+  const queryText = 'DELETE FROM "user" WHERE id=$1';
+  console.log(req.params)
+  pool.query(queryText, [req.params.id])
+    .then(() => { res.sendStatus(200); })
+    .catch((err) => {
+      console.log('Error completing DELETE query', err);
+      res.sendStatus(500);
+    });
+});
 module.exports = router;

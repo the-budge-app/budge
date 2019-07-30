@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Card, Image, Input, Button, Icon, Grid } from 'semantic-ui-react';
+import Swal from 'sweetalert2';
 import './Profile.css';
 
 class Profile extends Component {
@@ -20,9 +21,9 @@ class Profile extends Component {
 
     handleChange = (profileAttribute) => (event) => {
         this.setState({
-                ...this.state,
-                [profileAttribute]: event.target.value,
-            
+            ...this.state,
+            [profileAttribute]: event.target.value,
+
         });
     }
 
@@ -30,6 +31,28 @@ class Profile extends Component {
         console.log(this.state);
         this.props.dispatch({ type: 'EDIT_PROFILE', payload: this.state });
     }
+
+    handleDeleteAcct = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This will PERMENANTLY delete your account',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#FF4438',
+            cancelButtonColor: '#E0E1E3',
+            confirmButtonText: 'Delete Account'
+        }).then((result) => {
+            if (result.value === true) {
+                console.log('sweet alert working')
+                this.props.dispatch({ type: "DELETE_ACCOUNT", payload: this.props.user.id });
+            }
+        }).then(() =>{
+            this.props.history.push('/home')
+        })
+
+        }
+    
+    
 
     render() {
         return (
@@ -86,10 +109,10 @@ class Profile extends Component {
                                         <br />
                                         {this.state.EditModeOn === true ?
                                             <Card.Meta>
-                                                <Button 
-                                                size="big" 
-                                                onClick={this.handleSubmit}
-                                                className="submitProfChanges">Submit Changes</Button>
+                                                <Button
+                                                    size="big"
+                                                    onClick={this.handleSubmit}
+                                                    className="submitProfChanges">Submit Changes</Button>
                                             </Card.Meta>
                                             :
                                             <>
@@ -100,12 +123,22 @@ class Profile extends Component {
                                 </Card>
                             </Grid.Column>
                         </Grid.Row>
+                        <Grid.Row>
+                            <br />
+                            <Button
+                                size="big"
+                                inverted color="red"
+                                className="deleteAccountButton"
+                                onClick={this.handleDeleteAcct}>Delete Account
+                            </Button>
+                        </Grid.Row>
                     </center>
                 </Grid>
             </>
         )
     }
 }
+
 
 const mapStateToProps = state => ({
     user: state.user,
