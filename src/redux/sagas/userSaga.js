@@ -15,17 +15,26 @@ function* fetchUser() {
   }
 }
 
-function* editProfile(action) {
+function* editProfile(action) {  
   try {
-    yield axios.put(`/api/user/profile/`+ action.payload.id, action.payload.username, action.payload.email_address, action.payload.phone_number);
+    yield axios.put(`/api/user/profile/`+ action.payload.id, action.payload);
   } catch (error) {
     console.log('error updating profile', error);
+  }
+}
+
+function* deleteAccount(action) {
+  try {
+    yield axios.delete('/api/user/' + action.payload, action.payload);
+  }catch (error) {
+    console.log('error deleting account', error)
   }
 }
 
 function* userSaga() {
   yield takeLatest('FETCH_USER', fetchUser);
   yield takeLatest('EDIT_PROFILE', editProfile);
+  yield takeLatest('DELETE_ACCOUNT', deleteAccount);
 }
 
 export default userSaga;

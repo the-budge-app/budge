@@ -11,7 +11,11 @@ const passport = require('./strategies/user.strategy');
 // Route includes
 const userRouter = require('./routes/user.router');
 const venueRouter = require('./routes/venue.router');
+<<<<<<< HEAD
 const waitListRouter = require('./routes/waitList.router')
+=======
+const paymentRouter = require('./routes/payment.router');
+>>>>>>> master
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -30,8 +34,13 @@ app.use('/api/user', userRouter);
 // Routes for venues
 app.use('/api/venues', venueRouter);
 
+<<<<<<< HEAD
 // Routes for waitList data
 app.use('/api/waitList', waitListRouter);
+=======
+// Routes for payments
+app.use('/api/payment', paymentRouter);
+>>>>>>> master
 
 // Serve static files
 app.use(express.static('build'));
