@@ -1,0 +1,5 @@
+.joinButton:active {
+    box-shadow: 0 5px rgb(104, 104, 104);
+    transform: translateY(4px);
+    opacity: .80;
+}
