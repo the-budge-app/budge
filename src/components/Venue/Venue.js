@@ -30,13 +30,14 @@ class Venue extends Component {
         })
         //fetch user's WL to check if the user has joined the WL in this restaurant
         //only run the code if user is logged in
-        if(this.props.user.id) {
+        // if(this.props.user.id) {
             this.props.dispatch({
-            type: 'FETCH_USER_WAITLIST',
-            payload: this.props.match.params.id,
+                type: 'FETCH_USER_WAITLIST',
+                payload: this.props.match.params.id,
         })
-    }
-    }
+    // }
+}
+    
     //function to toggle between join/leave WL
     leaveWL = () => {
         //dispatch action to remove user from the waitlist of this restaurant first
@@ -56,11 +57,7 @@ class Venue extends Component {
     }
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
     handleSelectSpot = (waitlist_id) => {
-        if(!this.props.user.id || this.props.userWaitlist.id) {
-            this.props.history.push(`/selected-offer/${waitlist_id}`);
-        } else {
-            this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
-        }
+        this.props.history.push(`/selected-offer/${waitlist_id}`);
     }
 
     //function to toggle between showing all spots or only budgable spots
@@ -76,7 +73,6 @@ class Venue extends Component {
                 payload: { restaurant_id: this.props.match.params.id, }
             })
         }
-
         this.setState({
             showAll: !this.state.showAll,
         })
