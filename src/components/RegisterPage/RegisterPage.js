@@ -8,17 +8,21 @@ class RegisterPage extends Component {
   state = {
     username: '',
     password: '',
+    email_address: '',
+    phone_number: ''
   };
 
   registerUser = (event) => {
     event.preventDefault();
 
-    if (this.state.username && this.state.password) {
+    if (this.state.username && this.state.password && this.state.email_address && this.state.phone_number) {
       this.props.dispatch({
         type: 'REGISTER',
         payload: {
           username: this.state.username,
           password: this.state.password,
+          email_address: this.state.email_address,
+          phone_number: this.state.phone_number
         },
       });
     } else {
@@ -58,11 +62,11 @@ class RegisterPage extends Component {
           </Grid.Column>
 
           <Grid.Column width={14}>
-            <Input onChange={this.handleInputChangeFor('email')} label='Email' />
+            <Input onChange={this.handleInputChangeFor('email_address')} label='Email' />
           </Grid.Column>
 
           <Grid.Column width={14}>
-            <Input onChange={this.handleInputChangeFor('phone')} label='Phone' />
+            <Input onChange={this.handleInputChangeFor('phone_number')} label='Phone' />
           </Grid.Column>
 
           <Grid.Column width={14} textAlign="center">
