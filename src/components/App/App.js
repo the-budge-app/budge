@@ -32,6 +32,7 @@ import Profile from '../Profile/Profile';
 import RateUser from '../RateUser/RateUser';
 import SelectedOffer from '../SelectedOffer/SelectedOffer';
 import ErrorPage from '../ErrorPage/ErrorPage'
+import JoinWaitlist from '../JoinWaitlist/JoinWaitlist'
 
 class App extends Component {
   componentDidMount() {
@@ -77,6 +78,7 @@ class App extends Component {
             <ProtectedRoute exact path="/rate-user" component={RateUser}/>
             <ProtectedRoute exact path="/selected-offer/:id" component={SelectedOffer}/>
             <ProtectedRoute exact path="/seller-offer" component={SellerOffer}/>
+            <ProtectedRoute exact path="/join-restaurant/:restaurant_id" component={JoinWaitlist}/>
             {/* This works the same as the other protected route, except that if the user is logged in,
             they will see the info page instead. */}
             {/* If none of the other routes matched, we will show a 404. */}

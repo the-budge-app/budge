@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Checkbox, Modal } from 'semantic-ui-react';
+import { Button, Icon, Checkbox } from 'semantic-ui-react';
 
 const styles = {
     mainDiv: {
@@ -15,7 +15,6 @@ class Venue extends Component {
     state = {
         active: true, //store the on/off states between join/leave WL
         showAll: true, //store the on/off states between all spots vs. budgable spots
-        showModal: false,
     }
 
     componentDidMount() {
@@ -32,19 +31,23 @@ class Venue extends Component {
     }
     //function to toggle between join/leave WL
     leaveWL = () => {
+        //dispatch action to remove user from the waitlist of this restaurant first
+        //then update the local state to the wording on the button
         this.setState({
             active: !this.state.active
         })
     }
     //function to join waitlist
     joinWL = () => {
+        this.props.history.push(`/join-restaurant/${this.props.match.params.id}`)
+        //need to check if this user has successfully joined the WL
+        //then update the local state
         this.setState({
             active: !this.state.active,
-            showModal: true,
         })
     }
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
-    handleClick = (waitlist_id) => {
+    handleSelectSpot = (waitlist_id) => {
         this.props.history.push(`/selected-offer/${waitlist_id}`);
     }
 
@@ -93,7 +96,7 @@ class Venue extends Component {
                 {this.props.venueInfo.map(venue => 
                 venue.user_id === this.props.user.id ?
                     <>
-                        <Button key={venue.waitlist_id} fluid primary onClick={() => this.handleClick(venue.waitlist_id)}>
+                        <Button key={venue.waitlist_id} fluid primary onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
                             <Icon name="user" />{venue.party_size}
                             <Icon name="clock" />{venue.quote_time}
                             <Icon name="dont" />
@@ -104,7 +107,7 @@ class Venue extends Component {
                     </>
                     :
                     <>
-                        <Button key={venue.waitlist_id} fluid onClick={() => this.handleClick(venue.waitlist_id)}>
+                        <Button key={venue.waitlist_id} fluid onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
                             <Icon name="user" />{venue.party_size}
                             <Icon name="clock" />{venue.quote_time}
                             <Icon name="dont" />
@@ -120,13 +123,7 @@ class Venue extends Component {
                     :
                     <Button fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
                 }
-                {/* below join WL modal to pop up on click on join waitlist button */}
-                <Modal
-                    closeIcon
-                    open={this.state.showModal}
-                    content='this is a modal'
-                    onClose={() => {this.setState({showModal: false})}}
-                />
+                
             </div>
         )
     }
