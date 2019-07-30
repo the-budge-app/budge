@@ -41,7 +41,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className="app">
           {/* only show the nav component on every route except the loading route */}
           <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Nav {...routerProps} />} />
           <Switch>
@@ -75,7 +75,7 @@ class App extends Component {
             <ProtectedRoute exact path="/payment" component={PaymentPage}/>
             <ProtectedRoute exact path="/profile" component={Profile}/>
             <ProtectedRoute exact path="/rate-user" component={RateUser}/>
-            <ProtectedRoute exact path="/selected-offer" component={SelectedOffer}/>
+            <ProtectedRoute exact path="/selected-offer/:id" component={SelectedOffer}/>
             <ProtectedRoute exact path="/seller-offer" component={SellerOffer}/>
             {/* This works the same as the other protected route, except that if the user is logged in,
             they will see the info page instead. */}

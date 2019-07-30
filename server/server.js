@@ -11,6 +11,7 @@ const passport = require('./strategies/user.strategy');
 // Route includes
 const userRouter = require('./routes/user.router');
 const venueRouter = require('./routes/venue.router');
+const waitListRouter = require('./routes/waitList.router')
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -28,6 +29,9 @@ app.use('/api/user', userRouter);
 
 // Routes for venues
 app.use('/api/venues', venueRouter);
+
+// Routes for waitList data
+app.use('/api/waitList', waitListRouter);
 
 // Serve static files
 app.use(express.static('build'));

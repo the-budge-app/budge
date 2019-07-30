@@ -42,7 +42,7 @@
   position: relative;
 }
 
-h2 {
+.nav h2 {
   font-family: helvetica, sans-serif;
   display: inline-block;
   font-weight: 300;
