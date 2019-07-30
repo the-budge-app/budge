@@ -42,7 +42,7 @@ router.post('/logout', (req, res) => {
 
 router.put('/profile/:id', rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "user"
-  SET "username" = $1, "email_address" = $2, "phone_number" = $3,
+  SET "username" = $1, "email_address" = $2, "phone_number" = $3
   WHERE "id" = $4;`
   const queryValues = [req.body.username, req.body.email_address, req.body.phone_number, req.params.id]
   pool.query(queryText, queryValues)

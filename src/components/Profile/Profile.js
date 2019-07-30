@@ -19,7 +19,6 @@ class Profile extends Component {
     }
 
     handleChange = (profileAttribute) => (event) => {
-        console.log('event happened')
         this.setState({
                 ...this.state,
                 [profileAttribute]: event.target.value,

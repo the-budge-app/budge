@@ -15,9 +15,9 @@ function* fetchUser() {
   }
 }
 
-function* editProfile(action) {
+function* editProfile(action) {  
   try {
-    yield axios.put(`/api/user/profile/`+ action.payload.id, action.payload.username, action.payload.email_address, action.payload.phone_number);
+    yield axios.put(`/api/user/profile/`+ action.payload.id, action.payload);
   } catch (error) {
     console.log('error updating profile', error);
   }
