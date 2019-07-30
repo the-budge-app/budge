@@ -37,7 +37,7 @@ function* fetchUserWaitlist(action) {
 function* venueInfoSaga() {
     yield takeLatest('FETCH_WAITLIST', fetchWaitlist);
     yield takeLatest('FETCH_BUDGABLE_WAITLIST', fetchBudgableWaitlist);
-    yield takeLatest('FETCH_USER_WAITLIST', fetchUserWaitlist);
+    // yield takeLatest('FETCH_USER_WAITLIST', fetchUserWaitlist);
 }
 
 export default venueInfoSaga

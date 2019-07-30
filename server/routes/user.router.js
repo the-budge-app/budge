@@ -18,9 +18,11 @@ router.get('/', rejectUnauthenticated, (req, res) => {
 router.post('/register', (req, res, next) => {  
   const username = req.body.username;
   const password = encryptLib.encryptPassword(req.body.password);
+  const email_address = req.body.email_address;
+  const phone_number = req.body.phone_number;
 
-  const queryText = 'INSERT INTO "user" (username, password) VALUES ($1, $2) RETURNING id';
-  pool.query(queryText, [username, password])
+  const queryText = 'INSERT INTO "user" (username, password, email_address, phone_number) VALUES ($1, $2, $3, $4) RETURNING id';
+  pool.query(queryText, [username, password, email_address, phone_number])
     .then(() => res.sendStatus(201))
     .catch(() => res.sendStatus(500));
 });
@@ -40,4 +42,27 @@ router.post('/logout', (req, res) => {
   res.sendStatus(200);
 });
 
+router.put('/profile/:id', rejectUnauthenticated, (req, res) => {
+  const queryText = `UPDATE "user"
+  SET "username" = $1, "email_address" = $2, "phone_number" = $3
+  WHERE "id" = $4;`
+  const queryValues = [req.body.username, req.body.email_address, req.body.phone_number, req.params.id]
+  pool.query(queryText, queryValues)
+  .then(() => { res.sendStatus(200); })
+  .catch((err) => {
+    console.log('Error completing UPDATE query', err);
+    res.sendStatus(500);
+  });
+});
+
+router.delete('/:id', rejectUnauthenticated, (req, res) => {
+  const queryText = 'DELETE FROM "user" WHERE id=$1';
+  console.log(req.params)
+  pool.query(queryText, [req.params.id])
+    .then(() => { res.sendStatus(200); })
+    .catch((err) => {
+      console.log('Error completing DELETE query', err);
+      res.sendStatus(500);
+    });
+});
 module.exports = router;

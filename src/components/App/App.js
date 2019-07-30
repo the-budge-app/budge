@@ -42,7 +42,7 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className="app">
           {/* only show the nav component on every route except the loading route */}
           <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Nav {...routerProps} />} />
           <Switch>
