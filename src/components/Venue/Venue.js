@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Checkbox } from 'semantic-ui-react';
+import { Button, Icon, Checkbox, Modal } from 'semantic-ui-react';
 
 const styles = {
     mainDiv: {
@@ -12,10 +12,10 @@ const styles = {
 }
 
 class Venue extends Component {
-
     state = {
         active: true, //store the on/off states between join/leave WL
         showAll: true, //store the on/off states between all spots vs. budgable spots
+        showModal: false,
     }
 
     componentDidMount() {
@@ -31,11 +31,17 @@ class Venue extends Component {
         })
     }
     //function to toggle between join/leave WL
-    toggleButton = () => {
+    leaveWL = () => {
         this.setState({
             active: !this.state.active
         })
-        
+    }
+    //function to join waitlist
+    joinWL = () => {
+        this.setState({
+            active: !this.state.active,
+            showModal: true,
+        })
     }
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
     handleClick = (waitlist_id) => {
@@ -110,10 +116,17 @@ class Venue extends Component {
 
                 )}
                 {this.state.active ?
-                    <Button fluid toggle active={active} onClick={this.toggleButton}>Join Waitlist</Button>
+                    <Button fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
                     :
-                    <Button fluid toggle active={active} onClick={this.toggleButton}>Leave Waitlist</Button>
+                    <Button fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
                 }
+                {/* below join WL modal to pop up on click on join waitlist button */}
+                <Modal
+                    closeIcon
+                    open={this.state.showModal}
+                    content='this is a modal'
+                    onClose={() => {this.setState({showModal: false})}}
+                />
             </div>
         )
     }
