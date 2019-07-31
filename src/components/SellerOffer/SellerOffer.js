@@ -26,6 +26,13 @@ class SellerOffer extends Component {
     offerPrice: 20,
     userRating: 4.5,
   }
+
+  componentDidMount () {
+    this.props.dispatch({
+      type: 'FETCH_BUYER_INFO',
+      payload: this.props.match.params.offer_id
+    })
+  }
   render() {
     return (
       <>
@@ -41,8 +48,8 @@ class SellerOffer extends Component {
                 <Grid>
                   <Grid.Row style={styles.gridRow}>
                     <Grid.Column width={16}>
-                      <h2>{this.state.buyer_name}</h2>
-                      <h3>is offering ${this.state.offerPrice} for your spot!</h3>
+                      <h2>{this.props.buyerInfo.username}</h2>
+                      <h3>is offering ${this.props.buyerInfo.offer_price} for your spot!</h3>
                     </Grid.Column>
                   </Grid.Row>
                 </Grid>
@@ -75,19 +82,19 @@ class SellerOffer extends Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={6}>
-              <h3>Steverino</h3>
+              <h3>{this.props.buyerInfo.username}</h3>
             </Grid.Column>
             <Grid.Column width={2}>
               <Icon name="user" />
             </Grid.Column>
             <Grid.Column width={2}>
-              <h3>4</h3>
+              <h3>{this.props.buyerInfo.party_size}</h3>
             </Grid.Column>
             <Grid.Column width={2}>
               <Icon name="clock" />
             </Grid.Column>
             <Grid.Column width={4}>
-              <h3>40 min</h3>
+              <h3>{this.props.buyerInfo.quote_time} min</h3>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -109,6 +116,6 @@ class SellerOffer extends Component {
   }
 }
 const mapStateToProps = reduxState => ({
-  reduxState
+  buyerInfo: reduxState.sellerConfirmation.buyerInfo,
 });
 export default connect(mapStateToProps)(SellerOffer);

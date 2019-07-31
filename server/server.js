@@ -13,6 +13,7 @@ const userRouter = require('./routes/user.router');
 const venueRouter = require('./routes/venue.router');
 const waitListRouter = require('./routes/waitList.router')
 const paymentRouter = require('./routes/payment.router');
+const sellerConfirmation = require('./routes/sellerConfirmation.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -35,6 +36,8 @@ app.use('/api/venues', venueRouter);
 app.use('/api/waitList', waitListRouter);
 // Routes for payments
 app.use('/api/payment', paymentRouter);
+// Routes for seller confirmation page
+app.use('/api/seller_confirmation', sellerConfirmation);
 
 // Serve static files
 app.use(express.static('build'));
