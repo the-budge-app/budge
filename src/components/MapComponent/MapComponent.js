@@ -39,7 +39,6 @@ class Map extends Component {
             ...this.state,
             selectedVenue: venue,
         })
-        console.log('venue is selected', venue)
         // set distance away from venue when user clicks venue marker
         this.props.dispatch({
             type: 'SET_USER_DISTANCE', payload: {
@@ -57,7 +56,6 @@ class Map extends Component {
     }
 
     viewVenue = () => {
-        this.props.dispatch({type: 'FETCH_SELECTED_VENUE', payload: this.state.selectedVenue.id});
         this.props.history.push(`/venue/${this.state.selectedVenue.id}`);
     }
 
