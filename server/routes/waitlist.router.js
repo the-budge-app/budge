@@ -4,10 +4,9 @@ const router = express.Router();
 
 
 router.get('/singleSpot/:id', (req, res) => {
-<<<<<<< HEAD
-    pool.query(``)
-    res.send({id: req.params.id});
-=======
+
+    
+
     // console.log('getting the data for waitList spot', req.params.id);
     pool.query(`SELECT * FROM "waitlist" WHERE "id" = $1;`, [req.params.id])
         .then(result => {
@@ -19,7 +18,7 @@ router.get('/singleSpot/:id', (req, res) => {
         });
 
     
->>>>>>> master
+
 })
 
 router.post('/', (req, res) => {
