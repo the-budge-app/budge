@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Card, Image, Input, Button, Icon, Grid, Modal, Header } from 'semantic-ui-react';
-import Swal from 'sweetalert2';
 import './Profile.css';
 
 class Profile extends Component {
