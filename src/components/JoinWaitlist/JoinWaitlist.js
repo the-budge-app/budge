@@ -21,8 +21,8 @@ class JoinWaitlist extends Component {
   }
 
   handleJoin = () => {
-    console.log(this.state);
-    this.props.dispatch({ type: 'ADD_TO_WAITLIST', payload: this.state });
+    this.props.dispatch({ type: 'ADD_TO_WAITLIST', payload: this.state })
+    this.props.history.push('/venue/' + this.props.selectedVenue.id)
   }
 
   render() {

@@ -21,18 +21,20 @@ router.get('/singleSpot/:id', (req, res) => {
 
 })
 
-router.post('/', (req, res) => {
+router.post('/join', (req, res) => {
     const user_id = req.body.user_id
     const id = req.body.id
     const reservation_name = req.body.reservation_name
     const party_size = req.body.party_size
-    const quoted_time = req.body.quoted_time
-    
-    const queryText = `INSERT INTO "waitlist" ("user_id", "reservation_name", "party_size", "quoted_time", "restaurant_id)
+    const quote_time = req.body.quote_time
+    const queryText = `INSERT INTO "waitlist" ("user_id", "reservation_name", "party_size", "quote_time", "restaurant_id")
     VALUES ($1, $2, $3, $4, $5)`;
-    pool.query(queryText, [user_id, reservation_name, party_size, quoted_time, id])
+    pool.query(queryText, [user_id, reservation_name, party_size, quote_time, id])
     .then(() => res.sendStatus(201))
-    .catch(() => res.sendStatus(500));
+    .catch(error => {
+        console.log('Error in adding to WL', error);
+        res.sendStatus(500);
+    });
     });
 
 module.exports = router;
