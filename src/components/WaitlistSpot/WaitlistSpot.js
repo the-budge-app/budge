@@ -8,7 +8,7 @@ import NonUserSpot from './NonUserSpot/NonUserSpot'
 import './WaitlistSpot.css'
 
 // import Semantic UI components
-import { Grid, Button, Icon, Rating, Input, Segment, Modal, Header } from 'semantic-ui-react'
+import { Button, Icon, Modal, Header } from 'semantic-ui-react'
 
 class SelectedOffer extends Component {
 
@@ -42,15 +42,21 @@ class SelectedOffer extends Component {
             <>
                 {/* protected route checks to see if user is logged in.
                 once they are logged in, check to see if they are on the waitlist */}
-                { !this.props.userWaitlist.id ?
-                    <Redirect to={`/join-waitlist/${this.props.selectedVenue.id}`} />
+                {!this.props.userWaitlist.id ?
+                    <>
+                        {this.props.selectedVenue.id ?
+                            <Redirect to={`/join-waitlist/${this.props.selectedVenue.id}`} />
+                            :
+                            <Redirect to={`/home`} />
+                        }
+                    </>
                     :
                     <>
                         {
-                            this.props.selectedSpot.user_id === this.props.user.id ? 
-                            <UserSpot history={this.props.history} toggleModal={this.toggleModal}/>
-                            :
-                            <NonUserSpot history={this.props.history} toggleModal={this.toggleModal}/>
+                            this.props.selectedSpot.user_id === this.props.user.id ?
+                                <UserSpot history={this.props.history} toggleModal={this.toggleModal} />
+                                :
+                                <NonUserSpot history={this.props.history} toggleModal={this.toggleModal} />
                         }
 
                         {/* Below is the dialog for error on getting user location */}
