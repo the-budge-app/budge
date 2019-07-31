@@ -52,6 +52,16 @@ class RegisterPage extends Component {
             <Grid.Column width={12} textAlign="center" >
               <h1>Register</h1>
             </Grid.Column>
+            <Grid.Column width={14} textAlign="center">
+              <br/>
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => { this.props.dispatch({ type: 'SET_TO_LOGIN_MODE' }) }}
+            >
+             Already a Budger?
+          </button>
+          </Grid.Column>
           </Grid.Row>
           <Grid.Column width={14}>
             <Input onChange={this.handleInputChangeFor('username')} label='Username' />
@@ -73,15 +83,7 @@ class RegisterPage extends Component {
             <Button primary size="large" onClick={this.registerUser} type='submit' name='submit'>Register</Button>
           </Grid.Column>
 
-          <Grid.Column width={14} textAlign="center">
-            <button
-              type="button"
-              className="link-button"
-              onClick={() => { this.props.dispatch({ type: 'SET_TO_LOGIN_MODE' }) }}
-            >
-              Login Form
-          </button>
-          </Grid.Column>
+         
 
         </Grid>
       </div>
