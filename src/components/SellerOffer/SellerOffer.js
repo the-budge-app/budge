@@ -101,10 +101,10 @@ class SellerOffer extends Component {
             <Grid.Column width={2}>
             </Grid.Column>
             <Grid.Column width={6}>
-              <Button>Reject</Button>
+              <Button fluid style={{color: 'white', backgroundColor: 'red'}}>Reject</Button>
             </Grid.Column>
             <Grid.Column width={6}>
-              <Button>Accept</Button>
+              <Button fluid style={{backgroundColor: 'green', color: 'white'}}>Accept</Button>
             </Grid.Column>
             <Grid.Column width={2}>
             </Grid.Column>
