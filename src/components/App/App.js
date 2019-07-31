@@ -33,6 +33,7 @@ import RateUser from '../RateUser/RateUser';
 import WaitlistSpot from '../WaitlistSpot/WaitlistSpot';
 import ErrorPage from '../ErrorPage/ErrorPage'
 import JoinWaitlist from '../JoinWaitlist/JoinWaitlist'
+import Login from '../LoginPage/LoginPage'
 
 class App extends Component {
   componentDidMount() {
@@ -55,6 +56,7 @@ class App extends Component {
 
             {/* route to test any semantic ui components on */}
             <Route exact path="/semantic-playground" component={SemanticPlayground} />
+            <Route exact path="/login" component={Login}/>
 
             {/* route for the map component  */}
             <Route exact path="/home" component={HomeMap} />

@@ -76,6 +76,11 @@ class Nav extends Component {
             </Link>
           </Menu.Item>
           <Menu.Item style={{textAlign: 'left'}}>
+            <Link onClick={this.toggleVisible} to="/login">
+              Login
+            </Link>
+          </Menu.Item>
+          <Menu.Item style={{textAlign: 'left'}}>
             <Link onClick={this.toggleVisible} to="/semantic-playground">
               Semantic
             </Link>
