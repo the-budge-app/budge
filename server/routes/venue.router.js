@@ -29,10 +29,11 @@ router.get('/selected/:id', (req, res) => {
 router.get('/budgable/:restaurant_id', (req, res) => {
     console.log('in budgable wl', req.params.restaurant_id);
     pool.query(`SELECT "party_size" FROM "waitlist"
-        WHERE "user_id" = $1;`, [req.user.id])
+        WHERE "user_id" = $1
+        AND "restaurant_id" = $2;`, [req.user.id, req.params.restaurant_id])
         .then(
             result => {
-                // console.log(result.rows[0].party_size);
+                console.log(result.rows);
                 pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", 
                 ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price"
                 FROM  "waitlist"
