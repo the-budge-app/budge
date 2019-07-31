@@ -19,6 +19,8 @@ class Venue extends Component {
 
     componentDidMount() {
         console.log('Venue page mounted!');
+        this.props.dispatch({ type: 'FETCH_USER' });
+
         //fetch WL info - default show all WL
         this.props.dispatch({
             type: 'FETCH_WAITLIST',
