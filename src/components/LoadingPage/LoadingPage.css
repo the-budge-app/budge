@@ -3,7 +3,7 @@
 }
 
 #logoContainer {
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 150px);
 }
 #loadingPage #logoWrapper {
     text-align: center;
@@ -62,11 +62,11 @@
     padding: 5px;
 }
 
-#loadingPage button {
+/* #loadingPage button {
     position: absolute;
     left: calc(50vw - 75px);
     bottom: 50px;
-}
+} */
 /* Animation Keyframes */
 
 @keyframes budgeForwardSlow {
