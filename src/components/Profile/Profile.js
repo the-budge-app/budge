@@ -1,17 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Card, Image, Input, Button, Icon, Grid } from 'semantic-ui-react';
+import { Card, Image, Input, Button, Icon, Grid, Modal, Header } from 'semantic-ui-react';
 import Swal from 'sweetalert2';
 import './Profile.css';
 
 class Profile extends Component {
     state = {
         EditModeOn: false,
+        modalOpen: false,
         username: this.props.user.username,
         email_address: this.props.user.email_address,
         phone_number: this.props.user.phone_number,
         id: this.props.user.id
     }
+
+componentDidMount(){
+    this.props.dispatch({ type: 'FETCH_USER' });
+}
 
     toggleEditMode = () => {
         this.setState({
@@ -32,44 +37,42 @@ class Profile extends Component {
         this.props.dispatch({ type: 'EDIT_PROFILE', payload: this.state });
     }
 
-    handleDeleteAcct = () => {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'This will PERMENANTLY delete your account',
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#FF4438',
-            cancelButtonColor: '#E0E1E3',
-            confirmButtonText: 'Delete Account'
-        }).then((result) => {
-            if (result.value === true) {
-                console.log('sweet alert working')
-                this.props.dispatch({ type: "DELETE_ACCOUNT", payload: this.props.user.id });
-            }
-        }).then(() =>{
-            this.props.history.push('/home')
+    toggleModal = () => {
+        this.setState({
+            ...this.state,
+            modalOpen: !this.state.modalOpen,
         })
+    }
 
-        }
-    
-    
+    handleDeleteAcct = () => {
+        this.props.dispatch({ type: "DELETE_ACCOUNT", payload: this.props.user.id })
+            
+                this.props.history.push('/home')
+    //when this function runs and brings user back to map page,
+    //if they navigate back to /profile, their user still shows up
+    //until hard refresh of the page        
+
+    }
+
+
 
     render() {
         return (
             <>
-                <Grid className="profile">
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Icon
-                                id="editMode"
-                                name="cog"
-                                size="big"
-                                onClick={this.toggleEditMode}>
-                                <h4>Edit</h4>
-                            </Icon>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <center>
+                <center>
+                    <Grid className="profile">
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Icon
+                                    id="editMode"
+                                    name="cog"
+                                    size="big"
+                                    onClick={this.toggleEditMode}>
+                                    <h4>Edit</h4>
+                                </Icon>
+                            </Grid.Column>
+                        </Grid.Row>
+
                         <br />
                         <Grid.Row>
                             <Grid.Column width={16} className="profileCard">
@@ -129,11 +132,31 @@ class Profile extends Component {
                                 size="big"
                                 inverted color="red"
                                 className="deleteAccountButton"
-                                onClick={this.handleDeleteAcct}>Delete Account
+                                onClick={this.toggleModal}>Delete Account
                             </Button>
                         </Grid.Row>
-                    </center>
-                </Grid>
+
+                    </Grid>
+                    <Modal
+                        open={this.state.modalOpen}
+                        basic
+                        size='small'>
+                        <Header content='Are You Sure?' />
+                        <Modal.Content>
+                            <p>This Will PERMENANTLY Delete Your Account!</p>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button color='red' onClick={this.handleDeleteAcct}>
+                                Delete Account
+                            </Button>
+                            <Button color='green' onClick={this.toggleModal}>
+                                Go Back
+                            </Button>
+                        </Modal.Actions>
+
+
+                    </Modal>
+                </center>
             </>
         )
     }
