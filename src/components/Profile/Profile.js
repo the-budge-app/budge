@@ -6,7 +6,7 @@ import './Profile.css';
 
 class Profile extends Component {
     state = {
-        EditModeOn: true,
+        EditModeOn: false,
         username: this.props.user.username,
         email_address: this.props.user.email_address,
         phone_number: this.props.user.phone_number,

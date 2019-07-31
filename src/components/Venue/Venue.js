@@ -50,6 +50,10 @@ class Venue extends Component {
     //function to join waitlist
     joinWL = () => {
         this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
+        this.props.dispatch({
+            type: 'FETCH_SELECTED_VENUE',
+            payload: this.props.match.params.id,
+        })
         //need to check if this user has successfully joined the WL
         //then update the local state
         this.setState({
