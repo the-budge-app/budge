@@ -5,6 +5,7 @@ import './JoinWaitlist.css';
 
 class JoinWaitlist extends Component {
   state = {
+    user_id: this.props.user.id,
     reservation_name: '',
     party_size: 1,
     quote_time: '',
@@ -21,7 +22,7 @@ class JoinWaitlist extends Component {
 
   handleJoin = () => {
     console.log(this.state);
-    //this.props.dispatch({ type: 'EDIT_PROFILE', payload: this.state });
+    this.props.dispatch({ type: 'ADD_TO_WAITLIST', payload: this.state });
   }
 
   render() {
@@ -30,10 +31,11 @@ class JoinWaitlist extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={16} textAlign="center">
-              <h2>{this.props.selectedVenue.restaurant_name}</h2>
+              <h1>{this.props.selectedVenue.restaurant_name}</h1>
               <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
               <h4>{this.props.selectedVenue.address}</h4>
               <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
+              <br/>
               <h3>{this.props.user.username}</h3>
             </Grid.Column>
           </Grid.Row>

@@ -3,3 +3,11 @@
     transform: translateY(4px);
     opacity: .80;
 }
+
+h1 {
+    margin-bottom: -10px;
+}
+
+h4 {
+    margin-bottom: -15px;
+}
