@@ -18,6 +18,7 @@ class Venue extends Component {
     }
 
     componentDidMount() {
+        console.log('Venue page mounted!');
         //fetch WL info - default show all WL
         this.props.dispatch({
             type: 'FETCH_WAITLIST',
@@ -29,11 +30,15 @@ class Venue extends Component {
             payload: this.props.match.params.id,
         })
         //fetch user's WL to check if the user has joined the WL in this restaurant
-        this.props.dispatch({
-            type: 'FETCH_USER_WAITLIST',
-            payload: this.props.match.params.id,
+        //only run the code if user is logged in
+        // if(this.props.user.id) {
+            this.props.dispatch({
+                type: 'FETCH_USER_WAITLIST',
+                payload: this.props.match.params.id,
         })
-    }
+    // }
+}
+    
     //function to toggle between join/leave WL
     leaveWL = () => {
         //dispatch action to remove user from the waitlist of this restaurant first
@@ -57,12 +62,17 @@ class Venue extends Component {
     }
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
     handleSelectSpot = (waitlist_id) => {
-        this.props.history.push(`/selected-offer/${waitlist_id}`);
+        this.props.history.push(`/waitlist-spot/${waitlist_id}`);
+        // if(!this.props.user.id || this.props.userWaitlist.id) {
+        //     this.props.history.push(`/waitlist-spot/${waitlist_id}`);
+        // } else {
+        //     this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
+        // }
     }
 
     //function to toggle between showing all spots or only budgable spots
-    handleSwitch = () => {        
-        if(!this.state.showAll) {
+    handleSwitch = () => {
+        if (!this.state.showAll) {
             this.props.dispatch({
                 type: 'FETCH_WAITLIST',
                 payload: { restaurant_id: this.props.match.params.id, }
@@ -73,7 +83,6 @@ class Venue extends Component {
                 payload: { restaurant_id: this.props.match.params.id, }
             })
         }
-
         this.setState({
             showAll: !this.state.showAll,
         })
@@ -87,8 +96,8 @@ class Venue extends Component {
                 <h4>{this.props.selectedVenue.address}</h4>
                 <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
                 <h3>Waitlist</h3>
-                {/* conditional rendering - non log in user will not see the toggle button */}
-                {this.props.user.id?
+                {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
+                {this.props.user.id && this.props.userWaitlist.id ?
                     <>
                         <label>All Parties</label>
                         <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
@@ -98,41 +107,27 @@ class Venue extends Component {
                     <>
                     </>
                 }
-                
+
                 <br />
                 <br />
                 <br />
-                {this.props.venueInfo.map(venue => 
-                venue.user_id === this.props.user.id ?
-                    <>
-                        <Button key={venue.waitlist_id} fluid primary onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
-                            <Icon name="user" />{venue.party_size}
-                            <Icon name="clock" />{venue.quote_time}
-                            <Icon name="dont" />
-                            $ {venue.rejected_price[0]}
 
-                        </Button>
-                        <br />
-                    </>
-                    :
-                    <>
-                        <Button key={venue.waitlist_id} fluid onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
-                            <Icon name="user" />{venue.party_size}
-                            <Icon name="clock" />{venue.quote_time}
-                            <Icon name="dont" />
-                            $ {venue.rejected_price[0]}
-
-                        </Button>
-                        <br />
-                    </>
-
+                {/* tried to clean up the map function
+                made the primary prop based on the conditional */}
+                {this.props.venueInfo && this.props.venueInfo.map(venue =>
+                    <Button key={venue.waitlist_id} style={{ marginBottom: '15px' }} fluid primary={venue.user_id === this.props.user.id} onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
+                        <Icon name="user" />{venue.party_size}
+                        <Icon name="clock" />{venue.quote_time}
+                        <Icon name="dont" />
+                        $ {venue.rejected_price[0]}
+                    </Button>
                 )}
                 {this.state.active ?
                     <Button fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
                     :
                     <Button fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
                 }
-                
+
             </div>
         )
     }
@@ -142,5 +137,31 @@ const mapStateToProps = reduxState => ({
     venueInfo: reduxState.venueInfo,
     selectedVenue: reduxState.selectedVenue,
     user: reduxState.user,
+    userWaitlist: reduxState.userWaitlist,
 });
 export default connect(mapStateToProps)(Venue);
+
+
+{/* venue.user_id === this.props.user.id ?
+                
+<>
+    <Button key={venue.waitlist_id} fluid primary onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
+        <Icon name="user" />{venue.party_size}
+        <Icon name="clock" />{venue.quote_time}
+        <Icon name="dont" />
+        $ {venue.rejected_price[0]}
+
+    </Button>
+    <br />
+</>
+:
+<>
+    <Button key={venue.waitlist_id} fluid onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
+        <Icon name="user" />{venue.party_size}
+        <Icon name="clock" />{venue.quote_time}
+        <Icon name="dont" />
+        $ {venue.rejected_price[0]}
+
+    </Button>
+    <br />
+</> */}

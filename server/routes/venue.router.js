@@ -32,7 +32,7 @@ router.get('/budgable/:restaurant_id', (req, res) => {
         WHERE "user_id" = $1;`, [req.user.id])
         .then(
             result => {
-                console.log(result.rows[0].party_size);
+                // console.log(result.rows[0].party_size);
                 pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", 
                 ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price"
                 FROM  "waitlist"
@@ -54,7 +54,6 @@ router.get('/budgable/:restaurant_id', (req, res) => {
 
 //get request to get waitlist information for the restaurant that the user selected
 router.get('/waitlist/:restaurant_id', (req, res) => {
-    console.log(req.params.restaurant_id);
     pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price"
     FROM  "waitlist"
     LEFT JOIN (SELECT * FROM "offer" WHERE "offer"."status_code" = 2) AS "rejected_offer" 
@@ -69,6 +68,28 @@ router.get('/waitlist/:restaurant_id', (req, res) => {
             console.log('error with getting one restaurant', error);
             res.sendStatus(500);
         })
+})
+
+//get request to get the user's waitlist for one restaurant
+router.get(`/user_waitlist/:restaurant_id`, (req, res) => {
+    // console.log(req.user);
+    if(req.user) {
+        pool.query(`SELECT * FROM "waitlist"
+        WHERE "restaurant_id" = $1
+        AND "user_id"=$2`, [req.params.restaurant_id, req.user.id])
+    .then(
+        result => {
+            res.send(result.rows[0]);
+        }
+    )
+    .catch(error => {
+        console.log('error with get user waitlist', error);
+        res.sendStatus(500);
+    })
+    } else {
+        res.send({});
+    }
+
 })
 
 module.exports = router;
