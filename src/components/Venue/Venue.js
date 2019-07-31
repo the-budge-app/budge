@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Checkbox } from 'semantic-ui-react';
+import { Button, Icon, Checkbox, Grid } from 'semantic-ui-react';
+import './Venue.css'
 
 const styles = {
     mainDiv: {
+        marginTop: '4%',
         textAlign: 'center',
         maxWidth: '900px',
         marginLeft: 'auto',
@@ -34,13 +36,13 @@ class Venue extends Component {
         //fetch user's WL to check if the user has joined the WL in this restaurant
         //only run the code if user is logged in
         // if(this.props.user.id) {
-            this.props.dispatch({
-                type: 'FETCH_USER_WAITLIST',
-                payload: this.props.match.params.id,
+        this.props.dispatch({
+            type: 'FETCH_USER_WAITLIST',
+            payload: this.props.match.params.id,
         })
-    // }
-}
-    
+        // }
+    }
+
     //function to toggle between join/leave WL
     leaveWL = () => {
         //dispatch action to remove user from the waitlist of this restaurant first
@@ -93,11 +95,24 @@ class Venue extends Component {
         const { active } = this.state
         return (
             <div style={styles.mainDiv}>
-                <h3>{this.props.selectedVenue.restaurant_name}</h3>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column>
+
+                            <h1>{this.props.selectedVenue.restaurant_name}</h1>
+                            <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
+                            <h4>{this.props.selectedVenue.address}</h4>
+                            <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
+                            <h3>Waitlist</h3>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+
+                {/* <h1>{this.props.selectedVenue.restaurant_name}</h1>
                 <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
                 <h4>{this.props.selectedVenue.address}</h4>
                 <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
-                <h3>Waitlist</h3>
+                <h3>Waitlist</h3> */}
                 {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
                 {this.props.user.id && this.props.userWaitlist.id ?
                     <>
@@ -116,20 +131,28 @@ class Venue extends Component {
 
                 {/* tried to clean up the map function
                 made the primary prop based on the conditional */}
-                {this.props.venueInfo && this.props.venueInfo.map(venue =>
-                    <Button key={venue.waitlist_id} style={{ marginBottom: '15px' }} fluid primary={venue.user_id === this.props.user.id} onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
-                        <Icon name="user" />{venue.party_size}
-                        <Icon name="clock" />{venue.quote_time}
-                        <Icon name="dont" />
-                        $ {venue.rejected_price[0]}
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column>
+                            {this.props.venueInfo && this.props.venueInfo.map(venue =>
+                                <Button key={venue.waitlist_id} style={{ marginBottom: '15px', }} fluid primary={venue.user_id === this.props.user.id} onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
+                                    <Icon name="user" />{venue.party_size}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            
+                        <Icon name="clock" />{venue.quote_time}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            
+                        <Icon name="dont" />&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                        $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                     </Button>
-                )}
-                {this.state.active ?
-                    <Button fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
-                    :
-                    <Button fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
-                }
-
+                            )}
+                            {this.state.active ?
+                                <Button className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
+                                :
+                                <Button className="joinButton" fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </div>
         )
     }
