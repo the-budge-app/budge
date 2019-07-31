@@ -25,6 +25,7 @@ function* fetchBudgableWaitlist(action) {
 
 function* fetchUserWaitlist(action) {
     try {
+        console.log('in fetch user wl');
         const userWaitListResponse = yield axios.get(`/api/venues/user_waitlist/${action.payload}`);
         // console.log(userWaitListResponse);
         yield put({type: 'SET_USER_WAITLIST', payload: userWaitListResponse.data})
