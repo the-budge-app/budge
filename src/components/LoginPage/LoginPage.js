@@ -56,7 +56,7 @@ class LoginPage extends Component {
           </Grid.Column>
 
           <Grid.Column width={14}>
-            <Input onChange={this.handleInputChangeFor('password')} label='Password' />
+            <Input type="password" onChange={this.handleInputChangeFor('password')} label='Password' />
           </Grid.Column>
 
           <Grid.Column width={14} textAlign="center">
