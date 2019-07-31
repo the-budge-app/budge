@@ -30,13 +30,14 @@ import SellerOffer from '../SellerOffer/SellerOffer';
 import PaymentPage from '../PaymentPage/PaymentPage';
 import Profile from '../Profile/Profile';
 import RateUser from '../RateUser/RateUser';
-import SelectedOffer from '../SelectedOffer/SelectedOffer';
+import WaitlistSpot from '../WaitlistSpot/WaitlistSpot';
 import ErrorPage from '../ErrorPage/ErrorPage'
 import JoinWaitlist from '../JoinWaitlist/JoinWaitlist'
 
 class App extends Component {
   componentDidMount() {
-    this.props.dispatch({ type: 'FETCH_USER' })
+    console.log('App page mounted!');
+    this.props.dispatch({ type: 'FETCH_USER' });
   }
 
   render() {
@@ -76,7 +77,7 @@ class App extends Component {
             <ProtectedRoute exact path="/payment" component={PaymentPage}/>
             <ProtectedRoute exact path="/profile" component={Profile}/>
             <ProtectedRoute exact path="/rate-user" component={RateUser}/>
-            <ProtectedRoute exact path="/selected-offer/:id" component={SelectedOffer}/>
+            <ProtectedRoute exact path="/waitlist-spot/:id" component={WaitlistSpot}/>
             <ProtectedRoute exact path="/seller-offer" component={SellerOffer}/>
             <ProtectedRoute exact path="/join-waitlist/:restaurant_id" component={JoinWaitlist}/>
             {/* This works the same as the other protected route, except that if the user is logged in,

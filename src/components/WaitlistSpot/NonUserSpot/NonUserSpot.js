@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import './SelectedOffer.css'
-
-// import Semantic UI components
-import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
+// import Semantic UI Component 
+import { Grid, Segment, Button, Icon, Rating, Input, Modal, Header } from 'semantic-ui-react'
 
 const styles = {
     icon: {
@@ -21,26 +19,18 @@ const styles = {
     }
 }
 
-class SelectedOffer extends Component {
+class NonUserSpot extends Component {
 
     state = {
         lastRejected: 25,
         userRating: 4.5,
         offerPrice: '',
-    }
-
-    componentDidMount() {
-        console.log('the offer id is', this.props.match.params.id);
-        this.getSelectedOffer();
-    }
-
-    getSelectedOffer = () => {
-        this.props.dispatch({ type: 'FETCH_SELECTED_OFFER', payload: this.props.match.params.id });
+        offerModal: false,
     }
 
     handleInput = (event) => {
         this.setState({
-            ...this.state, 
+            ...this.state,
             offerPrice: event.target.value,
         })
     }
@@ -50,40 +40,57 @@ class SelectedOffer extends Component {
         // check user account balance
         // load modal if user doesn't have enough
         // otherwise, fire off make offer saga probably 
-        this.setState({
-            ...this.state, 
-            offerPrice: '',
-        })
+
+        if (this.props.user.account_balance >= this.state.offerPrice) {
+            // dispatch to saga to do that shit.
+
+            // reset state
+            this.setState({
+                ...this.state,
+                offerPrice: '',
+                offerModal: true,
+            })
+        } // open modal to make user add funds
+        else {
+            this.props.toggleModal();
+        }
     }
 
+    closeOfferModal = () => {
+        this.setState({
+            ...this.state,
+            offerModal: false,
+        })
+        this.props.history.push(`/venue/${this.props.selectedVenue.id}`)
+    }
 
     render() {
         return (
             <>
+                {/* <h1 onClick={this.props.toggleModal}>This spot is NOT owned by the user</h1> */}
                 <Segment attached >
-
                     <Grid id="spotData">
                         <Grid.Row style={styles.gridRow}>
-                            <Grid.Column width={6} textAlign="center">
+                            <Grid.Column width={7} textAlign="center">
                                 <Icon circular bordered name="user" color="grey" style={styles.icon} />
                                 <Rating defaultRating={this.state.userRating} maxRating={5} disabled size='large' />
                                 <h5>{this.state.userRating}</h5>
                             </Grid.Column>
-                            <Grid.Column width={10} style={{ paddingLeft: '0' }}>
+                            <Grid.Column width={9} style={{ paddingLeft: '0' }}>
                                 <Grid>
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={16}>
-                                            <h2>UserName</h2>
+                                            <h2>{this.props.selectedSpot.reservation_name}</h2>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={8}>
-                                            <Icon className="bump-up" size="big" name="user" />
-                                            <h3>4</h3>
+                                            <Icon className="bump-up" size="large" name="user" />
+                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.party_size}</h4>
                                         </Grid.Column>
                                         <Grid.Column width={8}>
-                                            <Icon className="bump-up" size="big" name="clock" />
-                                            <h3>4</h3>
+                                            <Icon className="bump-up" size="large" name="clock" />
+                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.quote_time}</h4>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row style={styles.gridRow}>
@@ -103,25 +110,45 @@ class SelectedOffer extends Component {
                                     label="$"
                                     value={this.state.offerPrice}
                                     placeholder={this.state.lastRejected + 1}
-                                    onChange = {this.handleInput}
+                                    onChange={this.handleInput}
                                 />
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row style={styles.gridRow} centered>
                             <Grid.Column width={8} textAlign="center">
-                                <Button onClick={this.makeOffer} color="green" fluid>Make Offer</Button>
+                                <Button disabled={!this.state.offerPrice.length} onClick={this.makeOffer} color="green" fluid>Make Offer</Button>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
 
                 </Segment>
-                <Button attached="bottom" fluid>Back to Wait List</Button>
+                <Button attached="bottom" fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
+
+                <Modal
+                    open={this.state.offerModal}
+                    basic
+                    size='small'
+                >
+                    <Header content='Offer Made!' />
+                    <Modal.Content>
+                        <h3>Your offer has been sent to {this.props.selectedSpot.reservation_name}</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='green' onClick={this.closeOfferModal} inverted>
+                            <Icon name='checkmark' />
+                            Great!
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
             </>
         )
     }
 }
 
-const mapStateToProps = reduxState => ({
-    reduxState
-});
-export default connect(mapStateToProps)(SelectedOffer);
+const MapStateToProps = reduxState => ({
+    user: reduxState.user,
+    selectedVenue: reduxState.selectedVenue,
+    selectedSpot: reduxState.selectedSpot,
+})
+
+export default connect(MapStateToProps)(NonUserSpot);
