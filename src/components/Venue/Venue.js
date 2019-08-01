@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Icon, Checkbox, Grid } from 'semantic-ui-react';
-import './Venue.css'
+import './Venue.css';
+import WaitlistFooter from '../Footer/WaitlistFooter';
 
 const styles = {
     mainDiv: {
@@ -153,6 +154,7 @@ class Venue extends Component {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
+                <WaitlistFooter />
             </div>
         )
     }

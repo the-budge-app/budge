@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Tab, Checkbox, Button, Icon } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 
 const styles = {
     mainDiv: {
@@ -69,21 +69,21 @@ class SelectPaymentTab extends Component {
                 <div style={styles.paymentDiv}>
                     <br />
                     <br />
-                    <input type="radio" class="hidden" readonly="" tabindex="0" />
+                    <input type="radio" className="hidden" tabIndex="0" />
                     <label>MC ************ 5543</label>
                     <Icon style={styles.cvv} name="credit card" />
                     <input style={styles.cvv} type="text" placeholder="CVV"></input>
                     
                     <br />
                     <br />
-                    <input type="radio" class="hidden" readonly="" tabindex="0" />
+                    <input type="radio" className="hidden" tabIndex="0" />
                     <label>Visa ************ 3254</label>
                     <Icon style={styles.cvv} name="credit card" />
                     <input style={styles.cvv} type="text" placeholder="CVV"></input>
                     
                     <br />
                     <br />
-                    <input type="radio" class="hidden" readonly="" tabindex="0" />
+                    <input type="radio" className="hidden" tabIndex="0" />
                     <label>Amex *********** 1001</label>
                     <Icon style={styles.cvv} name="credit card" />
                     <input style={styles.cvv} type="text" placeholder="CVV"></input>
