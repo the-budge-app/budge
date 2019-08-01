@@ -15,7 +15,7 @@ router.get('/user', (req, res) => {
         AND "waitlist"."restaurant_id"=$2
         AND "offer"."status_code"=1;`, [req.user.id, req.query.venue])
         .then( result => {
-            console.log(result.rows);
+            console.log('offerMade:',result.rows[0]);
             let offers = {offerMade: result.rows[0],}
             // we have the offer that was made, 
             // now lets get any offer received
@@ -25,6 +25,7 @@ router.get('/user', (req, res) => {
                 AND "offer"."status_code"=1
                 AND "waitlist"."user_id"=$2;`, [req.query.waitlist, req.user.id])
                 .then(result => {
+                    console.log('offerReceived:', result.rows[0]);
                     offers = {
                         ...offers,
                         offerReceived: result.rows[0],
@@ -36,7 +37,13 @@ router.get('/user', (req, res) => {
 
 router.put('/reject/:id', (req, res) => {
     console.log('Retracting offer', req.params.id)
-    res.sendStatus(200);
+    pool.query(`UPDATE "offer" SET "status_code" = 2 WHERE "id" = $1;`, [req.params.id])
+        .then(result => {
+            res.sendStatus(200)
+        })
+        .catch( error => {
+            console.log('Error with updating seller rejected offer', error);
+        })
 })
 
 module.exports = router;

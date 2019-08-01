@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 // import Semantic UI Component 
-import { Grid, Button, Divider } from 'semantic-ui-react'
+import { Grid, Button, Divider, Modal, Icon, Header } from 'semantic-ui-react'
 
 
 const styles = {
@@ -29,6 +28,7 @@ class UserSpot extends Component {
     state = {
         offerMade: {},
         offerReceived: {},
+        retractModal: false,
     }
 
     componentDidMount() {
@@ -51,7 +51,8 @@ class UserSpot extends Component {
     }
 
     retractOffer = () => {
-        axios.put(`/api/offers/reject/${this.state.sentOfferId}`)
+        this.toggleRetractModal();
+        axios.put(`/api/offers/reject/${this.state.offerMade.id}`)
             .then(response => {
                 this.getOffers();
             })
@@ -64,9 +65,15 @@ class UserSpot extends Component {
         this.props.history.push(`/seller-offer?offerId=${this.state.offerReceived.id}&buyer=${this.state.offerReceived.buyer_id}&venue=${this.state.offerReceived.restaurant_id}&waitlist=${this.props.selectedSpot.id}`)
     }
 
+    toggleRetractModal = () => {
+        this.setState({
+            retractModal: !this.state.retractModal
+        })
+    }
+
     render() {
         return (
-            <>
+            <div>
                 <Grid centered>
                     <Grid.Row>
                         <Grid.Column width={16} textAlign="center">
@@ -80,14 +87,22 @@ class UserSpot extends Component {
                         <Grid.Column width={16} textAlign="center">
                             <h3>Offer Made:</h3>
                         </Grid.Column>
-                        <Grid.Column width={16}>
-                            <h3 style={styles.headingThree}>To: {this.state.offerMade.user_id}</h3>
-                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerMade.quote_time}</h3>
-                            <h3 style={styles.headingThree}>Amount: ${this.state.offerMade.offer_price}</h3>
-                        </Grid.Column>
-                        <Grid.Column width={16} textAlign="center">
-                            <Button color="red" onClick={this.retractOffer}>Retract Offer</Button>
-                        </Grid.Column>
+                        <>
+                            {this.state.offerMade ?
+                                <>
+                                    <Grid.Column width={16}>
+                                        <h3 style={styles.headingThree}>To: {this.state.offerMade.user_id}</h3>
+                                        <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerMade.quote_time}</h3>
+                                        <h3 style={styles.headingThree}>Amount: ${this.state.offerMade.offer_price}</h3>
+                                    </Grid.Column>
+                                    <Grid.Column width={16} textAlign="center">
+                                        <Button color="red" onClick={this.toggleRetractModal}>Retract Offer</Button>
+                                    </Grid.Column>
+                                </>
+                                :
+                                <h4>You haven't made any offers</h4>
+                            }
+                        </>
                     </Grid.Row>
                     <Divider />
                     <Grid.Row>
@@ -112,7 +127,29 @@ class UserSpot extends Component {
                 <pre>
                     {JSON.stringify(this.props.reduxState, null, 2)}
                 </pre>
-            </>
+
+                {/* Below is the dialog for retract offer confirmation */}
+                {this.state.offerMade &&
+                    <Modal
+                        open={this.state.retractModal}
+                        basic
+                        style={{ maxWidth: '90vw' }}
+                    >
+                        <Header icon='question circle outline' content='Are you sure?' />
+                        <Modal.Content>
+                            <h3>You don't want to budge {this.state.offerMade.user_id}?</h3>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button color='green' onClick={this.retractOffer} inverted>
+                                <Icon name='checkmark' />Yep
+                        </Button>
+                            <Button color='red' onClick={this.toggleRetractModal} inverted>
+                                <Icon name='checkmark' />Nope
+                        </Button>
+                        </Modal.Actions>
+                    </Modal>
+                }
+            </div>
         )
     }
 }
