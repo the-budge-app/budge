@@ -106,7 +106,7 @@ class LoadingPage extends Component {
                     <Grid.Row textAlign="center">
                         {
                             !this.props.user.latitude &&
-                            <p style={{position: 'absolute'}} id="loadingMessage">Getting your budging location. Please Wait.</p>
+                            <p style={{position: 'absolute'}} id="loadingMessage">We gotta get your budging location. Please Wait.</p>
                         }
                     </Grid.Row>
                     <Grid.Row textAlign="center">

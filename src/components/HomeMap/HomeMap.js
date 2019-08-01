@@ -100,7 +100,6 @@ class HomeMap extends Component {
     render() {
         return (
             <>
-            <p onClick={()=>this.setState({locationError: !this.state.locationError})}>click me</p>
                 <div className="mapContainer">
                     <MapComponent
                         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&v=3.exp&libraries=geometry,drawing,places`}
