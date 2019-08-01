@@ -2,11 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MapComponent from '../MapComponent/MapComponent'
 
+// import Semantic UI Components 
+import { Modal, Button, Icon, Header } from 'semantic-ui-react'
+
 import './HomeMap.css'
 // import Google Maps API key
 const MAPS_KEY = `${process.env.REACT_APP_GOOGLE_MAPS_KEY}`;
 
 class HomeMap extends Component {
+
+    state = {
+        locationErrorMsg: '',
+        locationError: false,
+    }
 
     componentDidMount() {
         this.getVenues();
@@ -33,7 +41,60 @@ class HomeMap extends Component {
                 longitude: position.coords.longitude,
             }
         })
+    }
 
+    // function to set user location in the user object in redux
+    setUserLocation = (position) => {
+        this.props.dispatch({
+            type: 'SET_USER_LOCATION', payload: {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+            }
+        })
+
+    }
+
+    // set local state error data if there was an error with retrieving location
+    setPositionError = (error) => {
+        switch (error.code) {
+            case 1:
+                this.setState({
+                    ...this.state,
+                    locationErrorMsg: "User denied the request for Geolocation.",
+                    locationError: true,
+                })
+                break;
+            case 2:
+                this.setState({
+                    ...this.state,
+                    locationErrorMsg: "Location information is unavailable.",
+                    locationError: true,
+                })
+                break;
+            case 3:
+                this.setState({
+                    ...this.state,
+                    locationErrorMsg: "The request to get user location timed out.",
+                    locationError: true,
+                })
+                break;
+            default:
+                this.setState({
+                    ...this.state,
+                    locationErrorMsg: "An unknown error occurred getting user location.",
+                    locationError: true,
+                })
+                break;
+        }
+    }
+
+    handleErrorModalClose = () => {
+        this.setState({
+            ...this.state,
+            locationError: false,
+            locationErrorMsg: '',
+        })
+        this.props.history.push('/loading');
     }
 
     render() {
@@ -51,6 +112,25 @@ class HomeMap extends Component {
                         className="mapContainer"
                     />
                 </div>
+
+                {/* Below is the dialog for error on getting user location */}
+                <Modal
+                    open={this.state.locationError}
+                    onClose={this.handleErrorModalClose}
+                    basic
+                    size='small'
+                >
+                    <Header icon='crosshairs' content='Location Services Required' />
+                    <Modal.Content>
+                        <h3>{this.state.locationErrorMsg}</h3>
+                        <h3>Please ensure location services are enabled in your browser.</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='green' onClick={this.handleErrorModalClose} inverted>
+                            <Icon name='checkmark' />Ok
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
             </>
         )
     }
