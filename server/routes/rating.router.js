@@ -7,9 +7,12 @@ router.get('/:id', (req, res) => {
     pool.query(`SELECT AVG("rating") AS "rating" FROM "customer_rating" WHERE "user_id" = $1;`, [req.params.id])
         .then(
             result => {
-                console.log(result.rows);
+                // console.log(result.rows);
                 res.send(result.rows[0]);
             }
         )
+        .catch(error => {
+            console.log('error with getting rating', error);
+        })
   });
 module.exports = router;
