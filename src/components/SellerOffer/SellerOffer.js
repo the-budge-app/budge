@@ -24,7 +24,6 @@ const styles = {
 class SellerOffer extends Component {
   //temporary hold the user rating to be replaced with the saga calculation
   state = {
-    userRating: 4.5,
     offerId: queryString.parse(this.props.location.search).offerId,
     buyerId: queryString.parse(this.props.location.search).buyer,
     venueId: queryString.parse(this.props.location.search).venue,
@@ -71,6 +70,7 @@ class SellerOffer extends Component {
         offer_id: this.state.offerId,
        } 
     })
+    
   }
   render() {
     return (
@@ -80,8 +80,8 @@ class SellerOffer extends Component {
             <Grid.Row style={styles.gridRow}>
               <Grid.Column width={6} textAlign="center">
                 <Icon circular bordered name="user" color="grey" style={styles.icon} />
-                <Rating defaultRating={this.state.userRating} maxRating={5} disabled size='large' />
-                <h5>{this.state.userRating}</h5>
+                <Rating defaultRating={this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
+                <h5>{this.props.customerRating.rating && this.props.customerRating.rating.substring(0,3)}</h5>
               </Grid.Column>
               <Grid.Column width={10} style={{ paddingLeft: '0' }}>
                 <Grid>
@@ -157,5 +157,6 @@ const mapStateToProps = reduxState => ({
   buyerInfo: reduxState.sellerConfirmation.buyerInfo,
   selectedVenue: reduxState.selectedVenue,
   sellerInfo: reduxState.sellerConfirmation.sellerInfo,
+  customerRating: reduxState.customerRating,
 });
 export default connect(mapStateToProps)(SellerOffer);

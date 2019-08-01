@@ -1,4 +1,4 @@
-const ratingReducer = (state = {}, action) => {
+const ratingReducer = (state = {rating: '1'}, action) => {
     switch (action.type) {
         // payload should be single object from db
       case 'SET_USER_RATING':
