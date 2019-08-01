@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
+
+const styles={
+    mainDiv:{
+        textAlign: 'center',
+    }
+}
 
 class Contact extends Component {
     render() {
         return (
-            <>
-            <h2>Contact Us Page</h2>
-            </>
+            <div style={styles.mainDiv}>
+                <Segment>
+            <h2>Contact Us at Budge!</h2>
+            </Segment>
+            </div>
         )
     }
 }
