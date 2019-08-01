@@ -28,9 +28,24 @@ class SellerOffer extends Component {
   }
 
   componentDidMount () {
+    //get restaurant info
+    this.props.dispatch({
+      type:'FETCH_SELECTED_VENUE',
+      payload: 1 //to be replaced with req.query
+    })
     this.props.dispatch({
       type: 'FETCH_BUYER_INFO',
-      payload: this.props.match.params.offer_id
+      payload: {
+        waitlist_id: 1,
+        offer_id: this.props.match.params.offer_id
+       } //to be replaced with req.query
+    })
+    this.props.dispatch({
+      type: 'FETCH_SELLER_INFO',
+      payload: {
+        waitlist_id: 1,
+        offer_id: this.props.match.params.offer_id,
+       } //to be replaced with req.query.waitlist_id
     })
   }
   render() {
@@ -60,24 +75,24 @@ class SellerOffer extends Component {
         <Grid id='spot-info'>
           <Grid.Row>
             <Grid.Column width={16} textAlign="center">
-              <h2>Restaurant Name</h2>
+              <h2>{this.props.selectedVenue.restaurant_name}</h2>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={6}>
-              <h3>Steverino</h3>
+              <h3>{this.props.sellerInfo.username}</h3>
             </Grid.Column>
             <Grid.Column width={2}>
               <Icon name="user" />
             </Grid.Column>
             <Grid.Column width={2}>
-              <h3>4</h3>
+              <h3>{this.props.sellerInfo.party_size}</h3>
             </Grid.Column>
             <Grid.Column width={2}>
               <Icon name="clock" />
             </Grid.Column>
             <Grid.Column width={4}>
-              <h3>15 min</h3>
+              <h3>{this.props.sellerInfo.quote_time} min</h3>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -117,5 +132,7 @@ class SellerOffer extends Component {
 }
 const mapStateToProps = reduxState => ({
   buyerInfo: reduxState.sellerConfirmation.buyerInfo,
+  selectedVenue: reduxState.selectedVenue,
+  sellerInfo: reduxState.sellerConfirmation.sellerInfo,
 });
 export default connect(mapStateToProps)(SellerOffer);
