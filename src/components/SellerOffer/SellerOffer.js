@@ -37,7 +37,7 @@ class SellerOffer extends Component {
       offerId: this.state.offerId,
       statusCode: 4,
     });
-    this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
+    this.props.history.push(`/venue/${this.state.venueId}`); //to be replace with req.query.restaurant_id
   }
 
   handleReject = () => {
@@ -46,7 +46,7 @@ class SellerOffer extends Component {
       offerId: this.state.offerId,
       statusCode: 2,
     });
-    this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
+    this.props.history.push(`/venue/${this.state.venueId}`); //to be replace with req.query.restaurant_id
   }
 
   componentDidMount () {
@@ -150,7 +150,6 @@ class SellerOffer extends Component {
           </Grid.Row>
         </Grid>
       </>
-
     );
   }
 }

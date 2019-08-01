@@ -16,6 +16,7 @@ const waitListRouter = require('./routes/waitList.router')
 const paymentRouter = require('./routes/payment.router');
 const sellerConfirmation = require('./routes/sellerConfirmation.router');
 const offerRouter = require('./routes/offer.router');
+const ratingRouter = require('./routes/rating.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -44,8 +45,12 @@ app.use('/api/seller_confirmation', sellerConfirmation);
 //Routes for offers
 app.use('/api/offers', offerRouter);
 
+//Route to calculate customer rating
+app.use('/api/rating', ratingRouter);
+
 // Serve static files
 app.use(express.static('build'));
+
 
 // App Set //
 const PORT = process.env.PORT || 5000;
