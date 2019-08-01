@@ -35,9 +35,9 @@ router.get('/user', (req, res) => {
         })
 })
 
-router.put('/reject/:id', (req, res) => {
-    console.log('Retracting offer', req.params.id)
-    pool.query(`UPDATE "offer" SET "status_code" = 2 WHERE "id" = $1;`, [req.params.id])
+router.put('/update', (req, res) => {
+    console.log('Retracting offer', req.body)
+    pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.offerId, req.body.statusCode])
         .then(result => {
             res.sendStatus(200)
         })

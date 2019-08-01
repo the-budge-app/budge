@@ -52,7 +52,10 @@ class UserSpot extends Component {
 
     retractOffer = () => {
         this.toggleRetractModal();
-        axios.put(`/api/offers/reject/${this.state.offerMade.id}`)
+        axios.put(`/api/offers/update`, {
+            offerId: this.state.offerMade.id,
+            statusCode: 2,
+        })
             .then(response => {
                 this.getOffers();
             })
