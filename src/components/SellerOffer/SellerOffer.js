@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 //semantic ui
 import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
@@ -20,11 +21,27 @@ const styles = {
 }
 
 class SellerOffer extends Component {
-
+  //temporary hold the user rating to be replaced with the saga calculation
   state = {
-    buyer_name: 'Sally1984',
-    offerPrice: 20,
     userRating: 4.5,
+  }
+
+  handleAccept = () => {
+    console.log('in handleAccept');
+    axios.put('/api/offers/update', {
+      offerId: this.props.match.params.offer_id,
+      statusCode: 4,
+    });
+    this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
+  }
+
+  handleReject = () => {
+    console.log('in handleReject');
+    axios.put('/api/offers/update', {
+      offerId: this.props.match.params.offer_id,
+      statusCode: 2,
+    });
+    this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
   }
 
   componentDidMount () {
@@ -116,10 +133,10 @@ class SellerOffer extends Component {
             <Grid.Column width={2}>
             </Grid.Column>
             <Grid.Column width={6}>
-              <Button fluid style={{color: 'white', backgroundColor: 'red'}}>Reject</Button>
+              <Button onClick={this.handleReject} fluid style={{color: 'white', backgroundColor: 'red'}}>Reject</Button>
             </Grid.Column>
             <Grid.Column width={6}>
-              <Button fluid style={{backgroundColor: 'green', color: 'white'}}>Accept</Button>
+              <Button onClick={this.handleAccept} fluid style={{backgroundColor: 'green', color: 'white'}}>Accept</Button>
             </Grid.Column>
             <Grid.Column width={2}>
             </Grid.Column>
