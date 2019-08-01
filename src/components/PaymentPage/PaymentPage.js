@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Tab, Checkbox, Button, Icon } from 'semantic-ui-react'
+import { Tab } from 'semantic-ui-react'
 import SelectPaymentTab from './SelectPaymentTab'
 import AddPaymentTab from './AddPaymentTab'
 
