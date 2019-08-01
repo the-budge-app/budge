@@ -12,10 +12,6 @@ import { withRouter } from 'react-router';
 class WaitlistFooter extends Component {
 goToActivity = () => {
     this.props.history.push(`/activity/${this.props.match.params.id}`)
-        // this.props.dispatch({
-        //     type: 'FETCH_SELECTED_VENUE',
-        //     payload: this.props.match.params.id,
-        // })
     }
 
 
