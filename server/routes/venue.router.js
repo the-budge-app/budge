@@ -4,6 +4,7 @@ const router = express.Router();
 
 // get request for all participating venues in db
 router.get('/', (req, res) => {
+    console.log('getting all venues.')
     pool.query(`SELECT * FROM "restaurant"`)
         .then( response => {
             res.send(response.rows);
