@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 
 // import Semantic UI Component 
-import { Grid, Button, Divider } from 'semantic-ui-react'
+import { Grid, Button, Divider, Modal, Icon, Header } from 'semantic-ui-react'
 
 
 const styles = {
@@ -27,16 +26,9 @@ const styles = {
 class UserSpot extends Component {
 
     state = {
-        buyerName: 'Michael',
-        buyerSpot: '7',
-        buyerWaitTime: '90',
-        sellerName: 'Kaeti',
-        sellerSpot: '2',
-        sellerWaitTime: '20',
-        offerMade: '45',
-        offerReceived: '20',
-        sentOfferId: 1,
-        receivedOfferId: 2,
+        offerMade: {},
+        offerReceived: {},
+        retractModal: false,
     }
 
     componentDidMount() {
@@ -46,9 +38,12 @@ class UserSpot extends Component {
     // function to get the id of any offer made
     // and any offer received
     getOffers = () => {
-        axios.get(`/api/offers/user/${this.props.user.id}`)
+        axios.get(`/api/offers/user?venue=${this.props.selectedSpot.restaurant_id}&waitlist=${this.props.selectedSpot.id}`)
             .then(response => {
-                console.log(response)
+                this.setState({
+                    offerMade: response.data.offerMade,
+                    offerReceived: response.data.offerReceived,
+                })
             })
             .catch(error => {
                 console.log('Error in getting offers for user', error);
@@ -56,7 +51,11 @@ class UserSpot extends Component {
     }
 
     retractOffer = () => {
-        axios.put(`/api/offers/reject/${this.state.sentOfferId}`)
+        this.toggleRetractModal();
+        axios.put(`/api/offers/update`, {
+            offerId: this.state.offerMade.id,
+            statusCode: 2,
+        })
             .then(response => {
                 this.getOffers();
             })
@@ -66,12 +65,18 @@ class UserSpot extends Component {
     }
 
     viewOffer = () => {
-        this.props.history.push(`/seller-offer/${this.state.receivedOfferId}`)
+        this.props.history.push(`/seller-offer?offerId=${this.state.offerReceived.id}&buyer=${this.state.offerReceived.buyer_id}&venue=${this.state.offerReceived.restaurant_id}&waitlist=${this.props.selectedSpot.id}`)
+    }
+
+    toggleRetractModal = () => {
+        this.setState({
+            retractModal: !this.state.retractModal
+        })
     }
 
     render() {
         return (
-            <>
+            <div>
                 <Grid centered>
                     <Grid.Row>
                         <Grid.Column width={16} textAlign="center">
@@ -85,15 +90,22 @@ class UserSpot extends Component {
                         <Grid.Column width={16} textAlign="center">
                             <h3>Offer Made:</h3>
                         </Grid.Column>
-                        <Grid.Column width={16}>
-                            <h3 style={styles.headingThree}>To: {this.state.sellerName}</h3>
-                            <h3 style={styles.headingThree}>Spot: {this.state.sellerSpot}</h3>
-                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.sellerWaitTime}</h3>
-                            <h3 style={styles.headingThree}>Amount: ${this.state.offerMade}</h3>
-                        </Grid.Column>
-                        <Grid.Column width={16} textAlign="center">
-                            <Button color="red" onClick={this.retractOffer}>Retract Offer</Button>
-                        </Grid.Column>
+                        <>
+                            {this.state.offerMade ?
+                                <>
+                                    <Grid.Column width={16}>
+                                        <h3 style={styles.headingThree}>To: {this.state.offerMade.user_id}</h3>
+                                        <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerMade.quote_time}</h3>
+                                        <h3 style={styles.headingThree}>Amount: ${this.state.offerMade.offer_price}</h3>
+                                    </Grid.Column>
+                                    <Grid.Column width={16} textAlign="center">
+                                        <Button color="red" onClick={this.toggleRetractModal}>Retract Offer</Button>
+                                    </Grid.Column>
+                                </>
+                                :
+                                <h4>You haven't made any offers</h4>
+                            }
+                        </>
                     </Grid.Row>
                     <Divider />
                     <Grid.Row>
@@ -101,10 +113,9 @@ class UserSpot extends Component {
                             <h3>Offer Received:</h3>
                         </Grid.Column>
                         <Grid.Column width={16}>
-                            <h3 style={styles.headingThree}>From: {this.state.buyerName}</h3>
-                            <h3 style={styles.headingThree}>Spot: {this.state.buyerSpot}</h3>
-                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.buyerWaitTime}</h3>
-                            <h3 style={styles.headingThree}>Amount: ${this.state.offerReceived}</h3>
+                            <h3 style={styles.headingThree}>From: {this.state.offerReceived.buyer_id}</h3>
+                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerReceived.quote_time}</h3>
+                            <h3 style={styles.headingThree}>Amount: ${this.state.offerReceived.offer_price}</h3>
                         </Grid.Column>
                         <Grid.Column width={16} textAlign="center">
                             <Button color="green" onClick={this.viewOffer}>View Offer</Button>
@@ -114,9 +125,34 @@ class UserSpot extends Component {
                 </Grid>
                 <Button attached="bottom" fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
                 <pre>
+                    {JSON.stringify(this.state, null, 2)}
+                </pre>
+                <pre>
                     {JSON.stringify(this.props.reduxState, null, 2)}
                 </pre>
-            </>
+
+                {/* Below is the dialog for retract offer confirmation */}
+                {this.state.offerMade &&
+                    <Modal
+                        open={this.state.retractModal}
+                        basic
+                        style={{ maxWidth: '90vw' }}
+                    >
+                        <Header icon='question circle outline' content='Are you sure?' />
+                        <Modal.Content>
+                            <h3>You don't want to budge {this.state.offerMade.user_id}?</h3>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button color='green' onClick={this.retractOffer} inverted>
+                                <Icon name='checkmark' />Yep
+                        </Button>
+                            <Button color='red' onClick={this.toggleRetractModal} inverted>
+                                <Icon name='checkmark' />Nope
+                        </Button>
+                        </Modal.Actions>
+                    </Modal>
+                }
+            </div>
         )
     }
 }
@@ -125,6 +161,7 @@ const MapStateToProps = reduxState => ({
     reduxState,
     user: reduxState.user,
     selectedVenue: reduxState.selectedVenue,
+    selectedSpot: reduxState.selectedSpot,
 })
 
 export default connect(MapStateToProps)(UserSpot);
