@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { put, takeLatest } from 'redux-saga/effects';
 
-
+//fetching buyer information for seller receive offer page
 function* fetchBuyerInfo(action) {
-    // payload should be a single id - not in an object
     try {
-        const buyerInfoResponse = yield axios.get(`/api/seller_confirmation/${action.payload}`);
+        const buyerInfoResponse = yield axios.get(`/api/seller_confirmation/buyer/${action.payload.waitlist_id}/${action.payload.offer_id}`);
         console.log(buyerInfoResponse);
         yield put({type: 'SET_BUYER_INFO', payload: buyerInfoResponse.data})
     } catch (error) {
@@ -13,9 +12,20 @@ function* fetchBuyerInfo(action) {
     }
 }
 
+//fetching seller information for seller receive offer page
+function* fetchSellerInfo(action) {
+    try {
+        const sellerInfoResponse = yield axios.get(`/api/seller_confirmation/seller/${action.payload.waitlist_id}`);
+        console.log(sellerInfoResponse);
+        yield put({type: 'SET_SELLER_INFO', payload: sellerInfoResponse.data})
+    } catch (error) {
+        console.log('Error in fetching seller info.', error)
+    }
+}
 
 function* sellerConfirmSaga() {
     yield takeLatest('FETCH_BUYER_INFO', fetchBuyerInfo);
+    yield takeLatest('FETCH_SELLER_INFO', fetchSellerInfo);
     
 }
 
