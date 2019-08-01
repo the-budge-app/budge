@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import queryString from 'query-string';
 
 //semantic ui
 import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
@@ -24,12 +25,16 @@ class SellerOffer extends Component {
   //temporary hold the user rating to be replaced with the saga calculation
   state = {
     userRating: 4.5,
+    offerId: queryString.parse(this.props.location.search).offerId,
+    buyerId: queryString.parse(this.props.location.search).buyer,
+    venueId: queryString.parse(this.props.location.search).venue,
+    waitlistId: queryString.parse(this.props.location.search).waitlist,
   }
 
   handleAccept = () => {
     console.log('in handleAccept');
     axios.put('/api/offers/update', {
-      offerId: this.props.match.params.offer_id,
+      offerId: this.state.offerId,
       statusCode: 4,
     });
     this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
@@ -38,7 +43,7 @@ class SellerOffer extends Component {
   handleReject = () => {
     console.log('in handleReject');
     axios.put('/api/offers/update', {
-      offerId: this.props.match.params.offer_id,
+      offerId: this.state.offerId,
       statusCode: 2,
     });
     this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
@@ -48,21 +53,23 @@ class SellerOffer extends Component {
     //get restaurant info
     this.props.dispatch({
       type:'FETCH_SELECTED_VENUE',
-      payload: 1 //to be replaced with req.query
+      payload: this.state.venueId,
     })
+    //buyer info
     this.props.dispatch({
       type: 'FETCH_BUYER_INFO',
       payload: {
-        waitlist_id: 1,
-        offer_id: this.props.match.params.offer_id
-       } //to be replaced with req.query
+        waitlist_id: this.state.waitlistId,
+        offer_id: this.state.offerId,
+       } 
     })
+    //seller info
     this.props.dispatch({
       type: 'FETCH_SELLER_INFO',
       payload: {
-        waitlist_id: 1,
-        offer_id: this.props.match.params.offer_id,
-       } //to be replaced with req.query.waitlist_id
+        waitlist_id: this.state.waitlistId,
+        offer_id: this.state.offerId,
+       } 
     })
   }
   render() {
