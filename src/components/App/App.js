@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 
 import Nav from '../Nav/Nav';
-import Footer from '../Footer/Footer';
+// import Footer from '../Footer/ActivityFooter';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 
@@ -22,6 +22,7 @@ import LoadingPage from '../LoadingPage/LoadingPage'
 import StatusPage from '../StatusPage/StatusPage'
 import Contact from '../Contact/Contact';
 import SemanticPlayground from '../SemanticPlayground'
+import Activity from '../Activity/Activity';
 
 import './App.css';
 import SellerConfirm from '../Confirmation/SellerConfirm';
@@ -82,13 +83,14 @@ class App extends Component {
             <ProtectedRoute exact path="/waitlist-spot/:id" component={WaitlistSpot}/>
             <ProtectedRoute exact path="/seller-offer" component={SellerOffer}/>
             <ProtectedRoute exact path="/join-waitlist/:restaurant_id" component={JoinWaitlist}/>
+            <ProtectedRoute exact path="/activity/:id" component={Activity}/>
             {/* This works the same as the other protected route, except that if the user is logged in,
             they will see the info page instead. */}
             {/* If none of the other routes matched, we will show a 404. */}
             <Route component={ErrorPage} />
           </Switch>
           {/* only show the footer component on every route except the loading route */}
-          <Route path="/" render={(routerProps) => (routerProps.location.pathname !== "/loading") && <Footer {...routerProps} />} />
+          {/* <Route path="/" render={(routerProps) => (routerProps.location.pathname == "/venue") && <Footer {...routerProps} />} /> */}
         </div>
       </Router>
     )
