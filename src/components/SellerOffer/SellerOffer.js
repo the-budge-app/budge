@@ -80,7 +80,7 @@ class SellerOffer extends Component {
             <Grid.Row style={styles.gridRow}>
               <Grid.Column width={6} textAlign="center">
                 <Icon circular bordered name="user" color="grey" style={styles.icon} />
-                <Rating defaultRating={this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
+                <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
                 <h5>{this.props.customerRating.rating && this.props.customerRating.rating.substring(0,3)}</h5>
               </Grid.Column>
               <Grid.Column width={10} style={{ paddingLeft: '0' }}>
