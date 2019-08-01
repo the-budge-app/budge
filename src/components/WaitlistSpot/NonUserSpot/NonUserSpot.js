@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import axios from 'axios'
 
 // import Semantic UI Component 
 import { Grid, Segment, Button, Icon, Rating, Input, Modal, Header } from 'semantic-ui-react'
@@ -42,8 +43,11 @@ class NonUserSpot extends Component {
         // otherwise, fire off make offer saga probably 
 
         if (this.props.user.account_balance >= this.state.offerPrice) {
-            // dispatch to saga to do that shit.
-
+            axios.post('/api/offers/make-new', {
+                waitlistId: this.props.selectedSpot.id,
+                offerPrice: this.state.offerPrice,
+                venueId: this.props.selectedVenue.id,
+            })
             // reset state
             this.setState({
                 ...this.state,
@@ -140,12 +144,16 @@ class NonUserSpot extends Component {
                         </Button>
                     </Modal.Actions>
                 </Modal>
+                <pre>
+                    {JSON.stringify(this.props.reduxState, null, 2)}
+                </pre>
             </>
         )
     }
 }
 
 const MapStateToProps = reduxState => ({
+    reduxState, 
     user: reduxState.user,
     selectedVenue: reduxState.selectedVenue,
     selectedSpot: reduxState.selectedSpot,

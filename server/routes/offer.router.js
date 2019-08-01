@@ -46,6 +46,41 @@ router.put('/update', (req, res) => {
         })
 })
 
+router.post('/make-new', (req, res) => {
+    // for making a new offer, we need to insert into 
+    // the offer table with the data for the new offer
+    // then change the status on the waitlist for the 
+    // seller to show the inactive so they
+    // wont receive any other offers
+    console.log('Making new offer', req.body);
+    pool.query(`INSERT INTO "offer" (waitlist_id, buyer_id, offer_price, status_time, status_code)
+        VALUES ($1, $2, $3, NOW(), '1');`, [req.body.waitlistId, req.user.id, req.body.offerPrice])
+        .then(result => {
+            // new row inserted into the table. now change the status of the seller
+            // get the user_id that owns the waitlist spot we are making an offer on
+            pool.query(`SELECT "user_id" FROM "waitlist" WHERE "id"=$1;`, [req.body.waitlistId])
+                .then( result => {
+                    const sellerId = result.rows[0];
+                    console.log(sellerId);
+                    // now that we have the user_id of the spot owner, lets change their status to pending
+                    pool.query(`UPDATE "waitlist" SET "status_code" = 3 WHERE "user_id" = $1 AND "restaurant_id"=$2;`, [sellerId.user_id, req.body.venueId])
+                        .then(result => {
+                            // status changed for that waitlist spot to pending
+                            res.sendStatus(200);
+                        })
+                        .catch(error=> {
+                            console.log('Error in updating waitlist status to pending', error);
+                        })
+                })
+                .catch(error=> {
+                    console.log('Error in selecting user id from waitlist', error);
+                })
+        })
+        .catch(error => {
+            console.log('Error making new offer', error)
+        })
+})
+
 module.exports = router;
 
 

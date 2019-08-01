@@ -17,9 +17,6 @@ class PaymentPage extends Component {
         return (
             <div  >
                 <Tab panes={panes} />
-            
-
-
             </div>
         )
     }
