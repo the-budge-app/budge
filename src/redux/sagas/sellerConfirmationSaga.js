@@ -6,7 +6,8 @@ function* fetchBuyerInfo(action) {
     try {
         const buyerInfoResponse = yield axios.get(`/api/seller_confirmation/buyer/${action.payload.waitlist_id}/${action.payload.offer_id}`);
         console.log(buyerInfoResponse);
-        yield put({type: 'SET_BUYER_INFO', payload: buyerInfoResponse.data})
+        yield put({type: 'FETCH_RATING', payload: buyerInfoResponse.data})
+        yield put({type: 'SET_BUYER_INFO', payload: buyerInfoResponse.data.buyer_id});
     } catch (error) {
         console.log('Error in fetching buyer info.', error)
     }
