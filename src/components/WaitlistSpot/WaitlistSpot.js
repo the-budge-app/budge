@@ -26,7 +26,7 @@ class SelectedOffer extends Component {
     }
 
     addFunds = () => {
-        this.toggleModal();
+        this.props.history.push('/payment');
     }
 
     toggleModal = () => {
