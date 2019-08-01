@@ -27,16 +27,8 @@ const styles = {
 class UserSpot extends Component {
 
     state = {
-        buyerName: 'Michael',
-        buyerSpot: '7',
-        buyerWaitTime: '90',
-        sellerName: 'Kaeti',
-        sellerSpot: '2',
-        sellerWaitTime: '20',
-        offerMade: '45',
-        offerReceived: '20',
-        sentOfferId: 1,
-        receivedOfferId: 2,
+        offerMade: {},
+        offerReceived: {},
     }
 
     componentDidMount() {
@@ -46,9 +38,12 @@ class UserSpot extends Component {
     // function to get the id of any offer made
     // and any offer received
     getOffers = () => {
-        axios.get(`/api/offers/user/${this.props.user.id}`)
+        axios.get(`/api/offers/user?venue=${this.props.selectedSpot.restaurant_id}&waitlist=${this.props.selectedSpot.id}`)
             .then(response => {
-                console.log(response)
+                this.setState({
+                    offerMade: response.data.offerMade,
+                    offerReceived: response.data.offerReceived,
+                })
             })
             .catch(error => {
                 console.log('Error in getting offers for user', error);
@@ -66,7 +61,7 @@ class UserSpot extends Component {
     }
 
     viewOffer = () => {
-        this.props.history.push(`/seller-offer/${this.state.receivedOfferId}`)
+        this.props.history.push(`/seller-offer?offerId=${this.state.offerReceived.id}&buyer=${this.state.offerReceived.buyer_id}&venue=${this.state.offerReceived.restaurant_id}&waitlist=${this.props.selectedSpot.id}`)
     }
 
     render() {
@@ -86,10 +81,9 @@ class UserSpot extends Component {
                             <h3>Offer Made:</h3>
                         </Grid.Column>
                         <Grid.Column width={16}>
-                            <h3 style={styles.headingThree}>To: {this.state.sellerName}</h3>
-                            <h3 style={styles.headingThree}>Spot: {this.state.sellerSpot}</h3>
-                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.sellerWaitTime}</h3>
-                            <h3 style={styles.headingThree}>Amount: ${this.state.offerMade}</h3>
+                            <h3 style={styles.headingThree}>To: {this.state.offerMade.user_id}</h3>
+                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerMade.quote_time}</h3>
+                            <h3 style={styles.headingThree}>Amount: ${this.state.offerMade.offer_price}</h3>
                         </Grid.Column>
                         <Grid.Column width={16} textAlign="center">
                             <Button color="red" onClick={this.retractOffer}>Retract Offer</Button>
@@ -101,10 +95,9 @@ class UserSpot extends Component {
                             <h3>Offer Received:</h3>
                         </Grid.Column>
                         <Grid.Column width={16}>
-                            <h3 style={styles.headingThree}>From: {this.state.buyerName}</h3>
-                            <h3 style={styles.headingThree}>Spot: {this.state.buyerSpot}</h3>
-                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.buyerWaitTime}</h3>
-                            <h3 style={styles.headingThree}>Amount: ${this.state.offerReceived}</h3>
+                            <h3 style={styles.headingThree}>From: {this.state.offerReceived.buyer_id}</h3>
+                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerReceived.quote_time}</h3>
+                            <h3 style={styles.headingThree}>Amount: ${this.state.offerReceived.offer_price}</h3>
                         </Grid.Column>
                         <Grid.Column width={16} textAlign="center">
                             <Button color="green" onClick={this.viewOffer}>View Offer</Button>
@@ -113,6 +106,9 @@ class UserSpot extends Component {
                     </Grid.Row>
                 </Grid>
                 <Button attached="bottom" fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
+                <pre>
+                    {JSON.stringify(this.state, null, 2)}
+                </pre>
                 <pre>
                     {JSON.stringify(this.props.reduxState, null, 2)}
                 </pre>
@@ -125,6 +121,7 @@ const MapStateToProps = reduxState => ({
     reduxState,
     user: reduxState.user,
     selectedVenue: reduxState.selectedVenue,
+    selectedSpot: reduxState.selectedSpot,
 })
 
 export default connect(MapStateToProps)(UserSpot);
