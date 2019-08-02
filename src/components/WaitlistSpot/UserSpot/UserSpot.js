@@ -51,10 +51,11 @@ class UserSpot extends Component {
     }
 
     retractOffer = () => {
+        console.log('Retracting offer......please hold.');
         this.toggleRetractModal();
-        axios.put(`/api/offers/update`, {
+        axios.put(`/api/offers/buyer-retract`, {
             offerId: this.state.offerMade.id,
-            statusCode: 2,
+            statusCode: 3,
         })
             .then(response => {
                 this.getOffers();
@@ -80,7 +81,7 @@ class UserSpot extends Component {
                 <Grid centered>
                     <Grid.Row>
                         <Grid.Column width={16} textAlign="center">
-                            <h2 onClick={this.props.toggleModal}>Status at</h2>
+                            <h2>Status at</h2>
                         </Grid.Column>
                         <Grid.Column width={16} textAlign="center">
                             <h1>{this.props.selectedVenue.restaurant_name}</h1>
@@ -103,7 +104,10 @@ class UserSpot extends Component {
                                     </Grid.Column>
                                 </>
                                 :
-                                <h4>You haven't made any offers</h4>
+                                <>
+                                    <h4>You haven't made any offers</h4>
+                                    <h4>Get Budging!</h4>
+                                </>
                             }
                         </>
                     </Grid.Row>
@@ -112,15 +116,23 @@ class UserSpot extends Component {
                         <Grid.Column width={16} textAlign="center">
                             <h3>Offer Received:</h3>
                         </Grid.Column>
-                        <Grid.Column width={16}>
-                            <h3 style={styles.headingThree}>From: {this.state.offerReceived.buyer_id}</h3>
-                            <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerReceived.quote_time}</h3>
-                            <h3 style={styles.headingThree}>Amount: ${this.state.offerReceived.offer_price}</h3>
-                        </Grid.Column>
-                        <Grid.Column width={16} textAlign="center">
-                            <Button color="green" onClick={this.viewOffer}>View Offer</Button>
-                        </Grid.Column>
+                        <>
+                            {this.state.offerReceived ?
+                                <>
+                                    <Grid.Column width={16}>
+                                        <h3 style={styles.headingThree}>From: {this.state.offerReceived.buyer_id}</h3>
+                                        <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerReceived.quote_time}</h3>
+                                        <h3 style={styles.headingThree}>Amount: ${this.state.offerReceived.offer_price}</h3>
+                                    </Grid.Column>
+                                    <Grid.Column width={16} textAlign="center">
+                                        <Button color="green" onClick={this.viewOffer}>View Offer</Button>
+                                    </Grid.Column>
 
+                                </>
+                                :
+                                <h4>You haven't received any offers</h4>
+                            }
+                        </>
                     </Grid.Row>
                 </Grid>
                 <Button attached="bottom" fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
