@@ -27,8 +27,8 @@ router.post('/join', (req, res) => {
     const reservation_name = req.body.reservation_name
     const party_size = req.body.party_size
     const quote_time = req.body.quote_time
-    const queryText = `INSERT INTO "waitlist" ("user_id", "reservation_name", "party_size", "quote_time", "restaurant_id")
-    VALUES ($1, $2, $3, $4, $5)`;
+    const queryText = `INSERT INTO "waitlist" ("user_id", "reservation_name", "party_size", "quote_time", "restaurant_id", "status_code")
+    VALUES ($1, $2, $3, $4, $5, 1)`;
     pool.query(queryText, [user_id, reservation_name, party_size, quote_time, id])
     .then(() => res.sendStatus(201))
     .catch(error => {
