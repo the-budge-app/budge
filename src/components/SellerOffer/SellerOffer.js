@@ -70,8 +70,31 @@ class SellerOffer extends Component {
         offer_id: this.state.offerId,
        } 
     })
-    
+
+     //refresh every minute
+     this.interval = setInterval(() => {
+       this.props.dispatch({
+        type: 'FETCH_BUYER_INFO',
+        payload: {
+          waitlist_id: this.state.waitlistId,
+          offer_id: this.state.offerId,
+         } 
+        });
+        this.props.dispatch({
+          type: 'FETCH_SELLER_INFO',
+          payload: {
+            waitlist_id: this.state.waitlistId,
+            offer_id: this.state.offerId,
+           } 
+        })
+     },60000)
   }
+
+    componentWillUnmount() {
+      clearInterval(this.interval);
+  }
+    
+  
   render() {
     return (
       <>
