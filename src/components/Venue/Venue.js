@@ -36,13 +36,21 @@ class Venue extends Component {
         })
         //fetch user's WL to check if the user has joined the WL in this restaurant
         //only run the code if user is logged in
-        // if(this.props.user.id) {
         this.props.dispatch({
             type: 'FETCH_USER_WAITLIST',
             payload: this.props.match.params.id,
         })
-        // }
+
+        //refresh every minute
+        this.interval = setInterval(() => this.props.dispatch({
+            type: 'FETCH_WAITLIST',
+            payload: { restaurant_id: this.props.match.params.id, }
+        }), 60000)
     }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+      }
 
     //function to toggle between join/leave WL
     leaveWL = () => {
