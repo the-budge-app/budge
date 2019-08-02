@@ -37,7 +37,7 @@ router.get('/user', (req, res) => {
 
 router.put('/update', (req, res) => {
     console.log('Retracting offer', req.body)
-    pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.offerId, req.body.statusCode])
+    pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId ])
         .then(result => {
             res.sendStatus(200)
         })
