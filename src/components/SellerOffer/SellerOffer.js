@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import queryString from 'query-string';
 
 //semantic ui
 import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
@@ -23,48 +24,77 @@ const styles = {
 class SellerOffer extends Component {
   //temporary hold the user rating to be replaced with the saga calculation
   state = {
-    userRating: 4.5,
+    offerId: queryString.parse(this.props.location.search).offerId,
+    buyerId: queryString.parse(this.props.location.search).buyer,
+    venueId: queryString.parse(this.props.location.search).venue,
+    waitlistId: queryString.parse(this.props.location.search).waitlist,
   }
 
   handleAccept = () => {
     console.log('in handleAccept');
     axios.put('/api/offers/update', {
-      offerId: this.props.match.params.offer_id,
+      offerId: this.state.offerId,
       statusCode: 4,
     });
-    this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
+    this.props.history.push(`/venue/${this.state.venueId}`); //to be replace with req.query.restaurant_id
   }
 
   handleReject = () => {
     console.log('in handleReject');
     axios.put('/api/offers/update', {
-      offerId: this.props.match.params.offer_id,
+      offerId: this.state.offerId,
       statusCode: 2,
     });
-    this.props.history.push(`/venue/1`); //to be replace with req.query.restaurant_id
+    this.props.history.push(`/venue/${this.state.venueId}`); //to be replace with req.query.restaurant_id
   }
 
   componentDidMount () {
     //get restaurant info
     this.props.dispatch({
       type:'FETCH_SELECTED_VENUE',
-      payload: 1 //to be replaced with req.query
+      payload: this.state.venueId,
     })
+    //buyer info
     this.props.dispatch({
       type: 'FETCH_BUYER_INFO',
       payload: {
-        waitlist_id: 1,
-        offer_id: this.props.match.params.offer_id
-       } //to be replaced with req.query
+        waitlist_id: this.state.waitlistId,
+        offer_id: this.state.offerId,
+       } 
     })
+    //seller info
     this.props.dispatch({
       type: 'FETCH_SELLER_INFO',
       payload: {
-        waitlist_id: 1,
-        offer_id: this.props.match.params.offer_id,
-       } //to be replaced with req.query.waitlist_id
+        waitlist_id: this.state.waitlistId,
+        offer_id: this.state.offerId,
+       } 
     })
+
+     //refresh every minute
+     this.interval = setInterval(() => {
+       this.props.dispatch({
+        type: 'FETCH_BUYER_INFO',
+        payload: {
+          waitlist_id: this.state.waitlistId,
+          offer_id: this.state.offerId,
+         } 
+        });
+        this.props.dispatch({
+          type: 'FETCH_SELLER_INFO',
+          payload: {
+            waitlist_id: this.state.waitlistId,
+            offer_id: this.state.offerId,
+           } 
+        })
+     },60000)
   }
+
+    componentWillUnmount() {
+      clearInterval(this.interval);
+  }
+    
+  
   render() {
     return (
       <>
@@ -73,8 +103,8 @@ class SellerOffer extends Component {
             <Grid.Row style={styles.gridRow}>
               <Grid.Column width={6} textAlign="center">
                 <Icon circular bordered name="user" color="grey" style={styles.icon} />
-                <Rating defaultRating={this.state.userRating} maxRating={5} disabled size='large' />
-                <h5>{this.state.userRating}</h5>
+                <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
+                <h5>{this.props.customerRating.rating && this.props.customerRating.rating.substring(0,3)}</h5>
               </Grid.Column>
               <Grid.Column width={10} style={{ paddingLeft: '0' }}>
                 <Grid>
@@ -109,7 +139,7 @@ class SellerOffer extends Component {
               <Icon name="clock" />
             </Grid.Column>
             <Grid.Column width={4}>
-              <h3>{this.props.sellerInfo.quote_time} min</h3>
+              <h3>{this.props.sellerInfo.latest_wait_time} min</h3>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -126,7 +156,7 @@ class SellerOffer extends Component {
               <Icon name="clock" />
             </Grid.Column>
             <Grid.Column width={4}>
-              <h3>{this.props.buyerInfo.quote_time} min</h3>
+              <h3>{this.props.buyerInfo.latest_wait_time} min</h3>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -143,7 +173,6 @@ class SellerOffer extends Component {
           </Grid.Row>
         </Grid>
       </>
-
     );
   }
 }
@@ -151,5 +180,6 @@ const mapStateToProps = reduxState => ({
   buyerInfo: reduxState.sellerConfirmation.buyerInfo,
   selectedVenue: reduxState.selectedVenue,
   sellerInfo: reduxState.sellerConfirmation.sellerInfo,
+  customerRating: reduxState.customerRating,
 });
 export default connect(mapStateToProps)(SellerOffer);

@@ -8,6 +8,8 @@ import paymentSaga from './paymentSaga';
 import waitlistJoinLeave from './waitlistJoinLeaveSaga';
 import sellerConfirmation from './sellerConfirmationSaga';
 import contactSaga from './contactSaga';
+import customerRating from './customerRatingSaga';
+
 
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -27,5 +29,6 @@ export default function* rootSaga() {
     waitlistJoinLeave(),
     sellerConfirmation(),
     contactSaga(),
+    customerRating(),
   ]);
 }

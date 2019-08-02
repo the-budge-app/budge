@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Button, Icon, Checkbox, Grid } from 'semantic-ui-react';
-import './Venue.css'
+import './Venue.css';
+import WaitlistFooter from '../Footer/WaitlistFooter';
 
 const styles = {
     mainDiv: {
@@ -35,12 +36,20 @@ class Venue extends Component {
         })
         //fetch user's WL to check if the user has joined the WL in this restaurant
         //only run the code if user is logged in
-        // if(this.props.user.id) {
         this.props.dispatch({
             type: 'FETCH_USER_WAITLIST',
             payload: this.props.match.params.id,
         })
-        // }
+
+        //refresh every minute
+        this.interval = setInterval(() => this.props.dispatch({
+            type: 'FETCH_WAITLIST',
+            payload: { restaurant_id: this.props.match.params.id, }
+        }), 60000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
     }
 
     //function to toggle between join/leave WL
@@ -138,21 +147,29 @@ class Venue extends Component {
                                 <Button key={venue.waitlist_id} style={{ marginBottom: '15px', }} fluid primary={venue.user_id === this.props.user.id} onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
                                     <Icon name="user" />{venue.party_size}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
-                        <Icon name="clock" />{venue.quote_time}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Icon name="clock" />{venue.latest_wait_time} min&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
-                        <Icon name="dont" />&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <Icon name="dont" />&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                         $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                     </Button>
                             )}
                             {this.state.active ?
-                                <Button className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
+                                <Button disabled={this.props.user.distance > 850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
                                 :
                                 <Button className="joinButton" fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
                             }
                         </Grid.Column>
                     </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={16}>
+                            <div>
+                                
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
+                <WaitlistFooter />
             </div>
         )
     }

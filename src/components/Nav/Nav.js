@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-//import LogOutButton from '../LogOutButton/LogOutButton';
 import './Nav.css';
 import { Sidebar, Menu, Icon, Grid } from 'semantic-ui-react';
 
@@ -78,11 +77,6 @@ class Nav extends Component {
           <Menu.Item style={{textAlign: 'left'}}>
             <Link onClick={this.toggleVisible} to="/login">
               Login
-            </Link>
-          </Menu.Item>
-          <Menu.Item style={{textAlign: 'left'}}>
-            <Link onClick={this.toggleVisible} to="/semantic-playground">
-              Semantic
             </Link>
           </Menu.Item>
           <Menu.Item style={{textAlign: 'left'}}>
