@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Button, Icon } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Button, Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const styles = {
     mainDiv: {
@@ -39,7 +40,9 @@ class SelectPaymentTab extends Component {
             type: 'ADD_FUNDS',
             payload: {
                 account_balance: Number(this.state.account_balance) + (this.props.reduxState.user.account_balance),
-                id: this.props.reduxState.user.id
+                id: this.props.reduxState.user.id,
+                history: this.props.history,
+                waitlistId: this.props.reduxState.selectedSpot.id,
             }
         })
         //this.props.history.push('/home')
@@ -56,10 +59,6 @@ class SelectPaymentTab extends Component {
     render() {
         return (
             <div style={styles.mainDiv} >
-
-
-
-
 
                 <div>
 
@@ -95,14 +94,20 @@ class SelectPaymentTab extends Component {
                         <br />
                         <br />
                     </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                </div>
+                
+                <Link to={`/waitlist-spot/${this.props.reduxState.selectedSpot.id}`}><Button fluid style={{backgroundColor: 'green', color: 'white'}} onClick={this.updateBalance}>Add Funds to Account</Button></Link>
 
-                    <Button fluid style={{ backgroundColor: 'green', color: 'white' }} onClick={this.updateBalance}>Add Funds to Account</Button>
+
 
 
                 </div>
 
 
-            </div>
         )
     }
 }
