@@ -116,7 +116,7 @@ class SellerOffer extends Component {
               <Icon name="clock" />
             </Grid.Column>
             <Grid.Column width={4}>
-              <h3>{this.props.sellerInfo.quote_time} min</h3>
+              <h3>{this.props.sellerInfo.latest_wait_time} min</h3>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -133,7 +133,7 @@ class SellerOffer extends Component {
               <Icon name="clock" />
             </Grid.Column>
             <Grid.Column width={4}>
-              <h3>{this.props.buyerInfo.quote_time} min</h3>
+              <h3>{this.props.buyerInfo.latest_wait_time} min</h3>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
