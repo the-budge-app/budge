@@ -28,7 +28,8 @@
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.2",
     "semantic-ui-react": "^0.87.3",
-    "sweetalert2": "^8.14.0"
+    "sweetalert2": "^8.14.0",
+    "twilio": "^3.33.2"
   },
   "scripts": {
     "start": "node server/server.js",
