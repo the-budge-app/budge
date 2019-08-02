@@ -3,6 +3,10 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
+
 // get request to get offers for a single user
 // id is the waitlist id for the user
 router.get('/user', (req, res) => {
@@ -14,9 +18,9 @@ router.get('/user', (req, res) => {
         WHERE "buyer_id" = $1
         AND "waitlist"."restaurant_id"=$2
         AND "offer"."status_code"=1;`, [req.user.id, req.query.venue])
-        .then( result => {
-            console.log('offerMade:',result.rows[0]);
-            let offers = {offerMade: result.rows[0],}
+        .then(result => {
+            console.log('offerMade:', result.rows[0]);
+            let offers = { offerMade: result.rows[0], }
             // we have the offer that was made, 
             // now lets get any offer received
             pool.query(`SELECT * FROM "offer" 
@@ -31,7 +35,7 @@ router.get('/user', (req, res) => {
                         offerReceived: result.rows[0],
                     }
                     res.send(offers);
-                })      
+                })
         })
 })
 
@@ -41,7 +45,7 @@ router.put('/update', (req, res) => {
         .then(result => {
             res.sendStatus(200)
         })
-        .catch( error => {
+        .catch(error => {
             console.log('Error with updating seller rejected offer', error);
         })
 })
@@ -65,7 +69,7 @@ router.put('/buyer-retract', (req, res) => {
                 })
                 .catch(error => console.log('Error in SELECT query for waitlist id on retract offer', error))
         })
-        .catch( error => {
+        .catch(error => {
             console.log('Error with updating seller rejected offer', error);
         })
 })
@@ -78,30 +82,53 @@ router.post('/make-new', (req, res) => {
     // wont receive any other offers
     console.log('Making new offer', req.body);
     pool.query(`INSERT INTO "offer" (waitlist_id, buyer_id, offer_price, status_time, status_code)
-        VALUES ($1, $2, $3, NOW(), '1');`, [req.body.waitlistId, req.user.id, req.body.offerPrice])
+        VALUES ($1, $2, $3, NOW(), '1') RETURNING "id";`, [req.body.waitlistId, req.user.id, req.body.offerPrice])
         .then(result => {
+            const newOfferId = result.rows[0].id;
+            console.log(newOfferId);
             // new row inserted into the table. now change the status of the seller
             // get the user_id that owns the waitlist spot we are making an offer on
             pool.query(`SELECT "user_id" FROM "waitlist" WHERE "id"=$1;`, [req.body.waitlistId])
-                .then( result => {
+                .then(result => {
                     const sellerId = result.rows[0];
                     console.log(sellerId);
                     // now that we have the user_id of the spot owner, lets change their status to pending
                     pool.query(`UPDATE "waitlist" SET "status_code" = 3 WHERE "user_id" = $1 AND "restaurant_id"=$2;`, [sellerId.user_id, req.body.venueId])
                         .then(result => {
+                            console.log(sellerId);
                             // status changed for that waitlist spot to pending
-                            res.sendStatus(200);
+                            // new offer is now complete on the db side, so lets notify the seller
+                            pool.query(`SELECT "phone_number" FROM "user" WHERE "id" = $1;`, [sellerId.user_id])
+                                .then(result => {
+                                    const sellerPhone = result.rows[0].phone_number;
+                                    client.messages
+                                        .create({
+                                            body: `Someone's trying Budge you! View it: http://thebudgeapp.herokuapp.com/seller-offer?offerId=${newOfferId}&buyer=${req.user.id}&venue=${req.body.venueId}&waitlist=${req.body.waitlistId}`,
+                                            from: '+16125025504',
+                                            to: `+1${sellerPhone}`
+                                        })
+                                        .then(message => console.log(message.sid));
+                                        res.sendStatus(200);
+                                })
+                                .catch(error => {
+                                    console.log('Error with getting user phone', error)
+                                    res.sendStatus(500);
+                                })
+                            
                         })
-                        .catch(error=> {
+                        .catch(error => {
                             console.log('Error in updating waitlist status to pending', error);
+                            res.sendStatus(500);
                         })
                 })
-                .catch(error=> {
+                .catch(error => {
                     console.log('Error in selecting user id from waitlist', error);
+                    res.sendStatus(500);
                 })
         })
         .catch(error => {
             console.log('Error making new offer', error)
+            res.sendStatus(500);
         })
 })
 
