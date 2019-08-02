@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Checkbox, Grid } from 'semantic-ui-react';
+import { Button, Icon, Checkbox, Grid, Segment } from 'semantic-ui-react';
 import './Venue.css';
 import WaitlistFooter from '../Footer/WaitlistFooter';
 
@@ -103,7 +103,9 @@ class Venue extends Component {
     render() {
         const { active } = this.state
         return (
+            <>
             <div style={styles.mainDiv}>
+                <Segment style={{overflow: 'auto', maxHeight: 500 }}>
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
@@ -134,9 +136,6 @@ class Venue extends Component {
                     </>
                 }
 
-                <br />
-                <br />
-                <br />
 
                 {/* tried to clean up the map function
                 made the primary prop based on the conditional */}
@@ -161,16 +160,12 @@ class Venue extends Component {
                             }
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column width={16}>
-                            <div>
-                                
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
                 </Grid>
-                <WaitlistFooter />
+                </Segment>
+                
             </div>
+            <WaitlistFooter />
+            </>
         )
     }
 }
