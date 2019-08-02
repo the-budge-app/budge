@@ -20,7 +20,7 @@ const styles = {
         marginRight: '2%',
     },
     paymentTab: {
-        
+
 
     }
 }
@@ -42,7 +42,7 @@ class SelectPaymentTab extends Component {
                 id: this.props.reduxState.user.id
             }
         })
-
+        //this.props.history.push('/home')
 
     }
 
@@ -58,47 +58,47 @@ class SelectPaymentTab extends Component {
             <div style={styles.mainDiv} >
 
 
-               
-            
+
+
 
                 <div>
-                    
-                    <div style={styles.paymentTab}>
-                    <Icon name="dollar sign" />
-                <input onChange={this.handleChange} value={this.state.account_balance} type="text" placeholder="Amount to Add"></input>
-                <div style={styles.paymentDiv}>
-                    <br />
-                    <br />
-                    <input type="radio" className="hidden" tabIndex="0" />
-                    <label>MC ************ 5543</label>
-                    <Icon style={styles.cvv} name="credit card" />
-                    <input style={styles.cvv} type="text" placeholder="CVV"></input>
-                    
-                    <br />
-                    <br />
-                    <input type="radio" className="hidden" tabIndex="0" />
-                    <label>Visa ************ 3254</label>
-                    <Icon style={styles.cvv} name="credit card" />
-                    <input style={styles.cvv} type="text" placeholder="CVV"></input>
-                    
-                    <br />
-                    <br />
-                    <input type="radio" className="hidden" tabIndex="0" />
-                    <label>Amex *********** 1001</label>
-                    <Icon style={styles.cvv} name="credit card" />
-                    <input style={styles.cvv} type="text" placeholder="CVV"></input>
-                    
-                    
-                    </div>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                </div>
-                
-                <Button fluid style={{backgroundColor: 'green', color: 'white'}} onClick={this.updateBalance}>Add Funds to Account</Button>
 
-              
+                    <div style={styles.paymentTab}>
+                        <Icon name="dollar sign" />
+                        <input onChange={this.handleChange} value={this.state.account_balance} type="text" placeholder="Amount to Add"></input>
+                        <div style={styles.paymentDiv}>
+                            <br />
+                            <br />
+                            <input type="radio" className="hidden" tabIndex="0" />
+                            <label>MC ************ 5543</label>
+                            <Icon style={styles.cvv} name="credit card" />
+                            <input style={styles.cvv} type="text" placeholder="CVV"></input>
+
+                            <br />
+                            <br />
+                            <input type="radio" className="hidden" tabIndex="0" />
+                            <label>Visa ************ 3254</label>
+                            <Icon style={styles.cvv} name="credit card" />
+                            <input style={styles.cvv} type="text" placeholder="CVV"></input>
+
+                            <br />
+                            <br />
+                            <input type="radio" className="hidden" tabIndex="0" />
+                            <label>Amex *********** 1001</label>
+                            <Icon style={styles.cvv} name="credit card" />
+                            <input style={styles.cvv} type="text" placeholder="CVV"></input>
+
+
+                        </div>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                    </div>
+
+                    <Button fluid style={{ backgroundColor: 'green', color: 'white' }} onClick={this.updateBalance}>Add Funds to Account</Button>
+
+
                 </div>
 
 
@@ -108,6 +108,7 @@ class SelectPaymentTab extends Component {
 }
 
 const mapStateToProps = reduxState => ({
-    reduxState
+    reduxState,
+    
 });
 export default connect(mapStateToProps)(SelectPaymentTab);

@@ -161,6 +161,13 @@ class Venue extends Component {
                             }
                         </Grid.Column>
                     </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column width={16}>
+                            <div>
+                                
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
                 </Grid>
                 <WaitlistFooter />
             </div>
