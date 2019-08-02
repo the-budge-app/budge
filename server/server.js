@@ -16,6 +16,7 @@ const waitListRouter = require('./routes/waitList.router')
 const paymentRouter = require('./routes/payment.router');
 const sellerConfirmation = require('./routes/sellerConfirmation.router');
 const offerRouter = require('./routes/offer.router');
+const contactRouter = require('./routes/contact.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -30,6 +31,7 @@ app.use(passport.session());
 
 /* Routes */
 app.use('/api/user', userRouter);
+app.use('/api/contact', contactRouter);
 
 // Routes for venues
 app.use('/api/venues', venueRouter);
