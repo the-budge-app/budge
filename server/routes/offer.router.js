@@ -36,10 +36,34 @@ router.get('/user', (req, res) => {
 })
 
 router.put('/update', (req, res) => {
-    console.log('Retracting offer', req.body)
-    pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId ])
+    console.log('updating offer', req.bodyofferId, 'to code', req.body.statusCode)
+    pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
         .then(result => {
             res.sendStatus(200)
+        })
+        .catch( error => {
+            console.log('Error with updating seller rejected offer', error);
+        })
+})
+
+// to retract an offer, we have to change the status of the offer
+// and then get the waitlist id to update to waitlist status back to active
+router.put('/buyer-retract', (req, res) => {
+    console.log('Updating offer', req.body.offerId, 'to status', req.body.statusCode);
+    pool.query(`UPDATE "offer" SET "status_code" = $1, "status_time"=NOW() WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
+        .then(result => {
+            console.log('Getting the id for the waitlist');
+            pool.query(`SELECT "waitlist_id" from "offer" WHERE "id" = $1;`, [req.body.offerId])
+                .then(result => {
+                    console.log('updating waitlist spot', result.rows[0].waitlist_id)
+                    pool.query(`UPDATE "waitlist" SET "status_code" = 1 WHERE id=$1;`, [result.rows[0].waitlist_id])
+                        .then(result => {
+                            console.log('all done!');
+                            res.sendStatus(200);
+                        })
+                        .catch(error => console.log('Error updating waitlist status on retract offer', error))
+                })
+                .catch(error => console.log('Error in SELECT query for waitlist id on retract offer', error))
         })
         .catch( error => {
             console.log('Error with updating seller rejected offer', error);

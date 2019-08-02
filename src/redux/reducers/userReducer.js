@@ -3,7 +3,10 @@ import getDistance from 'geolib/es/getDistance';
 const userReducer = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return action.payload;
+      return {
+        ...state,
+        ...action.payload
+      };
     case 'UNSET_USER':
       return {};
     case 'SET_USER_LOCATION':
