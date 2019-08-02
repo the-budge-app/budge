@@ -4,7 +4,7 @@ import { takeLatest } from 'redux-saga/effects';
 function* addToWaitlist(action) {    
     try {
         yield axios.post('/api/waitList/join', action.payload);
-        yield action.payload.history.push('/venue/' + this.props.selectedVenue.id);
+        yield action.payload.history.push('/venue/' + action.payload.id);
 
     } catch (error) {
         console.log('Error adding user to waitlist', error)

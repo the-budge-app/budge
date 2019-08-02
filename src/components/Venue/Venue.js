@@ -154,10 +154,10 @@ class Venue extends Component {
                         $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                     </Button>
                             )}
-                            {this.state.active ?
-                                <Button disabled={this.props.user.distance > 850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
-                                :
+                            {this.props.user.id && this.props.userWaitlist.id ? 
                                 <Button className="joinButton" fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
+                                :
+                                <Button disabled={this.props.user.distance > 850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
                             }
                         </Grid.Column>
                     </Grid.Row>
