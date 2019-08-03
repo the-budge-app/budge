@@ -143,15 +143,22 @@ class Venue extends Component {
                     <Grid.Row>
                         <Grid.Column>
                             {this.props.venueInfo && this.props.venueInfo.map(venue =>
-                                <Button key={venue.waitlist_id} style={{ marginBottom: '15px', }} fluid primary={venue.user_id === this.props.user.id} onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
+                                <Button key={venue.waitlist_id} style={{ marginBottom: '15px', }} fluid 
+                                    // primary color if it is the spot of current user
+                                    primary={venue.user_id === this.props.user.id}
+                                    //secondary color if it is not the spot of current user  
+                                    secondary={venue.user_id !== this.props.user.id}
+                                    //button disabled if there is an active offer on this spot (waitlist status code = 3) 
+                                    disabled={venue.waitlist_status_code === 3 && venue.user_id !== this.props.user.id}
+                                    onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
                                     <Icon name="user" />{venue.party_size}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
                                     <Icon name="clock" />{venue.latest_wait_time} min&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
                                     <Icon name="dont" />&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                     &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                        $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                    </Button>
+                                    $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                </Button>
                             )}
                             {this.props.user.id && this.props.userWaitlist.id ? 
                                 <Button className="joinButton" fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>

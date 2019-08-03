@@ -35,7 +35,7 @@ router.get('/budgable/:restaurant_id', (req, res) => {
         .then(
             result => {
                 console.log(result.rows);
-                pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", 
+                pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."status_code" AS "waitlist_status_code", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", 
                 ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price", ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
                 AS "latest_wait_time"
                 FROM  "waitlist"
@@ -57,7 +57,7 @@ router.get('/budgable/:restaurant_id', (req, res) => {
 
 //get request to get waitlist information for the restaurant that the user selected
 router.get('/waitlist/:restaurant_id', (req, res) => {
-    pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price", ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
+    pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."status_code" AS "waitlist_status_code", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price", ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
     AS "latest_wait_time"
     FROM  "waitlist"
     LEFT JOIN (SELECT * FROM "offer" WHERE "offer"."status_code" = 2) AS "rejected_offer" 
