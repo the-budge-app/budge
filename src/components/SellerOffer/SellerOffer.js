@@ -5,6 +5,7 @@ import queryString from 'query-string';
 
 //semantic ui
 import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
+import { json } from 'body-parser';
 
 const styles = {
   icon: {
@@ -31,15 +32,16 @@ class SellerOffer extends Component {
   }
 
   handleAccept = () => {
-    console.log('in handleAccept');
+    console.log('in handleAccept, venue', this.state.venueId);
     axios.put('/api/offers/update', {
       offerId: this.state.offerId,
       statusCode: 4,
     })
     axios.put(`/api/waitlist/swap?buyerWaitlist=${this.props.buyerInfo.waitlist_id}&sellerWaitlist=${this.state.waitlistId}&buyer=${this.state.buyerId}`)
     .then(
-      result =>  this.props.history.push(`/venue/${this.state.venueId}`)
+      result => this.props.history.push(`/venue/${this.state.venueId}`)
     )
+    .catch(error => console.log('error with handle accept', error))
   }
 
   handleReject = () => {
@@ -83,6 +85,7 @@ class SellerOffer extends Component {
         payload: {
           waitlist_id: this.state.waitlistId,
           offer_id: this.state.offerId,
+          venue_id: this.state.venueId,
          } 
         });
         this.props.dispatch({

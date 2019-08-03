@@ -34,15 +34,15 @@ router.post('/join', (req, res) => {
 //put route to swap spots after seller accepts the offer
 router.put('/swap', (req, res) => {
     console.log('in swap');
-    console.log('buyer waitlist', req.query.buyerWaitlist);
-    console.log('seller waitlist', req.query.sellerWaitlist);
+    console.log('buyer_waitlist', req.query.buyerWaitlist);
+    console.log('seller_waitlist', req.query.sellerWaitlist);
     pool.query('UPDATE "waitlist" SET "user_id" = $1 WHERE "id" = $2;',
         [req.query.buyer, req.query.sellerWaitlist])
         .then(
             ()=>{
                 pool.query('UPDATE "waitlist" SET "user_id" = $1 WHERE "id" = $2;',
                 [req.user.id, req.query.buyerWaitlist]);
-                ()=> res.sendStatus(201);
+                res.sendStatus(201);
             }            
         )
         .catch(error => {

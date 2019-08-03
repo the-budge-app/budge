@@ -2,13 +2,13 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 //get route to get buyer waitlist information for seller receive offer page
-router.get(`/buyer`, (req, res) => {
+router.get('/buyer/:venueId/:waitlistId/:buyerId', (req, res) => {
     console.log('user id', req.user.id);
-    console.log('waitlist id', req.query.waitlistId);
-    console.log('offer id is', req.query.offerId);
+    console.log('waitlist id', req.params.waitlistId);
+    console.log('venue', req.params.venueId);
     pool.query(`SELECT * FROM "waitlist"
         WHERE "id" = $1
-        AND "user_id" = $2;`, [req.query.waitlistId, req.user.id])
+        AND "user_id" = $2;`, [req.params.waitlistId, req.user.id])
         .then(result => {
             if (result.rows.length) {
                 console.log('inside buyer query');
@@ -18,7 +18,7 @@ router.get(`/buyer`, (req, res) => {
                 JOIN "waitlist" ON "waitlist"."user_id" = "user"."id"
                 WHERE "waitlist"."restaurant_id" = $1
                 AND "waitlist"."user_id" = $2
-                AND "waitlist"."status_code" <> 2;`, [req.query.venueId, req.query.buyerId] )
+                AND "waitlist"."status_code" <> 2;`, [req.params.venueId, req.params.buyerId] )
                 .then(
                     result => {
                         console.log('buyer', result.rows);
