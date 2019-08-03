@@ -50,7 +50,11 @@ class SellerOffer extends Component {
       offerId: this.state.offerId,
       statusCode: 2,
     });
-    this.props.history.push(`/venue/${this.state.venueId}`); 
+    axios.put(`/api/waitlist/reject/${this.state.waitlistId}`)
+      .then(
+        result => this.props.history.push(`/venue/${this.state.venueId}`)
+
+      )
   }
 
   componentDidMount () {

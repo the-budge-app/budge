@@ -36,8 +36,10 @@ router.put('/swap', (req, res) => {
     console.log('in swap');
     console.log('buyer_waitlist', req.query.buyerWaitlist);
     console.log('seller_waitlist', req.query.sellerWaitlist);
-    pool.query('UPDATE "waitlist" SET "user_id" = $1, "status_code" = 1 WHERE "id" = $2;',
-        [req.query.buyer, req.query.sellerWaitlist])
+    pool.query(`UPDATE "waitlist" SET "user_id" = $1, "status_code" = 1 
+        WHERE "id" = $2
+        AND "user_id" = $3;`,
+        [req.query.buyer, req.query.sellerWaitlist, req.user.id])
         .then(
             ()=>{
                 pool.query('UPDATE "waitlist" SET "user_id" = $1 WHERE "id" = $2;',
@@ -48,6 +50,19 @@ router.put('/swap', (req, res) => {
         .catch(error => {
             console.log('error with swap spots', error);
             res.sendStatus(500);
+        })
+})
+
+//put route to update waitlist status from pending to active after seller rejects offer
+router.put('/reject/:waitlistId', (req, res) => {
+    pool.query(`UPDATE "waitlist" SET "status_code" = 1
+    WHERE "id" = $1
+    AND "user_id" = $2;`, [req.params.waitlistId, req.user.id])
+        .then(
+            result => res.sendStatus(201)
+        )
+        .catch( error => {
+            console.log('error with update WL status', error)
         })
 })
 
