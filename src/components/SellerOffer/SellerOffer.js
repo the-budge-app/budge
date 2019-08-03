@@ -65,6 +65,7 @@ class SellerOffer extends Component {
       payload: {
         waitlist_id: this.state.waitlistId,
         offer_id: this.state.offerId,
+        buyer_id: this.state.buyerId,
        } 
     })
     //seller info
