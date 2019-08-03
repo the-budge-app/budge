@@ -35,13 +35,11 @@ class SellerOffer extends Component {
     axios.put('/api/offers/update', {
       offerId: this.state.offerId,
       statusCode: 4,
-    });
+    })
     axios.put(`/api/waitlist/swap?buyerWaitlist=${this.props.buyerInfo.waitlist_id}&sellerWaitlist=${this.state.waitlistId}&buyer=${this.state.buyerId}`)
-      .then(
-        () => {
-          this.props.history.push(`/venue/${this.state.venueId}`);
-        }
-      )
+    .then(
+      result =>  this.props.history.push(`/venue/${this.state.venueId}`)
+    )
   }
 
   handleReject = () => {
@@ -50,7 +48,7 @@ class SellerOffer extends Component {
       offerId: this.state.offerId,
       statusCode: 2,
     });
-    this.props.history.push(`/venue/${this.state.venueId}`); //to be replace with req.query.restaurant_id
+    this.props.history.push(`/venue/${this.state.venueId}`); 
   }
 
   componentDidMount () {
