@@ -4,9 +4,9 @@ import { put, takeLatest } from 'redux-saga/effects';
 //fetching buyer information for seller receive offer page
 function* fetchBuyerInfo(action) {
     try {
-        const buyerInfoResponse = yield axios.get(`/api/seller_confirmation/buyer/${action.payload.waitlist_id}/${action.payload.offer_id}`);
+        const buyerInfoResponse = yield axios.get(`/api/seller_confirmation/buyer/${action.payload.venue_id}/${action.payload.waitlist_id}/${action.payload.buyer_id}`);
         console.log(buyerInfoResponse);
-        yield put({type: 'FETCH_RATING', payload: buyerInfoResponse.data.buyer_id})
+        yield put({type: 'FETCH_RATING', payload: buyerInfoResponse.data.user_id})
         yield put({type: 'SET_BUYER_INFO', payload: buyerInfoResponse.data});
     } catch (error) {
         console.log('Error in fetching buyer info.', error)

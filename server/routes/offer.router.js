@@ -13,7 +13,7 @@ router.get('/user', (req, res) => {
     console.log('Getting offers for user', req.query);
     console.log(req.user.id);
     // get the offer the user has made first
-    pool.query(`SELECT * FROM "offer"
+    pool.query(`SELECT *, "offer"."id" AS "offer_id" FROM "offer"
         JOIN "waitlist" ON "offer"."waitlist_id" = "waitlist"."id"
         WHERE "buyer_id" = $1
         AND "waitlist"."restaurant_id"=$2
@@ -23,7 +23,7 @@ router.get('/user', (req, res) => {
             let offers = { offerMade: result.rows[0], }
             // we have the offer that was made, 
             // now lets get any offer received
-            pool.query(`SELECT * FROM "offer" 
+            pool.query(`SELECT "offer"."id" AS "offer_id", * FROM "offer"  
                 JOIN "waitlist" ON "waitlist"."id" = "offer"."waitlist_id" 
                 WHERE "waitlist"."id" = $1 
                 AND "offer"."status_code"=1
@@ -40,7 +40,7 @@ router.get('/user', (req, res) => {
 })
 
 router.put('/update', (req, res) => {
-    console.log('updating offer', req.bodyofferId, 'to code', req.body.statusCode)
+    console.log('updating offer', req.body.offerId, 'to code', req.body.statusCode)
     pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
         .then(result => {
             res.sendStatus(200)
