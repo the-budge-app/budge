@@ -36,7 +36,7 @@ router.put('/swap', (req, res) => {
     console.log('in swap');
     console.log('buyer_waitlist', req.query.buyerWaitlist);
     console.log('seller_waitlist', req.query.sellerWaitlist);
-    pool.query('UPDATE "waitlist" SET "user_id" = $1 WHERE "id" = $2;',
+    pool.query('UPDATE "waitlist" SET "user_id" = $1, "status_code" = 1 WHERE "id" = $2;',
         [req.query.buyer, req.query.sellerWaitlist])
         .then(
             ()=>{
