@@ -3,6 +3,10 @@ import { connect } from 'react-redux'
 import { Button, Icon, Checkbox, Grid, Segment } from 'semantic-ui-react';
 import './Venue.css';
 import WaitlistFooter from '../Footer/WaitlistFooter';
+import axios from 'axios'
+
+// import components from Semantic UI
+import { Modal, Header } from 'semantic-ui-react'
 
 const styles = {
     mainDiv: {
@@ -18,6 +22,7 @@ class Venue extends Component {
     state = {
         active: true, //store the on/off states between join/leave WL
         showAll: true, //store the on/off states between all spots vs. budgable spots
+        joinErrorModal: false, // state for modal for join error
     }
 
     componentDidMount() {
@@ -62,17 +67,33 @@ class Venue extends Component {
     }
     //function to join waitlist
     joinWL = () => {
-        this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
-        this.props.dispatch({
-            type: 'FETCH_SELECTED_VENUE',
-            payload: this.props.match.params.id,
-        })
-        //need to check if this user has successfully joined the WL
-        //then update the local state
-        this.setState({
-            active: !this.state.active,
-        })
+        // first thing if user tries to join waitlist is make sure they aren't active on another waitlist
+        axios.get('/api/waitlist/check-waitlist-status')
+            .then( response => {
+                // if user is not active on a waitlist, let them join
+                if ( response.status === 200 ) {
+                    this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
+                    this.props.dispatch({
+                        type: 'FETCH_SELECTED_VENUE',
+                        payload: this.props.match.params.id,
+                    })
+                    //need to check if this user has successfully joined the WL
+                    //then update the local state
+                    this.setState({
+                        active: !this.state.active,
+                    })
+                }
+                // otherwise, open the error modal
+                else {
+                    this.setState({
+                        ...this.state, 
+                        joinErrorModal: true,
+                    })
+                }
+            })
+            .catch( error => console.log(error))
     }
+
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
     handleSelectSpot = (waitlist_id) => {
         this.props.history.push(`/waitlist-spot/${waitlist_id}`);
@@ -100,6 +121,7 @@ class Venue extends Component {
             showAll: !this.state.showAll,
         })
     }
+
     render() {
         const { active } = this.state
         return (
@@ -136,9 +158,6 @@ class Venue extends Component {
                     </>
                 }
 
-
-                {/* tried to clean up the map function
-                made the primary prop based on the conditional */}
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
@@ -156,7 +175,7 @@ class Venue extends Component {
                             {this.props.user.id && this.props.userWaitlist.id ? 
                                 <Button className="joinButton" fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
-                                <Button disabled={this.props.user.distance > 850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
+                                <Button disabled={this.props.user.distance > 9850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
                             }
                         </Grid.Column>
                     </Grid.Row>
@@ -165,6 +184,24 @@ class Venue extends Component {
                 
             </div>
             <WaitlistFooter />
+
+            {/* Below is the dialog for error on getting user location */}
+            <Modal
+                    open={this.state.joinErrorModal}
+                    basic
+                    size='small'
+                >
+                    <Header icon='ban' content='Cannot Join Waitlist' />
+                    <Modal.Content>
+                        <h3>You are already active on another waitlist.</h3>
+                        <h3>Please leave other waitlist if you want to join this waitlist.</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='green' onClick={()=>this.setState({...this.state, joinErrorModal: false})} inverted>
+                            <Icon name='checkmark' />Ok
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
             </>
         )
     }
@@ -177,28 +214,3 @@ const mapStateToProps = reduxState => ({
     userWaitlist: reduxState.userWaitlist,
 });
 export default connect(mapStateToProps)(Venue);
-
-
-{/* venue.user_id === this.props.user.id ?
-                
-<>
-    <Button key={venue.waitlist_id} fluid primary onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
-        <Icon name="user" />{venue.party_size}
-        <Icon name="clock" />{venue.quote_time}
-        <Icon name="dont" />
-        $ {venue.rejected_price[0]}
-
-    </Button>
-    <br />
-</>
-:
-<>
-    <Button key={venue.waitlist_id} fluid onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
-        <Icon name="user" />{venue.party_size}
-        <Icon name="clock" />{venue.quote_time}
-        <Icon name="dont" />
-        $ {venue.rejected_price[0]}
-
-    </Button>
-    <br />
-</> */}
