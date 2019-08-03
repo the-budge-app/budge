@@ -66,6 +66,7 @@ class SellerOffer extends Component {
         waitlist_id: this.state.waitlistId,
         offer_id: this.state.offerId,
         buyer_id: this.state.buyerId,
+        venue_id: this.state.venueId,
        } 
     })
     //seller info
