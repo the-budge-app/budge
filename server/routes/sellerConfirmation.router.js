@@ -12,9 +12,9 @@ router.get(`/buyer`, (req, res) => {
         .then(result => {
             if (result.rows.length) {
                 console.log('inside buyer query');
-                pool.query(`SELECT "offer"."id" AS "offer_id", *, ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
-                AS "latest_wait_time" FROM "offer" 
-                JOIN "user" ON "user"."id" = "offer"."buyer_id" 
+                pool.query(`SELECT *, ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
+                AS "latest_wait_time", "waitlist"."id" AS "waitlist_id" 
+                FROM "user" 
                 JOIN "waitlist" ON "waitlist"."user_id" = "user"."id"
                 WHERE "waitlist"."restaurant_id" = $1
                 AND "waitlist"."user_id" = $2

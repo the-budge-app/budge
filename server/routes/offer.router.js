@@ -40,7 +40,7 @@ router.get('/user', (req, res) => {
 })
 
 router.put('/update', (req, res) => {
-    console.log('updating offer', req.bodyofferId, 'to code', req.body.statusCode)
+    console.log('updating offer', req.body.offerId, 'to code', req.body.statusCode)
     pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
         .then(result => {
             res.sendStatus(200)

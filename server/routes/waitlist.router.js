@@ -34,6 +34,8 @@ router.post('/join', (req, res) => {
 //put route to swap spots after seller accepts the offer
 router.put('/swap', (req, res) => {
     console.log('in swap');
+    console.log('buyer waitlist', req.query.buyerWaitlist);
+    console.log('seller waitlist', req.query.sellerWaitlist);
 })
 
 module.exports = router;
