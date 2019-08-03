@@ -66,7 +66,7 @@ class UserSpot extends Component {
     }
 
     viewOffer = () => {
-        this.props.history.push(`/seller-offer?offerId=${this.state.offerReceived.id}&buyer=${this.state.offerReceived.buyer_id}&venue=${this.state.offerReceived.restaurant_id}&waitlist=${this.props.selectedSpot.id}`)
+        this.props.history.push(`/seller-offer?offerId=${this.state.offerReceived.offer_id}&buyer=${this.state.offerReceived.buyer_id}&venue=${this.state.offerReceived.restaurant_id}&waitlist=${this.props.selectedSpot.id}`)
     }
 
     toggleRetractModal = () => {

@@ -3,14 +3,15 @@ const pool = require('../modules/pool');
 const router = express.Router();
 //get route to get buyer information for seller receive offer page
 router.get(`/buyer/:waitlist_id/:offer_id`, (req, res) => {
-    // console.log('user id', req.user.id);
-    // console.log('offer id is', req.params.offer_id);
+    console.log('user id', req.user.id);
+    console.log('waitlist id', req.params.waitlist_id);
+    console.log('offer id is', req.params.offer_id);
     pool.query(`SELECT * FROM "waitlist"
         WHERE "id" = $1
         AND "user_id" = $2;`, [req.params.waitlist_id, req.user.id])
         .then(result => {
             if (result.rows.length) {
-                // console.log('inside buyer query');
+                console.log('inside buyer query');
                 pool.query(`SELECT *, ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
                 AS "latest_wait_time" FROM "offer" 
                 JOIN "user" ON "user"."id" = "offer"."buyer_id" 
@@ -20,7 +21,7 @@ router.get(`/buyer/:waitlist_id/:offer_id`, (req, res) => {
                 AND "waitlist"."status_code" = 1;`, [req.params.offer_id] )
                 .then(
                     result => {
-                        // console.log('buyer', result.rows);
+                        console.log('buyer', result.rows);
                         res.send(result.rows[0]);
                     })
             }
