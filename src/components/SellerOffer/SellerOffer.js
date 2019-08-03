@@ -36,7 +36,12 @@ class SellerOffer extends Component {
       offerId: this.state.offerId,
       statusCode: 4,
     });
-    this.props.history.push(`/venue/${this.state.venueId}`); //to be replace with req.query.restaurant_id
+    axios.put(`/api/waitlist/swap?venue=${this.state.venueId}&waitlist=${this.state.waitlistId}&buyer=${this.state.buyerId}`)
+      .then(
+        () => {
+          this.props.history.push(`/venue/${this.state.venueId}`);
+        }
+      )
   }
 
   handleReject = () => {

@@ -41,7 +41,7 @@ router.get('/budgable/:restaurant_id', (req, res) => {
                 FROM  "waitlist"
                 LEFT JOIN (SELECT * FROM "offer" WHERE "offer"."status_code" = 2) AS "rejected_offer" 
                 ON "rejected_offer"."waitlist_id" = "waitlist"."id"
-                WHERE "waitlist"."status_code" = 1
+                WHERE "waitlist"."status_code" <> 2
                 AND "waitlist"."restaurant_id" = $1
                 AND "waitlist"."party_size" = $2
                 GROUP BY "waitlist"."id";`, [req.params.restaurant_id,result.rows[0].party_size ])
@@ -62,7 +62,7 @@ router.get('/waitlist/:restaurant_id', (req, res) => {
     FROM  "waitlist"
     LEFT JOIN (SELECT * FROM "offer" WHERE "offer"."status_code" = 2) AS "rejected_offer" 
     ON "rejected_offer"."waitlist_id" = "waitlist"."id"
-    WHERE "waitlist"."status_code" = 1
+    WHERE "waitlist"."status_code" <> 2
     AND "waitlist"."restaurant_id" = $1
     GROUP BY "waitlist"."id";`, [req.params.restaurant_id])
         .then(result => {
