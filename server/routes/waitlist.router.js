@@ -70,4 +70,15 @@ router.put('/reject/:waitlistId', (req, res) => {
         })
 })
 
+router.put('/leave/:id', (req, res) => {
+    pool.query(`UPDATE "waitlist" SET "status_code" = 2 
+    WHERE "id" =$1 AND "user_id" =$2;`, [req.params.id, req.user.id])
+    .then(
+        result => res.sendStatus(201)
+    )
+    .catch ( error => {
+        console.log('error with PUT request for leaving waitlist', error)
+    })
+})
+
 module.exports = router;

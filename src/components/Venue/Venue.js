@@ -60,18 +60,20 @@ class Venue extends Component {
     //function to toggle between join/leave WL
     leaveWL = () => {
         //dispatch action to remove user from the waitlist of this restaurant first
+        this.props.dispatch({ type: 'LEAVE_WAITLIST', payload: this.props.userWaitlist })
         //then update the local state to the wording on the button
         this.setState({
             active: !this.state.active
         })
+        console.log(this.state)
     }
     //function to join waitlist
     joinWL = () => {
         // first thing if user tries to join waitlist is make sure they aren't active on another waitlist
-        axios.get('/api/waitlist/check-waitlist-status')
-            .then( response => {
-                // if user is not active on a waitlist, let them join
-                if ( response.status === 200 ) {
+        // axios.get('/api/waitlist/check-waitlist-status')
+        //     .then( response => {
+        //         // if user is not active on a waitlist, let them join
+        //         if ( response.status === 200 ) {
                     this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
                     this.props.dispatch({
                         type: 'FETCH_SELECTED_VENUE',
@@ -82,16 +84,16 @@ class Venue extends Component {
                     this.setState({
                         active: !this.state.active,
                     })
-                }
+                //}
                 // otherwise, open the error modal
-                else {
-                    this.setState({
-                        ...this.state, 
-                        joinErrorModal: true,
-                    })
-                }
-            })
-            .catch( error => console.log(error))
+            //     else {
+            //         this.setState({
+            //             ...this.state, 
+            //             joinErrorModal: true,
+            //         })
+            //     }
+            // })
+            // .catch( error => console.log(error))
     }
 
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
