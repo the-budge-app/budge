@@ -23,8 +23,6 @@ class Venue extends Component {
         active: true, //store the on/off states between join/leave WL
         showAll: true, //store the on/off states between all spots vs. budgable spots
         joinErrorModal: false, // state for modal for join error
-        venue_id: this.props.selectedVenue.id, //for leave WL payload
-        user_id: this.props.user.id //for leave WL payload
     }
 
     componentDidMount() {
@@ -62,11 +60,12 @@ class Venue extends Component {
     //function to toggle between join/leave WL
     leaveWL = () => {
         //dispatch action to remove user from the waitlist of this restaurant first
-        this.props.dispatch({ type: 'LEAVE_WAITLIST', payload: this.state });
+        this.props.dispatch({ type: 'LEAVE_WAITLIST', payload: this.props.userWaitlist })
         //then update the local state to the wording on the button
         this.setState({
             active: !this.state.active
         })
+        console.log(this.state)
     }
     //function to join waitlist
     joinWL = () => {
