@@ -32,10 +32,21 @@ class SellerOffer extends Component {
 
   handleAccept = () => {
     console.log('in handleAccept, venue', this.state.venueId);
+    //update offer status code to accepted by seller
     axios.put('/api/offers/update', {
       offerId: this.state.offerId,
       statusCode: 4,
     })
+    //update both seller and buyer's account balance
+    axios({
+      method: 'PUT',
+      url: '/api/payment/offer-accepted', 
+      data: {
+        buyerId: this.state.buyerId,
+        offerPrice: this.props.buyerInfo.offer_price,
+      }
+    })
+    //swap the user id of the spots
     axios.put(`/api/waitlist/swap?buyerWaitlist=${this.props.buyerInfo.waitlist_id}&sellerWaitlist=${this.state.waitlistId}&buyer=${this.state.buyerId}`)
     .then(
       result => this.props.history.push(`/venue/${this.state.venueId}`)
