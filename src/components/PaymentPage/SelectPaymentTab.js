@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Button, Icon, Input } from 'semantic-ui-react';
+import { Link, } from 'react-router-dom';
 
 const styles = {
     mainDiv: {
@@ -17,7 +17,7 @@ const styles = {
     },
     cvv: {
         float: 'right',
-        maxWidth: '15%',
+        maxWidth: '30%',
         marginRight: '2%',
     },
     paymentTab: {
@@ -64,28 +64,29 @@ class SelectPaymentTab extends Component {
 
                     <div style={styles.paymentTab}>
                         <Icon name="dollar sign" />
-                        <input onChange={this.handleChange} value={this.state.account_balance} type="text" placeholder="Amount to Add"></input>
+                        <Input onChange={this.handleChange} value={this.state.account_balance} type="text" placeholder="Amount to Add"></Input>
                         <div style={styles.paymentDiv}>
+                        
                             <br />
                             <br />
-                            <input type="radio" className="hidden" tabIndex="0" />
+                            <br />
+                            <Input type="radio" className="hidden" tabIndex="0" />
                             <label>MC ************ 5543</label>
-                            <Icon style={styles.cvv} name="credit card" />
-                            <input style={styles.cvv} type="text" placeholder="CVV"></input>
-
+                            <Input style={styles.cvv} type="text" icon="credit card" placeholder="CVV"></Input>
+                           
                             <br />
                             <br />
-                            <input type="radio" className="hidden" tabIndex="0" />
+                            <br />
+                            <Input type="radio" className="hidden" tabIndex="0" />
                             <label>Visa ************ 3254</label>
-                            <Icon style={styles.cvv} name="credit card" />
-                            <input style={styles.cvv} type="text" placeholder="CVV"></input>
-
+                            <Input style={styles.cvv} type="text" icon="credit card" placeholder="CVV"></Input>
+                           
                             <br />
                             <br />
-                            <input type="radio" className="hidden" tabIndex="0" />
+                            <br />
+                            <Input type="radio" className="hidden" tabIndex="0" />
                             <label>Amex *********** 1001</label>
-                            <Icon style={styles.cvv} name="credit card" />
-                            <input style={styles.cvv} type="text" placeholder="CVV"></input>
+                            <Input style={styles.cvv} type="text" icon="credit card" placeholder="CVV"></Input>
 
 
                         </div>

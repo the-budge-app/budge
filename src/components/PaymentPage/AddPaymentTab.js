@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'semantic-ui-react'
+import { Button, Input } from 'semantic-ui-react'
 
 const styles = {
     mainDiv: {
@@ -36,27 +36,27 @@ class AddPaymentTab extends Component {
             <br/>
                 <label>Name on Credit Card</label>
                 <br/>
-            <input type='text' placeholder='John M Smith'></input>
+            <Input type='text' placeholder='John M Smith'></Input>
             <br/>
             <br/>
             <label>Card Number</label>
                 <br/>
-            <input type='text' placeholder='xxxx-xxxx-xxxx-0000'></input>
+            <Input type='text' placeholder='xxxx-xxxx-xxxx-0000'></Input>
             <br/>
             <br/>
             <label>Expiration Date</label>
                 <br/>
-            <input type='text' placeholder='01/01/2023'></input>
+            <Input type='text' placeholder='01/01/2023'></Input>
             <br/>
             <br/>
             <label>CVV CODE</label>
                 <br/>
-            <input type='text' placeholder='123'></input>
+            <Input type='text' placeholder='123' ></Input>
             <br/>
             <br/>
             <label>Billing Zip Code</label>
                 <br/>
-            <input type='text' placeholder='55415'></input>
+            <Input type='text' placeholder='55415'></Input>
             <br/>
             <br/>
             <br/>
