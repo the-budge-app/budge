@@ -25,10 +25,21 @@ const styles = {
 class NonUserSpot extends Component {
 
     state = {
-        lastRejected: queryString.parse(this.props.history.location.search).lastRejected,//get last rejected offer price from url query string
+        lastRejected: '',
         userRating: 4.5,
         offerPrice: '',
         offerModal: false,
+    }
+
+    componentDidMount() {
+        axios.get(`/api/offers/last-rejected/${this.props.match.params.id}`)
+            .then(response => {
+                console.log('last rejected', response.data)
+                this.setState({
+                    lastRejected: response.data.offer_price,
+                })
+            })
+            
     }
 
     handleInput = (event) => {
@@ -74,6 +85,9 @@ class NonUserSpot extends Component {
         return (
             <>
                 {/* <h1 onClick={this.props.toggleModal}>This spot is NOT owned by the user</h1> */}
+                {/* <pre>
+                    {JSON.stringify(this.props, null, 2)}
+                </pre> */}
                 <Segment attached >
                     <Grid id="spotData">
                         <Grid.Row style={styles.gridRow}>
@@ -102,7 +116,7 @@ class NonUserSpot extends Component {
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={16}>
                                             <h5>Last Rejected Offer:</h5>
-                                            <h4>${this.state.lastRejected === 'null'? 0 : this.state.lastRejected}</h4>
+                                            <h4>${this.state.lastRejected ? this.state.lastRejected : 0}</h4>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
@@ -115,7 +129,7 @@ class NonUserSpot extends Component {
                                     type="number"
                                     label="$"
                                     value={this.state.offerPrice}
-                                    placeholder={this.state.lastRejected + 1}
+                                    // placeholder={this.state.lastRejected + 1}
                                     onChange={this.handleInput}
                                 />
                             </Grid.Column>

@@ -148,4 +148,17 @@ router.get('/check-offers', (req, res) => {
         })
 })
 
+//route to get the last rejected price for the selected spot
+router.get('/last-rejected/:waitlistId', (req, res) => {
+    // console.log(req.params.waitlistId);
+    pool.query(`SELECT * FROM "offer" 
+        WHERE "waitlist_id" = $1
+        AND "status_code" = 2
+        ORDER BY "status_time" DESC
+        LIMIT 1;`, [req.params.waitlistId])
+        .then(result => {
+            res.send(result.rows[0])
+        }) 
+})
+
 module.exports = router;
