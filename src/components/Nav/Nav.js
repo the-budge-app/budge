@@ -23,6 +23,7 @@ class Nav extends Component {
     })
   }
 
+
   render() {
     return (
       <>
@@ -38,7 +39,9 @@ class Nav extends Component {
             </Grid.Column>
             <Grid.Column width={2} textAlign="right">
               <div>
+                <Link to='/payment'>
                 <h2>${this.props.user.account_balance}</h2>
+                </Link>
               </div>
             </Grid.Column>
           </Grid.Row>
