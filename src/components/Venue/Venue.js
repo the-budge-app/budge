@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button, Icon, Checkbox, Grid, Segment } from 'semantic-ui-react';
 import './Venue.css';
 import WaitlistFooter from '../Footer/WaitlistFooter';
 import axios from 'axios'
+import Login from '../LoginPage/LoginPage'
 
 // import components from Semantic UI
-import { Modal, Header } from 'semantic-ui-react'
+import { Button, Icon, Checkbox, Grid, Segment, Modal, Header } from 'semantic-ui-react';
 
 const styles = {
     mainDiv: {
@@ -23,6 +23,8 @@ class Venue extends Component {
         active: true, //store the on/off states between join/leave WL
         showAll: true, //store the on/off states between all spots vs. budgable spots
         joinErrorModal: false, // state for modal for join error
+        loginModal: false, // modal to display the login 
+        // loginSuccessful: false, // modal to display login success
     }
 
     componentDidMount() {
@@ -71,7 +73,9 @@ class Venue extends Component {
     //function to join waitlist
     joinWL = () => {
         // first thing if user tries to join waitlist is make sure they aren't active on another waitlist
-        axios.get('/api/waitlist/check-waitlist-status')
+        // only check if user is logged in
+        if ( this.props.user.id ) {
+            axios.get('/api/waitlist/check-waitlist-status')
             .then( response => {
                 // if user is not active on a waitlist, let them join
                 if ( response.status === 200 ) {
@@ -95,6 +99,13 @@ class Venue extends Component {
                 }
             })
             .catch( error => console.log(error))
+        }
+        else {
+            this.setState({
+                ...this.state, 
+                loginModal: true,
+            })
+        }
     }
 
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
@@ -211,6 +222,16 @@ class Venue extends Component {
                             <Icon name='checkmark' />Ok
                         </Button>
                     </Modal.Actions>
+                </Modal>
+
+                {/* Modal for login */}
+                <Modal
+                    open={this.state.loginModal}
+                    onClose={() => this.setState({...this.state, loginModal: false,})}
+                    basic
+                    size='small'
+                >
+                    <Login closeLoginModal={() => this.setState({...this.state, loginModal: false,})}/>
                 </Modal>
             </>
         )
