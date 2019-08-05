@@ -20,7 +20,7 @@ const styles = {
 
 class Venue extends Component {
     state = {
-        active: true, //store the on/off states between join/leave WL
+        active: false, //store the on/off states between join/leave WL
         showAll: true, //store the on/off states between all spots vs. budgable spots
         joinErrorModal: false, // state for modal for join error
         loginModal: false, // modal to display the login 
@@ -53,6 +53,27 @@ class Venue extends Component {
             type: 'FETCH_WAITLIST',
             payload: { restaurant_id: this.props.match.params.id, }
         }), 60000)
+    
+        
+    }
+    
+    checkWaitlist = () => {
+        //to leave
+        console.log('in check WL function');
+        if (this.props.user.id && this.props.userWaitlist.id && this.props.userWaitlist.status_code === 1 )
+            {
+                this.setState({
+                active: true
+            })
+        }
+        //to join
+        else  
+            {
+                this.setState({
+                active: false
+            })
+        }
+        
     }
 
     componentWillUnmount() {
@@ -67,7 +88,6 @@ class Venue extends Component {
         this.setState({
             active: !this.state.active
         })
-        this.componentDidMount()
         console.log(this.state)
     }
     
@@ -138,7 +158,6 @@ class Venue extends Component {
     }
 
     render() {
-        const { active } = this.state
         return (
             <>
             <div style={styles.mainDiv}>
@@ -194,16 +213,16 @@ class Venue extends Component {
                                     $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 </Button>
                             )}
-                            {this.props.user.id && this.props.userWaitlist.id && this.props.userWaitlist.status_code === 1 ? 
-                                <Button className="joinButton" fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
+                            {this.state.active ? 
+                                <Button className="joinButton" fluid onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
-                                <Button disabled={this.props.user.distance > 99999850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
+                                <Button disabled={this.props.user.distance > 99999850} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
                             }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
                 </Segment>
-                
+                <pre>{JSON.stringify(this.state.active)}</pre>
             </div>
             <WaitlistFooter />
 
