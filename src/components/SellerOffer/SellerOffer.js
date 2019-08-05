@@ -4,8 +4,7 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 //semantic ui
-import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
-import { json } from 'body-parser';
+import { Grid, Button, Icon, Rating, Segment } from 'semantic-ui-react'
 
 const styles = {
   icon: {

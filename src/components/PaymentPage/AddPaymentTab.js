@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Tab, Checkbox, Button, Icon } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 
 const styles = {
     mainDiv: {

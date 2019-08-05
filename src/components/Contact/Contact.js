@@ -53,21 +53,21 @@ class Contact extends Component {
             <Segment>
 
                 {/* <pre>{JSON.stringify(this.state)}, Null, 2</pre> */}
-                <Input type="text" placeholder="First Name" onChange={this.handleChange} value={this.state.newEntry.first_name} onChange={this.handleChange('first_name')}></Input>
+                <Input type="text" placeholder="First Name" value={this.state.newEntry.first_name} onChange={this.handleChange('first_name')}></Input>
                 <br/>
                 <br/>
-                <Input type="text" placeholder="Last Name" onChange={this.handleChange} value={this.state.newEntry.last_name} onChange={this.handleChange('last_name')}></Input>
+                <Input type="text" placeholder="Last Name" value={this.state.newEntry.last_name} onChange={this.handleChange('last_name')}></Input>
                 <br/>
                 <br/>
-                <Input type="text" placeholder="Email Address" onChange={this.handleChange}  value={this.state.newEntry.email_address} onChange={this.handleChange('email_address')}></Input>
+                <Input type="text" placeholder="Email Address"  value={this.state.newEntry.email_address} onChange={this.handleChange('email_address')}></Input>
                 <br/>
                 <br/>
-                <Input type="text" placeholder="Phone Number" onChange={this.handleChange} value={this.state.newEntry.phone_number} onChange={this.handleChange('phone_number')}></Input>
+                <Input type="text" placeholder="Phone Number" value={this.state.newEntry.phone_number} onChange={this.handleChange('phone_number')}></Input>
                 
                 <br/>
                 <br/>
                 < br/>
-                <TextArea value={this.state.newEntry.comments} onChange={this.handleChange} fluid 
+                <TextArea value={this.state.newEntry.comments} fluid 
                 onChange={this.handleChange('comments')}
                 rows={5}
                 placeholder="Tell us more"></TextArea>

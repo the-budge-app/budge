@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
+import { Grid, Button, Segment } from 'semantic-ui-react'
 
 const styles = {
     icon: {
@@ -38,7 +38,6 @@ class SellerConfirm extends Component {
                 <Grid>
                   <Grid.Row style={styles.gridRow}>
                     <Grid.Column width={16}>
-                      <h2></h2>
                       <h4>You just got Budged!</h4>
                       <br/>
                       <h5>{this.state.buyer_name} paid ${this.state.offerPrice} for your spot</h5>
