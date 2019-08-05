@@ -23,6 +23,7 @@ class LoginPage extends Component {
           password: this.state.password,
         },
       });
+      this.props.closeLoginModal();
     } else {
       this.props.dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
