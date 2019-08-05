@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
+import queryString from 'query-string';
+
 
 // import Semantic UI Component 
 import { Grid, Segment, Button, Icon, Rating, Input, Modal, Header } from 'semantic-ui-react'
@@ -23,7 +25,7 @@ const styles = {
 class NonUserSpot extends Component {
 
     state = {
-        lastRejected: 25,
+        lastRejected: queryString.parse(this.props.history.location.search).lastRejected,//get last rejected offer price from url query string
         userRating: 4.5,
         offerPrice: '',
         offerModal: false,
