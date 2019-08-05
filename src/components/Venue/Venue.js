@@ -4,6 +4,7 @@ import './Venue.css';
 import WaitlistFooter from '../Footer/WaitlistFooter';
 import axios from 'axios'
 import Login from '../LoginPage/LoginPage'
+import Register from '../RegisterPage/RegisterPage'
 
 // import components from Semantic UI
 import { Button, Icon, Checkbox, Grid, Segment, Modal, Header } from 'semantic-ui-react';
@@ -251,9 +252,15 @@ class Venue extends Component {
                     <Modal.Actions>
                         <Icon name='close' onClick={() => this.setState({...this.state, loginModal: false,})}/>
                     </Modal.Actions>
-                    <Header style={{textAlign: 'center'}}><h2>You need to be logged in to view.</h2></Header>
+                    {this.props.loginMode === 'login' && 
+                        <Header style={{textAlign: 'center'}} content='You need to be logged in to view' />
+                    }
                     <Modal.Content>
-                        <Login closeLoginModal={() => this.setState({...this.state, loginModal: false,})}/>
+                    {this.props.loginMode === 'login' ?
+                    <Login closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
+                    :
+                    <Register closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
+                    }
                     </Modal.Content>
                 </Modal>
 
@@ -285,5 +292,6 @@ const mapStateToProps = reduxState => ({
     selectedVenue: reduxState.selectedVenue,
     user: reduxState.user,
     userWaitlist: reduxState.userWaitlist,
+    loginMode: reduxState.loginMode,
 });
 export default connect(mapStateToProps)(Venue);

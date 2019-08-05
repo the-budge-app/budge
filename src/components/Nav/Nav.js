@@ -5,6 +5,7 @@ import './Nav.css';
 import { Sidebar, Menu, Icon, Grid, Modal } from 'semantic-ui-react';
 
 import Login from '../LoginPage/LoginPage'
+import Register from '../RegisterPage/RegisterPage'
 
 const styles = {
   closeIcon: {
@@ -116,7 +117,13 @@ class Nav extends Component {
             <Icon name='close' onClick={() => this.setState({ ...this.state, loginModal: false, })} />
           </Modal.Actions>
           <Modal.Content>
-            <Login closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
+            {this.props.loginMode === 'login' ?
+              <Login closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
+              :
+              <Register closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
+            }
+
+
           </Modal.Content>
         </Modal>
       </>
@@ -131,6 +138,7 @@ class Nav extends Component {
 // const mapStateToProps = ({ user }) => ({ user });
 const mapStateToProps = state => ({
   user: state.user,
+  loginMode: state.loginMode,
 });
 
 export default connect(mapStateToProps)(Nav);
