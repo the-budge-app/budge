@@ -67,6 +67,7 @@ class Venue extends Component {
         this.setState({
             active: !this.state.active
         })
+        this.componentDidMount()
         console.log(this.state)
     }
     
