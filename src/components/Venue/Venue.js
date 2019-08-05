@@ -24,7 +24,7 @@ class Venue extends Component {
         showAll: true, //store the on/off states between all spots vs. budgable spots
         joinErrorModal: false, // state for modal for join error
         loginModal: false, // modal to display the login 
-        // loginSuccessful: false, // modal to display login success
+        singleOfferModal: false,
     }
 
     componentDidMount() {
@@ -108,14 +108,29 @@ class Venue extends Component {
         }
     }
 
-    //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
-    handleSelectSpot = (waitlist_id) => {
-        this.props.history.push(`/waitlist-spot/${waitlist_id}`);
-        // if(!this.props.user.id || this.props.userWaitlist.id) {
-        //     this.props.history.push(`/waitlist-spot/${waitlist_id}`);
-        // } else {
-        //     this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
-        // }
+    // function to other waitlist spot info page where user can make an offer on that spot
+    handleSelectSpot = (venue) => {
+        // check to see if the user has an active offer out already
+        axios.get('/api/offers/check-offers')
+            .then(response => {
+                // if we get the ok from the server, navigate to that page
+                if(response.status === 200 ) {
+                    this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
+                }
+                else {
+                    // here, we don't want to allow user to view another waitlist spot
+                    // unless that spot is theirs, then its ok
+                    if ( venue.user_id === this.props.user.id){
+                        this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
+                    } else {
+                        this.setState({
+                            ...this.state, 
+                            singleOfferModal: true,
+                        })
+                    }
+                }
+            })
+
     }
 
     //function to toggle between showing all spots or only budgable spots
@@ -183,7 +198,7 @@ class Venue extends Component {
                                     secondary={venue.user_id !== this.props.user.id}
                                     //button disabled if there is an active offer on this spot (waitlist status code = 3) 
                                     disabled={venue.waitlist_status_code === 3 && venue.user_id !== this.props.user.id}
-                                    onClick={() => this.handleSelectSpot(venue.waitlist_id)}>
+                                    onClick={() => this.handleSelectSpot(venue)}>
                                     <Icon name="user" />{venue.party_size}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
                                     <Icon name="clock" />{venue.latest_wait_time} min&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
@@ -232,6 +247,25 @@ class Venue extends Component {
                     size='small'
                 >
                     <Login closeLoginModal={() => this.setState({...this.state, loginModal: false,})}/>
+                </Modal>
+
+                {/* Modal for single offer */}
+                <Modal
+                    open={this.state.singleOfferModal}
+                    onClose={() => this.setState({...this.state, singleOfferModal: false,})}
+                    basic
+                    size='small'
+                >
+                <Header icon='ban' content='Cannot Make Multiple Offers' />
+                    <Modal.Content>
+                        <h3>You already have an active offer pending.</h3>
+                        <h3>Please wait for seller to respond before making another offer.</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='green' onClick={()=>this.setState({...this.state, singleOfferModal: false})} inverted>
+                            <Icon name='checkmark' />Ok
+                        </Button>
+                    </Modal.Actions>
                 </Modal>
             </>
         )

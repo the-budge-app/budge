@@ -132,21 +132,20 @@ router.post('/make-new', (req, res) => {
         })
 })
 
+// route to check for any active offers by current user
+router.get('/check-offers', (req, res) => {
+    pool.query(`SELECT * FROM "offer" WHERE "buyer_id"=$1 AND "status_code"=1;`, [req.user.id])
+        .then(result => {
+            // if we get something back, user has an active offer
+            // and we do not want to give them the ok to view another spot
+            if( result.rows.length ){
+                res.sendStatus(204);
+            }
+            else {
+                //user does not have an active offer, give them the ok to view another spot
+                res.sendStatus(200);
+            }
+        })
+})
+
 module.exports = router;
-
-
-
-
-// --offer received by the user
-// SELECT * FROM "offer" 
-//     JOIN "waitlist" ON "waitlist"."id" = "offer"."waitlist_id" 
-//     WHERE "waitlist"."id" = 1 
-//     AND "offer"."status_code"=1
-//     AND "waitlist"."user_id"=1; 
-
-// -- offer sent by the user
-// SELECT * FROM "offer"
-//     JOIN "waitlist" ON "offer"."waitlist_id" = "waitlist"."id"
-//     WHERE "buyer_id" = 1
-//     AND "waitlist"."restaurant_id"=1
-//     AND "offer"."status_code"=1;

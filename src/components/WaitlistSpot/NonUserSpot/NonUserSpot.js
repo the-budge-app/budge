@@ -144,9 +144,9 @@ class NonUserSpot extends Component {
                         </Button>
                     </Modal.Actions>
                 </Modal>
-                <pre>
+                {/* <pre>
                     {JSON.stringify(this.props.reduxState, null, 2)}
-                </pre>
+                </pre> */}
             </>
         )
     }
