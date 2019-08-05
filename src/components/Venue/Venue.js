@@ -193,7 +193,7 @@ class Venue extends Component {
                             <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
                             <h4>{this.props.selectedVenue.address}</h4>
                             <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
-                            <h3>Waitlist</h3>
+                           
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -214,7 +214,15 @@ class Venue extends Component {
                     <>
                     </>
                 }
+                         <Grid centered>
+                            <Grid.Row >
+                                <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
+                                <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
+                                <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
 
+                            </Grid.Row>
+
+                        </Grid>
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
