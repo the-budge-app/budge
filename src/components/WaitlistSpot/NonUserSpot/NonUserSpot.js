@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
-import queryString from 'query-string';
 
 
 // import Semantic UI Component 
@@ -34,12 +33,12 @@ class NonUserSpot extends Component {
     componentDidMount() {
         axios.get(`/api/offers/last-rejected/${this.props.match.params.id}`)
             .then(response => {
-                console.log('last rejected', response.data)
+                // console.log('last rejected', response.data)
                 this.setState({
                     lastRejected: response.data.offer_price,
                 })
             })
-            
+        
     }
 
     handleInput = (event) => {
@@ -85,16 +84,14 @@ class NonUserSpot extends Component {
         return (
             <>
                 {/* <h1 onClick={this.props.toggleModal}>This spot is NOT owned by the user</h1> */}
-                {/* <pre>
-                    {JSON.stringify(this.props, null, 2)}
-                </pre> */}
+                
                 <Segment attached >
                     <Grid id="spotData">
                         <Grid.Row style={styles.gridRow}>
                             <Grid.Column width={7} textAlign="center">
                                 <Icon circular bordered name="user" color="grey" style={styles.icon} />
-                                <Rating defaultRating={this.state.userRating} maxRating={5} disabled size='large' />
-                                <h5>{this.state.userRating}</h5>
+                                <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
+                                <h5>{this.props.customerRating? this.props.customerRating.rating.substring(0,3) : 111}</h5>
                             </Grid.Column>
                             <Grid.Column width={9} style={{ paddingLeft: '0' }}>
                                 <Grid>
@@ -160,9 +157,7 @@ class NonUserSpot extends Component {
                         </Button>
                     </Modal.Actions>
                 </Modal>
-                {/* <pre>
-                    {JSON.stringify(this.props.reduxState, null, 2)}
-                </pre> */}
+             
             </>
         )
     }
@@ -173,6 +168,7 @@ const MapStateToProps = reduxState => ({
     user: reduxState.user,
     selectedVenue: reduxState.selectedVenue,
     selectedSpot: reduxState.selectedSpot,
+    customerRating: reduxState.customerRating,
 })
 
 export default connect(MapStateToProps)(NonUserSpot);
