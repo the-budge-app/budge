@@ -259,7 +259,7 @@ class Venue extends Component {
                 <Header icon='ban' content='Cannot Make Multiple Offers' />
                     <Modal.Content>
                         <h3>You already have an active offer pending.</h3>
-                        <h3>Please wait for seller to respond before making another offer.</h3>
+                        <h3>Please wait for seller to respond OR retract your offer before making another offer.</h3>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='green' onClick={()=>this.setState({...this.state, singleOfferModal: false})} inverted>

@@ -152,15 +152,15 @@ class UserSpot extends Component {
                     >
                         <Header icon='question circle outline' content='Are you sure?' />
                         <Modal.Content>
-                            <h3>You don't want to budge {this.state.offerMade.user_id}?</h3>
+                            <h3>You don't want to budge for this spot?</h3>
                         </Modal.Content>
                         <Modal.Actions>
-                            <Button color='green' onClick={this.retractOffer} inverted>
-                                <Icon name='checkmark' />Yep
-                        </Button>
                             <Button color='red' onClick={this.toggleRetractModal} inverted>
                                 <Icon name='checkmark' />Nope
-                        </Button>
+                            </Button>
+                            <Button color='green' onClick={this.retractOffer} inverted>
+                                <Icon name='checkmark' />Yep
+                            </Button>
                         </Modal.Actions>
                     </Modal>
                 }
