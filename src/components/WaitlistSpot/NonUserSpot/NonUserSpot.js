@@ -44,6 +44,8 @@ class NonUserSpot extends Component {
         // load modal if user doesn't have enough
         // otherwise, fire off make offer saga probably 
 
+        // TODO - maybe add a server side check for account balance
+        
         if (this.props.user.account_balance >= this.state.offerPrice) {
             axios.post('/api/offers/make-new', {
                 waitlistId: this.props.selectedSpot.id,
