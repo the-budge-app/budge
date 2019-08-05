@@ -25,6 +25,9 @@ class RegisterPage extends Component {
           phone_number: this.state.phone_number
         },
       });
+      if (this.props.closeLoginModal) {
+        this.props.closeLoginModal();
+      }
     } else {
       this.props.dispatch({ type: 'REGISTRATION_INPUT_ERROR' });
     }

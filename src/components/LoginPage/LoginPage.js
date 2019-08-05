@@ -53,20 +53,16 @@ class LoginPage extends Component {
             <Grid.Column width={12} textAlign="center" >
               <h1>Login</h1>
             </Grid.Column>
-            {!this.props.closeLoginModal &&
-              <>
-                <Grid.Column width={14} textAlign="center">
-                  <br />
-                  <button
-                    type="button"
-                    className="link-button"
-                    onClick={() => { this.props.dispatch({ type: 'SET_TO_REGISTER_MODE' }) }}
-                  >
-                    Create an Account
+            <Grid.Column width={14} textAlign="center">
+              <br />
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => { this.props.dispatch({ type: 'SET_TO_REGISTER_MODE' }) }}
+              >
+                Create an Account
                   </button>
-                </Grid.Column>
-              </>
-            }
+            </Grid.Column>
           </Grid.Row>
           <Grid.Column width={14}>
             <Input onChange={this.handleInputChangeFor('username')} label='Username' />
@@ -79,9 +75,6 @@ class LoginPage extends Component {
           <Grid.Column width={14} textAlign="center">
             <Button primary size="large" onClick={this.login} type='submit' name='submit'>Log In</Button>
           </Grid.Column>
-
-
-
         </Grid>
       </div>
     );
