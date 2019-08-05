@@ -93,7 +93,7 @@ router.post('/make-new', (req, res) => {
                     const sellerId = result.rows[0];
                     console.log(sellerId);
                     // now that we have the user_id of the spot owner, lets change their status to pending
-                    pool.query(`UPDATE "waitlist" SET "status_code" = 3 WHERE "user_id" = $1 AND "restaurant_id"=$2;`, [sellerId.user_id, req.body.venueId])
+                    pool.query(`UPDATE "waitlist" SET "status_code" = 3 WHERE "user_id" = $1 AND "restaurant_id"=$2 AND "status_code"=1;`, [sellerId.user_id, req.body.venueId])
                         .then(result => {
                             console.log(sellerId);
                             // status changed for that waitlist spot to pending
