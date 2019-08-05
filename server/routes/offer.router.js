@@ -75,6 +75,9 @@ router.put('/buyer-retract', (req, res) => {
 })
 
 router.post('/make-new', (req, res) => {
+
+    // TODO research async/await
+
     // for making a new offer, we need to insert into 
     // the offer table with the data for the new offer
     // then change the status on the waitlist for the 

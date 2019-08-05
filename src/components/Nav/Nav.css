@@ -35,13 +35,6 @@
   float: right;
 }
 
-#logoWrapper {
-  text-align: center;
-  display: inline-block;
-  margin-left: 30px;
-  position: relative;
-}
-
 .nav h2 {
   font-family: helvetica, sans-serif;
   display: inline-block;
