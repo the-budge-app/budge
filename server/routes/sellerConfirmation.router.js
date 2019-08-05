@@ -6,6 +6,7 @@ router.get('/buyer/:venueId/:waitlistId/:buyerId', (req, res) => {
     console.log('user id', req.user.id);
     console.log('waitlist id', req.params.waitlistId);
     console.log('venue', req.params.venueId);
+    console.log('buyer', req.params.buyerId);
     pool.query(`SELECT * FROM "waitlist"
         WHERE "id" = $1
         AND "user_id" = $2;`, [req.params.waitlistId, req.user.id])
@@ -16,9 +17,11 @@ router.get('/buyer/:venueId/:waitlistId/:buyerId', (req, res) => {
                 AS "latest_wait_time", "waitlist"."id" AS "waitlist_id" 
                 FROM "user" 
                 JOIN "waitlist" ON "waitlist"."user_id" = "user"."id"
+                JOIN "offer" ON "offer"."buyer_id" = "user"."id"
                 WHERE "waitlist"."restaurant_id" = $1
                 AND "waitlist"."user_id" = $2
-                AND "waitlist"."status_code" <> 2;`, [req.params.venueId, req.params.buyerId] )
+                AND "waitlist"."status_code" <> 2
+                AND "offer"."status_code" = 1;`, [req.params.venueId, req.params.buyerId] )
                 .then(
                     result => {
                         console.log('buyer', result.rows);
