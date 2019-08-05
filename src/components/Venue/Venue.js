@@ -116,7 +116,7 @@ class Venue extends Component {
             .then(response => {
                 // if we get the ok from the server, navigate to that page
                 if(response.status === 200 ) {
-                    this.props.history.push(`/waitlist-spot/${venue.waitlist_id}?lastRejected=${venue.rejected_price[0]}`);
+                    this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
                 }
                 else {
                     // here, we don't want to allow user to view another waitlist spot

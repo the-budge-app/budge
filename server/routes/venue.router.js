@@ -34,7 +34,7 @@ router.get('/budgable/:restaurant_id', (req, res) => {
         AND "restaurant_id" = $2;`, [req.user.id, req.params.restaurant_id])
         .then(
             result => {
-                console.log(result.rows);
+                // console.log(result.rows);
                 pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."status_code" AS "waitlist_status_code", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", 
                 ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price", 
                 ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
