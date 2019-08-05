@@ -52,28 +52,7 @@ class Venue extends Component {
         this.interval = setInterval(() => this.props.dispatch({
             type: 'FETCH_WAITLIST',
             payload: { restaurant_id: this.props.match.params.id, }
-        }), 60000)
-   this.checkWaitlist();
-        
-    }
-    
-    checkWaitlist = () => {
-        //to leave
-        console.log('in check WL function');
-        if (this.props.user.id && this.props.userWaitlist.id && this.props.userWaitlist.status_code === 1 )
-            {
-                this.setState({
-                active: true
-            })
-        }
-        //to join
-        else  
-            {
-                this.setState({
-                active: false
-            })
-        }
-        
+        }), 60000)       
     }
 
     componentWillUnmount() {
@@ -188,42 +167,29 @@ class Venue extends Component {
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
-
                             <h1>{this.props.selectedVenue.restaurant_name}</h1>
                             <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
                             <h4>{this.props.selectedVenue.address}</h4>
-                            <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
-                           
+                            <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>                           
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-
-                {/* <h1>{this.props.selectedVenue.restaurant_name}</h1>
-                <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
-                <h4>{this.props.selectedVenue.address}</h4>
-                <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>
-                <h3>Waitlist</h3> */}
                 {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
-                {this.props.user.id && this.props.userWaitlist.id ?
+                {this.props.user.id && this.props.userWaitlist.id &&
                     <>
                         <label>All Parties</label>
                         <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
                         <label>Budgable</label>
                     </>
-                    :
-                    <>
-                    </>
                 }
-                         <Grid centered>
-                            <Grid.Row >
-                                <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
-                                <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
-                                <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
-
-                            </Grid.Row>
-
-                        </Grid>
-                <Grid>
+                    <Grid centered>
+                        <Grid.Row style={{padding: '0', marginTop: '20px'}}>
+                            <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
+                            <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
+                            <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                <Grid style={{marginTop: '0'}}>
                     <Grid.Row>
                         <Grid.Column>
                             {this.props.venueInfo && this.props.venueInfo.map(venue =>
@@ -244,8 +210,8 @@ class Venue extends Component {
                                     $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 </Button>
                             )}
-                            {this.state.active ? 
-                                <Button className="joinButton" fluid onClick={this.leaveWL}>Leave Waitlist</Button>
+                            {this.props.user.id && this.props.userWaitlist.id && this.props.userWaitlist.status_code === 1 && !this.state.active ? 
+                                <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
                                 <Button disabled={this.props.user.distance > 99999850} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
                             }
