@@ -110,8 +110,9 @@ class Venue extends Component {
 
     // function to other waitlist spot info page where user can make an offer on that spot
     handleSelectSpot = (venue) => {
-        // check to see if the user has an active offer out already
-        axios.get('/api/offers/check-offers')
+        // if user is logged in, check to see if the user has an active offer out already
+        if ( this.props.user.id ) {
+            axios.get('/api/offers/check-offers')
             .then(response => {
                 // if we get the ok from the server, navigate to that page
                 if(response.status === 200 ) {
@@ -130,6 +131,13 @@ class Venue extends Component {
                     }
                 }
             })
+        }
+        else {
+            this.setState({
+                ...this.state,
+                loginModal: true,
+            })
+        }
 
     }
 
@@ -245,8 +253,14 @@ class Venue extends Component {
                     onClose={() => this.setState({...this.state, loginModal: false,})}
                     basic
                     size='small'
-                >
-                    <Login closeLoginModal={() => this.setState({...this.state, loginModal: false,})}/>
+                >                 
+                    <Modal.Actions>
+                        <Icon name='close' onClick={() => this.setState({...this.state, loginModal: false,})}/>
+                    </Modal.Actions>
+                    <Header style={{textAlign: 'center'}}><h2>You need to be logged in to view.</h2></Header>
+                    <Modal.Content>
+                        <Login closeLoginModal={() => this.setState({...this.state, loginModal: false,})}/>
+                    </Modal.Content>
                 </Modal>
 
                 {/* Modal for single offer */}
