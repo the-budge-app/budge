@@ -67,13 +67,14 @@ class Venue extends Component {
         })
         console.log(this.state)
     }
+    
     //function to join waitlist
     joinWL = () => {
         // first thing if user tries to join waitlist is make sure they aren't active on another waitlist
-        // axios.get('/api/waitlist/check-waitlist-status')
-        //     .then( response => {
-        //         // if user is not active on a waitlist, let them join
-        //         if ( response.status === 200 ) {
+        axios.get('/api/waitlist/check-waitlist-status')
+            .then( response => {
+                // if user is not active on a waitlist, let them join
+                if ( response.status === 200 ) {
                     this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
                     this.props.dispatch({
                         type: 'FETCH_SELECTED_VENUE',
@@ -84,16 +85,16 @@ class Venue extends Component {
                     this.setState({
                         active: !this.state.active,
                     })
-                //}
+                }
                 // otherwise, open the error modal
-            //     else {
-            //         this.setState({
-            //             ...this.state, 
-            //             joinErrorModal: true,
-            //         })
-            //     }
-            // })
-            // .catch( error => console.log(error))
+                else {
+                    this.setState({
+                        ...this.state, 
+                        joinErrorModal: true,
+                    })
+                }
+            })
+            .catch( error => console.log(error))
     }
 
     //function to reroute to the selected venue page for logged in user, otherwise to login page (selected page is a protected route)
@@ -184,7 +185,7 @@ class Venue extends Component {
                             {this.props.user.id && this.props.userWaitlist.id ? 
                                 <Button className="joinButton" fluid toggle active={active} onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
-                                <Button disabled={this.props.user.distance > 9850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
+                                <Button disabled={this.props.user.distance > 99999850} className="joinButton" fluid toggle active={active} onClick={this.joinWL}>Join Waitlist</Button>
                             }
                         </Grid.Column>
                     </Grid.Row>

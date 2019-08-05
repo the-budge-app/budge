@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Grid, Button, Icon, Rating, Input, Segment, TextArea } from 'semantic-ui-react'
+import { Button, Input, Segment, TextArea } from 'semantic-ui-react'
 
 const styles={
     mainDiv:{
