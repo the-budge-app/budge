@@ -53,7 +53,7 @@ class Venue extends Component {
             type: 'FETCH_WAITLIST',
             payload: { restaurant_id: this.props.match.params.id, }
         }), 60000)
-    
+   this.checkWaitlist();
         
     }
     
