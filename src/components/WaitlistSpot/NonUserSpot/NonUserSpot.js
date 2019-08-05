@@ -91,7 +91,7 @@ class NonUserSpot extends Component {
                             <Grid.Column width={7} textAlign="center">
                                 <Icon circular bordered name="user" color="grey" style={styles.icon} />
                                 <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
-                                <h5>{this.props.customerRating? this.props.customerRating.rating.substring(0,3) : 111}</h5>
+                                <h5>{this.props.customerRating.rating && this.props.customerRating.rating.substring(0,3)}</h5>
                             </Grid.Column>
                             <Grid.Column width={9} style={{ paddingLeft: '0' }}>
                                 <Grid>
