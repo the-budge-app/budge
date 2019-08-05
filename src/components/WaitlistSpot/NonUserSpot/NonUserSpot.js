@@ -102,7 +102,7 @@ class NonUserSpot extends Component {
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={16}>
                                             <h5>Last Rejected Offer:</h5>
-                                            <h4>${this.state.lastRejected}</h4>
+                                            <h4>${this.state.lastRejected === 'null'? 0 : this.state.lastRejected}</h4>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>

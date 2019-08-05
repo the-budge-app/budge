@@ -22,7 +22,6 @@ const styles = {
 }
 
 class SellerOffer extends Component {
-  //temporary hold the user rating to be replaced with the saga calculation
   state = {
     offerId: queryString.parse(this.props.location.search).offerId,
     buyerId: queryString.parse(this.props.location.search).buyer,
