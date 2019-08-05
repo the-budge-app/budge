@@ -78,8 +78,9 @@ class Nav extends Component {
             </Link>
           </Menu.Item>
           <Menu.Item style={{textAlign: 'left'}}>
-            <Link onClick={this.toggleVisible} to="/login">
-              Login
+            <Link onClick={this.toggleVisible} to="/contact">
+              <Icon name='mail outline' />
+              Contact
             </Link>
           </Menu.Item>
           <Menu.Item style={{textAlign: 'left'}}>
