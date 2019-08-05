@@ -12,6 +12,7 @@ class RateUser extends Component {
   handleRate = (e, { rating }) => this.setState({ rating })
 
   handleSubmit = () => {
+    this.props.dispatch({ type: 'POST_RATING', payload: this.state })
     console.log('susie gave you a', this.state.rating)
   }
 

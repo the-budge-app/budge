@@ -1,3 +1,4 @@
+
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
@@ -15,16 +16,33 @@ router.get('/singleSpot/:id', (req, res) => {
         });
 })
 
+
+// route to check whether the user is currently active on a waitlist
+router.get('/check-waitlist-status', (req, res) => {
+    pool.query(`SELECT * FROM "waitlist"
+    WHERE "user_id" = $1 AND "status_code" = 1;`, [req.user.id])
+        .then( result => {
+            if ( !result.rows.length ){
+                // user is not active on any waitlist, send code 200 - ok
+                res.sendStatus(200);
+            }
+            else {
+                // user is active on another waitlist, send 204 - no content
+                res.sendStatus(204);
+            }
+        })
+        .catch(error => {
+            console.log('Error in checking waitlist for user', error);
+            res.sendStatus(500);
+        })
+})
+
 router.post('/join', (req, res) => {
     const user_id = req.body.user_id
     const id = req.body.id
     const reservation_name = req.body.reservation_name
     const party_size = req.body.party_size
     const quote_time = req.body.quote_time
-
-    // check to see if the user is already active on another venue waitlist
-
-
     const queryText = `INSERT INTO "waitlist" ("user_id", "reservation_name", "party_size", "quote_time", "restaurant_id", "status_code")
     VALUES ($1, $2, $3, $4, $5, 1)`;
     pool.query(queryText, [user_id, reservation_name, party_size, quote_time, id])

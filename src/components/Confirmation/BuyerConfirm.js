@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Grid, Button, Icon, Rating, Input, Segment } from 'semantic-ui-react'
+import { Grid, Button, Icon, Rating, Segment } from 'semantic-ui-react'
 
 const styles = {
     icon: {
@@ -42,7 +42,6 @@ class BuyerConfirm extends Component {
                 <Grid>
                   <Grid.Row style={styles.gridRow}>
                     <Grid.Column width={16}>
-                      <h2></h2>
                       <h4>{this.state.seller_name} Accepted your offer!</h4>
                       <br/>
                       <h4>${this.state.offerPrice} has been removed from your account</h4>
