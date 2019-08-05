@@ -136,12 +136,12 @@ class UserSpot extends Component {
                     </Grid.Row>
                 </Grid>
                 <Button attached="bottom" fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
-                <pre>
+                {/* <pre>
                     {JSON.stringify(this.state, null, 2)}
                 </pre>
                 <pre>
                     {JSON.stringify(this.props.reduxState, null, 2)}
-                </pre>
+                </pre> */}
 
                 {/* Below is the dialog for retract offer confirmation */}
                 {this.state.offerMade &&
