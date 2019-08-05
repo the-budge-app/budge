@@ -14,7 +14,7 @@ function* addToWaitlist(action) {
 function* leaveWaitlist(action) {
     try {
         yield axios.put(`/api/waitlist/leave/` + action.payload.id, action.payload);
-        yield put({type: 'FETCH_USER'})
+        yield put({type: 'FETCH_WAITLIST', payload: action.payload })
     } catch (error) {
         console.log('error removing from waitlist', error)
     }
