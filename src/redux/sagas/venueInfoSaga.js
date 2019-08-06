@@ -56,12 +56,24 @@ function* fetchSelectedVenue(action) {
     }
 }
 
+function* fetchAllVenueData(action) {
+    try {
+        yield put({type: 'FETCH_USER'})
+        yield put({type: 'FETCH_WAITLIST', payload: {restaurant_id: action.payload}})
+        yield put({type: 'FETCH_SELECTED_VENUE', payload: action.payload})
+        yield put({type: 'FETCH_USER_WAITLIST', payload: action.payload})
+    } catch (error) {
+        console.log('Error in fetching all data for the venue page', error);
+    }
+}
+
 function* venueInfoSaga() {
     yield takeLatest('FETCH_WAITLIST', fetchWaitlist);
     yield takeLatest('FETCH_BUDGABLE_WAITLIST', fetchBudgableWaitlist);
     yield takeLatest('FETCH_USER_WAITLIST', fetchUserWaitlist);
     yield takeLatest('FETCH_VENUE_LIST', fetchVenues);
     yield takeLatest('FETCH_SELECTED_VENUE', fetchSelectedVenue)
+    yield takeLatest('FETCH_ALL_VENUE_DATA', fetchAllVenueData)
     // yield takeLatest('FETCH_USER_WAITLIST', fetchUserWaitlist);
 }
 
