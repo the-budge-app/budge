@@ -46,7 +46,8 @@ router.get('/budgable/:restaurant_id', (req, res) => {
                 AND ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60) >-60
                 AND "waitlist"."restaurant_id" = $1
                 AND "waitlist"."party_size" = $2
-                GROUP BY "waitlist"."id";`, [req.params.restaurant_id,result.rows[0].party_size ])
+                GROUP BY "waitlist"."id"
+                ORDER BY "latest_wait_time";`, [req.params.restaurant_id,result.rows[0].party_size ])
                     .then(result => res.send(result.rows)) 
             }
         )
@@ -67,7 +68,8 @@ router.get('/waitlist/:restaurant_id', (req, res) => {
     WHERE "waitlist"."status_code" <> 2
     AND ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60) >-60
     AND "waitlist"."restaurant_id" = $1
-    GROUP BY "waitlist"."id";`, [req.params.restaurant_id])
+    GROUP BY "waitlist"."id"
+    ORDER BY "latest_wait_time";`, [req.params.restaurant_id])
         .then(result => {
             res.send(result.rows);
         })
