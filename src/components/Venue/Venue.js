@@ -25,30 +25,13 @@ class Venue extends Component {
         showAll: true, //store the on/off states between all spots vs. budgable spots
         joinErrorModal: false, // state for modal for join error
         loginModal: false, // modal to display the login 
-        singleOfferModal: false,
+        singleOfferModal: false, // modal to restrict user to single offer
+        loggingIn: false, // state for logging user in
     }
 
     componentDidMount() {
         console.log('Venue page mounted!');
-        this.props.dispatch({ type: 'FETCH_USER' });
-
-        //fetch WL info - default show all WL
-        this.props.dispatch({
-            type: 'FETCH_WAITLIST',
-            payload: { restaurant_id: this.props.match.params.id, }
-        })
-        //fetch venue info
-        this.props.dispatch({
-            type: 'FETCH_SELECTED_VENUE',
-            payload: this.props.match.params.id,
-        })
-        //fetch user's WL to check if the user has joined the WL in this restaurant
-        //only run the code if user is logged in
-        this.props.dispatch({
-            type: 'FETCH_USER_WAITLIST',
-            payload: this.props.match.params.id,
-        })
-
+        this.props.dispatch({type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id})
         //refresh every minute
         this.interval = setInterval(() => this.props.dispatch({
             type: 'FETCH_WAITLIST',
@@ -160,6 +143,18 @@ class Venue extends Component {
         })
     }
 
+    closeLoginRegisterModal = () => {
+        this.setState({
+            ...this.state, loggingIn: true,
+        })
+        setTimeout(() => {
+            this.setState({
+                ...this.state, loggingIn: false, loginModal: false,
+            })
+            this.props.dispatch({type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id})
+        }, 1500)
+    }
+
     render() {
         return (
             <>
@@ -211,7 +206,7 @@ class Venue extends Component {
                                     $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 </Button>
                             )}
-                            {this.props.user.id && this.props.userWaitlist.id && this.props.userWaitlist.status_code === 1 && !this.state.active ? 
+                            {this.props.user.id && this.props.userWaitlist.id && this.props.userWaitlist.status_code === 1 ? 
                                 <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
                                 <Button disabled={this.props.user.distance > 99999850} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
@@ -248,19 +243,36 @@ class Venue extends Component {
                     onClose={() => this.setState({...this.state, loginModal: false,})}
                     basic
                     size='small'
-                >                 
-                    <Modal.Actions>
-                        <Icon name='close' onClick={() => this.setState({...this.state, loginModal: false,})}/>
-                    </Modal.Actions>
-                    {this.props.loginMode === 'login' && 
+                >   
+                {this.props.loginMode === 'login' && !this.state.loggingIn &&
+                    <>              
+                        <Modal.Actions>
+                            <Icon name='close' onClick={() => this.setState({...this.state, loginModal: false,})}/>
+                        </Modal.Actions>
                         <Header style={{textAlign: 'center'}} content='You need to be logged in to view' />
+                    </>
                     }
                     <Modal.Content>
-                    {this.props.loginMode === 'login' ?
-                    <Login closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
-                    :
-                    <Register closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
-                    }
+                        {this.state.loggingIn ? 
+                        <>
+                            <Grid centered>
+                                <Grid.Column width={12} textAlign="center">
+                                    <h2>Logging in...</h2>
+                                </Grid.Column>
+                                <Grid.Column width={12} textAlign="center">
+                                    <Icon name="spinner" size="huge" loading={this.state.loggingIn} />
+                                </Grid.Column>
+                            </Grid>
+                        </>
+                        :
+                        <>
+                        {this.props.loginMode === 'login' ?
+                        <Login closeLoginModal={this.closeLoginRegisterModal}/>
+                        :
+                        <Register closeLoginModal={this.closeLoginRegisterModal} />
+                        }
+                    </>
+                        }
                     </Modal.Content>
                 </Modal>
 
