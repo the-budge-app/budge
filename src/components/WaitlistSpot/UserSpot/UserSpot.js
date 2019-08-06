@@ -105,7 +105,8 @@ class UserSpot extends Component {
                                 </>
                                 :
                                 <>
-                                    <h4>You haven't made any offers</h4>
+                                    <h4>You haven't made any offers </h4>
+                                    <br />
                                     <h4>Get Budging!</h4>
                                 </>
                             }
