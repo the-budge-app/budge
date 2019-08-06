@@ -22,13 +22,13 @@ router.get('/check-waitlist-status', (req, res) => {
     pool.query(`SELECT * FROM "waitlist"
     WHERE "user_id" = $1 AND "status_code" = 1;`, [req.user.id])
         .then( result => {
-            if ( !result.rows.length ){
-                // user is not active on any waitlist, send code 200 - ok
-                res.sendStatus(200);
+            if ( result.rows.length ){
+                // user is active on another waitlist
+                res.send({isActiveOnWaitlist: true});
             }
             else {
-                // user is active on another waitlist, send 204 - no content
-                res.sendStatus(204);
+                // user is not active on any waitlist
+                res.send({isActiveOnWaitlist: false});
             }
         })
         .catch(error => {

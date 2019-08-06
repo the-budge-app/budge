@@ -79,7 +79,7 @@ class Venue extends Component {
             axios.get('/api/waitlist/check-waitlist-status')
             .then( response => {
                 // if user is not active on a waitlist, let them join
-                if ( response.status === 200 ) {
+                if ( !response.data.isActiveOnWaitlist ) {
                     this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
                     this.props.dispatch({
                         type: 'FETCH_SELECTED_VENUE',
@@ -115,11 +115,7 @@ class Venue extends Component {
         if ( this.props.user.id ) {
             axios.get('/api/offers/check-offers')
             .then(response => {
-                // if we get the ok from the server, navigate to that page
-                if(response.status === 200 ) {
-                    this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
-                }
-                else {
+                if( response.data.hasActiveOffer ) {
                     // here, we don't want to allow user to view another waitlist spot
                     // unless that spot is theirs, then its ok
                     if ( venue.user_id === this.props.user.id){
@@ -130,6 +126,10 @@ class Venue extends Component {
                             singleOfferModal: true,
                         })
                     }
+                }
+                else {
+                    // if user doesn't have an active offer, allow navigation
+                    this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
                 }
             })
         }
