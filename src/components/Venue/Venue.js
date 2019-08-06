@@ -206,7 +206,7 @@ class Venue extends Component {
                                     $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 </Button>
                             )}
-                            {this.props.user.id && this.props.userWaitlist.id && this.props.userWaitlist.status_code === 1 ? 
+                            {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ? 
                                 <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
                                 <Button disabled={this.props.user.distance > 99999850} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
@@ -215,7 +215,7 @@ class Venue extends Component {
                     </Grid.Row>
                 </Grid>
                 </Segment>
-                <pre>{JSON.stringify(this.state.active)}</pre>
+                {/* <pre>{JSON.stringify(this.state.active)}</pre> */}
             </div>
             <WaitlistFooter />
 

@@ -83,7 +83,7 @@ router.get(`/user_waitlist/:restaurant_id`, (req, res) => {
     if(req.user) {
         pool.query(`SELECT * FROM "waitlist"
         WHERE "restaurant_id" = $1
-        AND "user_id"=$2 AND "status_code" = 1;`, [req.params.restaurant_id, req.user.id])
+        AND "user_id"=$2 AND ("status_code" = 1 OR "status_code" = 3);`, [req.params.restaurant_id, req.user.id])
     .then(
         result => {
             res.send(result.rows[0]);
