@@ -142,11 +142,11 @@ router.get('/check-offers', (req, res) => {
             // if we get something back, user has an active offer
             // and we do not want to give them the ok to view another spot
             if( result.rows.length ){
-                res.sendStatus(204);
+                res.send({hasActiveOffer: true})
             }
             else {
                 //user does not have an active offer, give them the ok to view another spot
-                res.sendStatus(200);
+                res.send({hasActiveOffer: false})
             }
         })
 })
