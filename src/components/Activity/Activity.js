@@ -15,9 +15,9 @@ class Activity extends Component {
                                     <Feed.Content>
                                         <Feed.Summary>
                                             <Icon name="user circle" size="large" />
-                                            <Feed.User>{this.props.user.username}</Feed.User> budged
+                                            <Feed.User>JosephJoestar</Feed.User> budged
                                             <Icon name="user circle" size="large" />
-                                            <Feed.User>Waluigi</Feed.User> for $8
+                                            <Feed.User>Dio</Feed.User> for $8
                                             <Feed.Date>1 Hour Ago</Feed.Date>
                                         </Feed.Summary>
                                         <Feed.Meta>
@@ -39,9 +39,7 @@ class Activity extends Component {
                                     <Feed.Content>
                                         <Feed.Summary>
                                             <Icon name="user circle" size="large" />
-                                            <Feed.User>MrBubz</Feed.User> budged
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>PrincessPetch</Feed.User> for $15
+                                            <Feed.User>SuzyQ</Feed.User> budged joined the waitlist!
                                             <Feed.Date>20 Minutes Ago</Feed.Date>
                                         </Feed.Summary>
                                         <Feed.Meta>
@@ -63,9 +61,9 @@ class Activity extends Component {
                                     <Feed.Content>
                                         <Feed.Summary>
                                             <Icon name="user circle" size="large" />
-                                            <Feed.User>ItIsWednesday</Feed.User> budged
+                                            <Feed.User>OwenWowlson</Feed.User> budged
                                             <Icon name="user circle" size="large" />
-                                            <Feed.User>MyDudes</Feed.User> for $18
+                                            <Feed.User>JosephJoestar</Feed.User> for $18
                                             <Feed.Date>16 Minutes Ago</Feed.Date>
                                         </Feed.Summary>
                                         <Feed.Meta>
@@ -87,9 +85,9 @@ class Activity extends Component {
                                     <Feed.Content>
                                         <Feed.Summary>
                                             <Icon name="user circle" size="large" />
-                                            <Feed.User>Butter</Feed.User> budged 
+                                            <Feed.User>Dio</Feed.User> budged 
                                             <Icon name="user circle" size="large" />
-                                            <Feed.User>PaulaDeen</Feed.User> for $2
+                                            <Feed.User>JosephJoestar</Feed.User> for $60
                                             <Feed.Date>20 Minutes Ago</Feed.Date>
                                         </Feed.Summary>
                                         <Feed.Meta>
@@ -112,6 +110,7 @@ class Activity extends Component {
 
 const mapStateToProps = state => ({
     user: state.user,
+    // venueInfo: reduxState.venueInfo,
 });
 
 export default connect(mapStateToProps)(Activity);

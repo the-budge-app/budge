@@ -99,7 +99,7 @@ class NonUserSpot extends Component {
                                 <Grid>
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={16}>
-                                            <h2>{this.props.selectedSpot.reservation_name}</h2>
+                                            <h2>{this.props.user.username}</h2>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row style={styles.gridRow}>
