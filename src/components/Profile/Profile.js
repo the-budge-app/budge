@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Card, Image, Input, Button, Icon, Grid, Modal, Header } from 'semantic-ui-react';
+import { Card, Image, Input, Button, Icon, Grid, Modal, Header, Segment } from 'semantic-ui-react';
 import './Profile.css';
 
 class Profile extends Component {
@@ -59,6 +59,7 @@ componentDidMount(){
         return (
             <>
                 <center>
+                <Segment style={{overflow: 'auto', maxHeight: 600 }}>
                     <Grid className="profile">
                         <Grid.Row>
                             <Grid.Column>
@@ -76,7 +77,7 @@ componentDidMount(){
                         <Grid.Row>
                             <Grid.Column width={16} className="profileCard">
                                 <Card>
-                                    <Image src='https://melmagazine.com/wp-content/uploads/2018/08/1XjDnFVbf7Y22cfyrCFg31w.gif' wrapped ui={false} />
+                                    <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSduvWS9MKk0X6lxZBGRiw5hAhtiACpKFrwk9f_wxA47sxuuQq9DQ' wrapped ui={false} />
                                     <Card.Content>
                                         <Card.Header>{this.state.EditModeOn === false ?
                                             this.props.user.username
@@ -155,6 +156,7 @@ componentDidMount(){
 
 
                     </Modal>
+                    </Segment>
                 </center>
             </>
         )
