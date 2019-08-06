@@ -5,10 +5,12 @@ import { Redirect } from 'react-router-dom'
 import UserSpot from './UserSpot/UserSpot'
 import NonUserSpot from './NonUserSpot/NonUserSpot'
 
+import AddFunds from '../PaymentPage/SelectPaymentTab'
+
 import './WaitlistSpot.css'
 
 // import Semantic UI components
-import { Button, Icon, Modal, Header } from 'semantic-ui-react'
+import { Button, Icon, Grid, Modal, Header } from 'semantic-ui-react'
 
 class SelectedOffer extends Component {
 
@@ -25,10 +27,6 @@ class SelectedOffer extends Component {
         this.props.dispatch({ type: 'FETCH_SELECTED_SPOT_DATA', payload: this.props.match.params.id });
     }
 
-    addFunds = () => {
-        this.props.history.push('/payment');
-    }
-
     toggleModal = () => {
         this.setState({
             ...this.state,
@@ -40,7 +38,7 @@ class SelectedOffer extends Component {
     render() {
         return (
             <>
-          
+
                 {/* protected route checks to see if user is logged in.
                 once they are logged in, check to see if they are on the waitlist */}
                 {!this.props.userWaitlist.id ?
@@ -55,7 +53,7 @@ class SelectedOffer extends Component {
                     <>
                         {
                             this.props.selectedSpot.user_id === this.props.user.id ?
-                                <UserSpot history={this.props.history}  toggleModal={this.toggleModal} />
+                                <UserSpot history={this.props.history} toggleModal={this.toggleModal} />
                                 :
                                 <NonUserSpot history={this.props.history} match={this.props.match} toggleModal={this.toggleModal} />
                         }
@@ -66,16 +64,24 @@ class SelectedOffer extends Component {
                             basic
                             size='small'
                         >
-                            <Header icon='credit card' content='Not Enough Funds' />
-                            <Modal.Content>
-                                <h3>Please add funds to your account</h3>
-                            </Modal.Content>
-                            <Modal.Actions>
-                                <Button color='green' onClick={this.addFunds} inverted>
-                                    <Icon name='checkmark' />
-                                    Add Funds
-                                </Button>
-                            </Modal.Actions>
+                            <Grid centered>
+                                <Grid.Column width={16}>
+                                    <Header style={{ color: 'white' }} icon='credit card' content='Not Enough Funds' />
+                                    <Modal.Content>
+                                        <h3>Please add funds to your account</h3>
+                                        <AddFunds toggleModal={this.toggleModal} />
+                                    </Modal.Content>
+                                </Grid.Column>
+                                <Grid.Column width={12}>
+                                    <Grid.Row>
+                                        <Modal.Actions>
+                                            <Button style={{ margin: '0' }} color='red' fluid onClick={this.toggleModal} inverted>
+                                                <Icon name='ban' />Cancel
+                                        </Button>
+                                        </Modal.Actions>
+                                    </Grid.Row>
+                                </Grid.Column>
+                            </Grid>
                         </Modal>
                     </>
                 }
