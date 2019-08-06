@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Button, Icon, Input } from 'semantic-ui-react';
+import { Button, Icon, Input, Grid } from 'semantic-ui-react';
 import { Link, } from 'react-router-dom';
 
 const styles = {
@@ -19,10 +19,6 @@ const styles = {
         float: 'right',
         maxWidth: '30%',
         marginRight: '2%',
-    },
-    paymentTab: {
-
-
     }
 }
 
@@ -35,6 +31,9 @@ class SelectPaymentTab extends Component {
     updateBalance = () => {
         console.log('state', this.state);
         console.log('redux State', this.props.reduxState.user.account_balance);
+        if (this.props.toggleModal) {
+            this.props.toggleModal();
+        }
 
         this.props.dispatch({
             type: 'ADD_FUNDS',
@@ -60,27 +59,58 @@ class SelectPaymentTab extends Component {
         return (
             <div style={styles.mainDiv} >
 
-                <div>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Input icon="dollar sign" iconPosition="left" onChange={this.handleChange} value={this.state.account_balance} type="text" placeholder="Amount to Add"></Input>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Input type="radio" className="hidden" tabIndex="0" />
+                            <label>MC ************ 5543</label>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Input type="radio" className="hidden" tabIndex="0" />
+                            <label>Visa ************ 3254</label>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Input type="radio" className="hidden" tabIndex="0" />
+                            <label>Amex *********** 1001</label>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row style={{marginTop: '25px'}}>
+                        <Grid.Column>
+                            <Link to={`/waitlist-spot/${this.props.reduxState.selectedSpot.id}`}><Button fluid style={{ backgroundColor: 'green', color: 'white' }} onClick={this.updateBalance}>Add Funds to Account</Button></Link>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
 
-                    <div style={styles.paymentTab}>
+                {/* <div>
+
+                    <div>
                         <Icon name="dollar sign" />
                         <Input onChange={this.handleChange} value={this.state.account_balance} type="text" placeholder="Amount to Add"></Input>
                         <div style={styles.paymentDiv}>
-                        
+
                             <br />
                             <br />
                             <br />
                             <Input type="radio" className="hidden" tabIndex="0" />
                             <label>MC ************ 5543</label>
                             <Input style={styles.cvv} type="text" icon="credit card" placeholder="CVV"></Input>
-                           
+
                             <br />
                             <br />
                             <br />
                             <Input type="radio" className="hidden" tabIndex="0" />
                             <label>Visa ************ 3254</label>
                             <Input style={styles.cvv} type="text" icon="credit card" placeholder="CVV"></Input>
-                           
+
                             <br />
                             <br />
                             <br />
@@ -99,22 +129,14 @@ class SelectPaymentTab extends Component {
                     <br />
                     <br />
                     <br />
-                </div>
-                
-                <Link to={`/waitlist-spot/${this.props.reduxState.selectedSpot.id}`}><Button fluid style={{backgroundColor: 'green', color: 'white'}} onClick={this.updateBalance}>Add Funds to Account</Button></Link>
-
-
-
-
-                </div>
-
-
+                </div> */}
+            </div>
         )
     }
 }
 
 const mapStateToProps = reduxState => ({
     reduxState,
-    
+
 });
 export default connect(mapStateToProps)(SelectPaymentTab);
