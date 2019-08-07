@@ -117,9 +117,19 @@ class NonUserSpot extends Component {
                                 <Grid>
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={16} style={{ marginBottom: '4px', }}>
-                                            <h2 style={styles.headingTwo}>{this.props.user.username}</h2>
+                                            <h2 style={styles.headingTwo}>{this.props.selectedSpot.username}</h2>
                                         </Grid.Column>
                                     </Grid.Row>
+                                    {/* <Grid.Row style={styles.gridRow}>
+                                        <Grid.Column width={8}>
+                                            <Icon className="bump-up" size="large" name="user" />
+                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.party_size}</h4>
+                                        </Grid.Column>
+                                        <Grid.Column width={8}>
+                                            <Icon className="bump-up" size="large" name="clock" />
+                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.latest_wait_time}</h4>
+                                        </Grid.Column>
+                                    </Grid.Row> */}
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={16}>
                                             <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0, 1)} maxRating={5} disabled size='large' />

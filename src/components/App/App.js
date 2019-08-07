@@ -71,7 +71,7 @@ class App extends Component {
 
             <ProtectedRoute exact path="/status" component={StatusPage}/>
             <ProtectedRoute exact path="/buyer-confirm" component={BuyerConfirm}/>
-            <ProtectedRoute exact path="/seller-confirm" component={SellerConfirm}/>
+            <ProtectedRoute exact path="/seller-confirm/:offerId/:buyerId" component={SellerConfirm}/>
             <ProtectedRoute exact path="/payment" component={PaymentPage}/>
             <ProtectedRoute exact path="/profile" component={Profile}/>
             <ProtectedRoute exact path="/rate-user/:id" component={RateUser}/>
