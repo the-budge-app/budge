@@ -38,7 +38,7 @@ class RateUser extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={16} verticalAlign="center">
-              <h1>Please rate {this.props.customerRating[0]}</h1>
+              <h1>Please rate {this.props.customerRating.username}</h1>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>

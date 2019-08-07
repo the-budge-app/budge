@@ -4,7 +4,7 @@ import { takeLatest, put } from 'redux-saga/effects';
 function* fetchRating(action) {
     try {
         // console.log('buyer id is', action.payload);
-        const ratingResponse = yield axios.get(`/api/rating/${action.payload}`);
+        const ratingResponse = yield axios.get(`/api/rating/getrating/${action.payload}`);
         console.log('the rating is ', ratingResponse.data);
         yield put({ type: 'SET_USER_RATING', payload: ratingResponse.data });
     } catch (error) {
@@ -15,7 +15,8 @@ function* fetchRating(action) {
 
 function* fetchUserToRate(action) {
     try {
-        const getUserResponse = yield axios.get(`/api/rating/`, action.payload);
+        console.log('in rate sagaaaaaaaaa', action.payload)
+        const getUserResponse = yield axios.get(`/api/rating/getusername/${action.payload}`);
         console.log('username is ', getUserResponse.data );
         yield put({ type: 'SET_OTHER_USER', payload: getUserResponse.data });
     }catch (error) {

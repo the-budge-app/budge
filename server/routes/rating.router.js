@@ -3,7 +3,7 @@ const pool = require('../modules/pool');
 const router = express.Router();
 
 //get request to calculate the rating for one given user
-router.get('/:id', (req, res) => {
+router.get('/getrating/:id', (req, res) => {
     pool.query(`SELECT AVG("rating") AS "rating" FROM "customer_rating" WHERE "user_id" = $1;`, [req.params.id])
         .then(
             result => {
@@ -12,16 +12,18 @@ router.get('/:id', (req, res) => {
             }
         )
         .catch(error => {
+            res.sendStatus(500)
             console.log('error with getting rating', error);
         })
   });
 
-router.get('/', (req, res) => {
+router.get('/getusername/:id', (req, res) => {
+    console.log(req.params)
     pool.query(`SELECT "username" FROM "user"
-    WHERE "user"."id" = $1;`, [req.body])
+    WHERE "user"."id" = $1;`, [req.params.id])
         .then(
             result => {
-                res.send(result.rows);
+                res.send(result.rows[0]);
                 console.log(result.rows)
             }
         )
