@@ -6,8 +6,11 @@ const router = express.Router();
 
 router.get('/singleSpot/:id', (req, res) => {
     // console.log('getting the data for waitList spot', req.params.id);
-    pool.query(`SELECT * FROM "waitlist" WHERE "id" = $1;`, [req.params.id])
+    pool.query(`SELECT *, ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
+    AS "latest_wait_time" 
+    FROM "waitlist" WHERE "id" = $1;`, [req.params.id])
         .then(result => {
+            console.log(result.rows)
             res.send(result.rows[0])
         })
         .catch(error => {
