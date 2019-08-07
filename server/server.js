@@ -19,6 +19,7 @@ const offerRouter = require('./routes/offer.router');
 const contactRouter = require('./routes/contact.router');
 const ratingRouter = require('./routes/rating.router');
 const twilioRouter = require('./routes/twilio.router')
+const adminRouter = require('./routes/admin.router')
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -34,6 +35,7 @@ app.use(passport.session());
 /* Routes */
 app.use('/api/user', userRouter);
 app.use('/api/contact', contactRouter);
+app.use('/api/admin', adminRouter);
 
 // Routes for venues
 app.use('/api/venues', venueRouter);
