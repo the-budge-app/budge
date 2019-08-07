@@ -23,6 +23,10 @@ class SellerConfirm extends Component {
     offerPrice: 20,
     userRating: 4.5,
   }
+
+  handleAccept = () => {
+    this.props.history.push(`/rate-user/${this.props.match.params.buyerId}`)
+  }
   render() {
     return (
       <>
@@ -73,7 +77,7 @@ class SellerConfirm extends Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={12}>
-                <Button fluid style={{ backgroundColor: 'green', color: 'white', float: 'center' }}>
+                <Button fluid style={{ backgroundColor: 'green', color: 'white', float: 'center' }} onClick={this.handleAccept}>
                   I'll Take My Money, Thanks!
                 </Button>
               </Grid.Column>
