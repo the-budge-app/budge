@@ -25,7 +25,9 @@ router.get('/user', (req, res) => {
             let offers = { offerMade: result.rows[0], }
             // we have the offer that was made, 
             // now lets get any offer received
-            pool.query(`SELECT "offer"."id" AS "offer_id", * FROM "offer"  
+            pool.query(`SELECT "offer"."id" AS "offer_id", * ,
+                ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60) AS "latest_wait_time"  
+                FROM "offer"
                 JOIN "waitlist" ON "waitlist"."id" = "offer"."waitlist_id" 
                 WHERE "waitlist"."id" = $1 
                 AND "offer"."status_code"=1
