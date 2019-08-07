@@ -8,17 +8,36 @@ import { Grid, Button, Divider, Modal, Icon, Header } from 'semantic-ui-react'
 
 const styles = {
     headingOne: {
-
+        fontWeight: '300',
+        display: 'inline-block',
     },
     headingTwo: {
-
+        fontWeight: '300',
+        letterSpacing: '2px',
+        textTransform: 'uppercase',
+        fontSize: '1.25rem',
+        borderBottom: '1px solid black',
+        display: 'inline-block',
     },
     headingThree: {
+        fontWeight: '300',
+        textTransform: 'uppercase',
         marginTop: '5px',
         marginBottom: '5px',
     },
     headingFour: {
         color: 'black',
+        fontWeight: '300',
+        textTransform: 'uppercase',
+    },
+    backButton: {
+        position:'absolute',
+        bottom: '0',
+        padding: '20px 0px',
+        fontWeight: '300',
+        fontSize: '1.5rem',
+        textTransform: 'uppercase',
+        letterSpacing: '2px',
     }
 }
 
@@ -81,15 +100,15 @@ class UserSpot extends Component {
                 <Grid centered>
                     <Grid.Row>
                         <Grid.Column width={16} textAlign="center">
-                            <h2>Status at</h2>
+                            <h2 style={styles.headingTwo}>Status at</h2>
                         </Grid.Column>
                         <Grid.Column width={16} textAlign="center">
-                            <h1>{this.props.selectedVenue.restaurant_name}</h1>
+                            <h1 style={styles.headingOne}>{this.props.selectedVenue.restaurant_name}</h1>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column width={16} textAlign="center">
-                            <h3>Offer Made:</h3>
+                            <h3 style={{...styles.headingThree, borderBottom: '1px solid black', display: 'inline-block'}}>Offer Made</h3>
                         </Grid.Column>
                         <>
                             {this.state.offerMade ?
@@ -104,18 +123,18 @@ class UserSpot extends Component {
                                     </Grid.Column>
                                 </>
                                 :
-                                <>
-                                    <h4>You haven't made any offers </h4>
+                                <Grid.Column width={16} textAlign="center">
+                                    <h4 style={{marginTop: '10px', ...styles.headingFour}}>You haven't made any offers</h4>
                                     <br />
-                                    <h4>Get Budging!</h4>
-                                </>
+                                    <h3 style={styles.headingThree}>Get Budging!</h3>
+                                </Grid.Column>
                             }
                         </>
                     </Grid.Row>
                     <Divider />
                     <Grid.Row>
                         <Grid.Column width={16} textAlign="center">
-                            <h3>Offer Received:</h3>
+                            <h3 style={{...styles.headingThree, borderBottom: '1px solid black', display: 'inline-block'}}>Offer Received</h3>
                         </Grid.Column>
                         <>
                             {this.state.offerReceived ?
@@ -131,12 +150,12 @@ class UserSpot extends Component {
 
                                 </>
                                 :
-                                <h4>You haven't received any offers</h4>
+                                <h4 style={{marginTop: '10px', ...styles.headingFour}}>You haven't received any offers</h4>
                             }
                         </>
                     </Grid.Row>
                 </Grid>
-                <Button attached="bottom" fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
+                <Button style={styles.backButton} fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
                 {/* <pre>
                     {JSON.stringify(this.state, null, 2)}
                 </pre>

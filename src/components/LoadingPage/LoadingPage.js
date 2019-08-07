@@ -6,6 +6,14 @@ import { Grid, Modal, Button, Icon, Header } from 'semantic-ui-react'
 
 import './LoadingPage.css'
 
+const styles = {
+    budgeButton: {
+        fontWeight: '300',
+        textTransform: 'uppercase',
+        letterSpacing: '2px',
+    }
+}
+
 class LoadingPage extends Component {
 
     state = {
@@ -93,11 +101,10 @@ class LoadingPage extends Component {
                     <Grid.Row verticalAlign="middle">
                         <Grid.Column width={12} textAlign="center">
                             <div id="logoWrapper">
-                                <h1 onClick={() => { this.setState({ ...this.state, locationError: true, locationErrorMsg: 'Testing' }) }}>Budge</h1>
+                                <h1>Budge</h1>
                                 <span id="leftDot"></span>
                                 <span id="rightDot"></span>
                             </div>
-                            <p>click the logo to test the location services error modal</p>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -106,12 +113,12 @@ class LoadingPage extends Component {
                     <Grid.Row textAlign="center">
                         {
                             !this.props.user.latitude &&
-                            <p style={{position: 'absolute'}} id="loadingMessage">We gotta get your budging location. Please Wait.</p>
+                            <p style={{position: 'absolute'}} id="loadingMessage">Getting your budging location. Please Wait.</p>
                         }
                     </Grid.Row>
                     <Grid.Row textAlign="center">
                         <Grid.Column width={16} textAlign="center">
-                            <Button color='green' basic size="big" disabled={!this.props.user.latitude} loading={!this.props.user.latitude} onClick={() => this.props.history.push('/home')}>Get Budging!</Button>
+                            <Button style={styles.budgeButton} color='green' basic size="big" disabled={!this.props.user.latitude} loading={!this.props.user.latitude} onClick={() => this.props.history.push('/home')}>Get Budging!</Button>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -127,7 +134,7 @@ class LoadingPage extends Component {
                     <Header icon='crosshairs' content='Location Services Required' />
                     <Modal.Content>
                         <h3>{this.state.locationErrorMsg}</h3>
-                        <h3>Please enable location in your browser.</h3>
+                        <h3>Please enable location services and then reload.</h3>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='green' onClick={this.handleErrorModalClose} inverted>

@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {
@@ -16,13 +17,23 @@ const styles = {
         },
         pTag: {
             margin: '0',
+            marginTop: '6px',
+            fontSize: '1.1rem',
         },
-        h4Tag: {
+        h3Tag: {
             margin: '5px',
+            fontWeight: '300',
+            letterSpacing: '2px',
+            display: 'inline-block',
+            borderBottom: '1px solid black',
             textAlign: 'center',
-            fontSize: '1.25rem',
+            fontSize: '1.5rem',
         }
-
+    },
+    viewButton: {
+        fontSize: '.9rem',
+        textTransform: 'uppercase',
+        letterSpacing: '1px',
     }
 }
 
@@ -96,20 +107,24 @@ class Map extends Component {
 
                             >
                                 <Grid>
-                                    <Grid.Column style={styles.infoWindow.gridColumn} width={16}>
-                                        <h4 style={styles.infoWindow.h4Tag}>{this.state.selectedVenue.restaurant_name}</h4>
-                                    </Grid.Column>
-                                    <Grid.Column style={styles.infoWindow.gridColumn} width={16}>
-                                        <p style={styles.infoWindow.pTag}>{this.state.selectedVenue.address}</p>
-                                        <p style={styles.infoWindow.pTag}>{this.state.selectedVenue.city}</p>
-                                        {/* format phone number to be pretty later */}
-                                        <p style={styles.infoWindow.pTag}>{this.state.selectedVenue.phone_number}</p>
-                                    </Grid.Column>
-                                    <Grid.Column style={{...styles.infoWindow.gridColumn, textAlign: 'center', paddingTop: '10px'}} width={16}>
-                                        <Button onClick={this.viewVenue} size="mini">View</Button>
-                                    </Grid.Column>
+                                    <Grid.Row style={{padding: '0'}}>
+                                        <Grid.Column style={styles.infoWindow.gridColumn} textAlign="center" width={16}>
+                                            <h3 style={styles.infoWindow.h3Tag}>{this.state.selectedVenue.restaurant_name}</h3>
+                                        </Grid.Column>
+                                        <Grid.Column style={styles.infoWindow.gridColumn} width={16} textAlign="center">
+                                            <p style={styles.infoWindow.pTag}>
+                                                {this.state.selectedVenue.address}
+                                                <br/>
+                                                {this.state.selectedVenue.city}
+                                                <br/>
+                                                {this.state.selectedVenue.phone_number.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")}
+                                            </p>
+                                        </Grid.Column>
+                                        <Grid.Column style={{ ...styles.infoWindow.gridColumn, textAlign: 'center', paddingTop: '10px' }} width={16}>
+                                            <Button onClick={this.viewVenue} style={styles.viewButton} basic color="green">View Waitlist</Button>
+                                        </Grid.Column>
+                                    </Grid.Row>
                                 </Grid>
-
                             </InfoWindow>
                         }
                     </GoogleMap>
