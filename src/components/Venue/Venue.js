@@ -7,15 +7,30 @@ import Login from '../LoginPage/LoginPage'
 import Register from '../RegisterPage/RegisterPage'
 
 // import components from Semantic UI
-import { Button, Icon, Checkbox, Grid, Segment, Modal, Header } from 'semantic-ui-react';
+import { Button, Icon, Checkbox, Grid, Segment, Modal, Header, Divider } from 'semantic-ui-react';
 
 const styles = {
     mainDiv: {
         marginTop: '4%',
-        textAlign: 'center',
         maxWidth: '900px',
         marginLeft: 'auto',
         marginRight: 'auto'
+    },
+    restaurantName: {
+        fontWeight: '300',
+        letterSpacing: '2px',
+        lineHeight: '1.25',
+        fontSize: '2.25rem',
+    },
+    restaurantDetails: {
+        lineHeight: '1.5',
+        marginTop: '8px',
+    },
+    toggleLabel: {
+        position: 'relative',
+        bottom: '5px',
+        fontSize: '1rem',
+        letterSpacing: '1px',
     }
 }
 
@@ -161,30 +176,38 @@ class Venue extends Component {
             <div style={styles.mainDiv}>
                 <Segment style={{overflow: 'auto', maxHeight: 500 }}>
                 <Grid>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <h1>{this.props.selectedVenue.restaurant_name}</h1>
-                            <h4>{this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)} </h4>
-                            <h4>{this.props.selectedVenue.address}</h4>
-                            <h4>{this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}</h4>                           
+                    <Grid.Row style={{padding: '0'}}>
+                        <Grid.Column width={6}>
+                            <h1 style={styles.restaurantName}>{this.props.selectedVenue.restaurant_name}</h1>
+                        </Grid.Column>
+                        <Grid.Column width={10}>
+                            <h4 style={styles.restaurantDetails}>
+                                {this.props.selectedVenue.address}
+                                <br/>
+                                {this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}
+                                <br />
+                                ({this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)}) {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)}
+                            </h4>                           
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
                 {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
                 {this.props.user.id && this.props.userWaitlist.id &&
-                    <>
-                        <label>All Parties</label>
-                        <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
-                        <label>Budgable</label>
-                    </>
-                }
-                    <Grid centered>
-                        <Grid.Row style={{padding: '0', marginTop: '20px'}}>
-                            <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
-                            <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
-                            <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
-                        </Grid.Row>
+                    <Grid>
+                        <Grid.Column width={16} textAlign="center">
+                            <label style={{marginRight: '10px', ...styles.toggleLabel}}>All Parties</label>
+                            <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
+                            <label style={{marginLeft: '10px', ...styles.toggleLabel}}>Budgable</label>
+                        </Grid.Column>
                     </Grid>
+                }
+                <Grid centered>
+                    <Grid.Row style={{padding: '0', marginTop: '20px'}}>
+                        <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
+                        <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
+                        <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
+                    </Grid.Row>
+                </Grid>
                 <Grid style={{marginTop: '0'}}>
                     <Grid.Row>
                         <Grid.Column>
@@ -249,7 +272,7 @@ class Venue extends Component {
                         <Modal.Actions>
                             <Icon name='close' onClick={() => this.setState({...this.state, loginModal: false,})}/>
                         </Modal.Actions>
-                        <Header style={{textAlign: 'center'}} content='You need to be logged in to view' />
+                        <Header style={{textAlign: 'center'}} content='Please Log In' />
                     </>
                     }
                     <Modal.Content>
