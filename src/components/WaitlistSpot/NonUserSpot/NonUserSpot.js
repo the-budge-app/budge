@@ -25,7 +25,7 @@ class NonUserSpot extends Component {
 
     state = {
         lastRejected: '',
-        userRating: 4.5,
+        userRating: 0,
         offerPrice: '',
         offerModal: false,
     }
@@ -109,7 +109,7 @@ class NonUserSpot extends Component {
                                         </Grid.Column>
                                         <Grid.Column width={8}>
                                             <Icon className="bump-up" size="large" name="clock" />
-                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.quote_time}</h4>
+                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.latest_wait_time}</h4>
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row style={styles.gridRow}>
