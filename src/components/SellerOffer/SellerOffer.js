@@ -45,6 +45,11 @@ class SellerOffer extends Component {
         offerPrice: this.props.buyerInfo.offer_price,
       }
     })
+    // notify the buyer that the offer was accepted
+    axios.post('/api/twilio/accept-offer', {
+      buyerId:this.state.buyerId,
+      offerId: this.state.offerId,
+    })
     //swap the user id of the spots
     axios.put(`/api/waitlist/swap?buyerWaitlist=${this.props.buyerInfo.waitlist_id}&sellerWaitlist=${this.state.waitlistId}&buyer=${this.state.buyerId}`)
     .then(

@@ -18,6 +18,7 @@ const sellerConfirmation = require('./routes/sellerConfirmation.router');
 const offerRouter = require('./routes/offer.router');
 const contactRouter = require('./routes/contact.router');
 const ratingRouter = require('./routes/rating.router');
+const twilioRouter = require('./routes/twilio.router')
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -49,6 +50,9 @@ app.use('/api/offers', offerRouter);
 
 //Route to calculate customer rating
 app.use('/api/rating', ratingRouter);
+
+//Routes for twilio messaging
+app.use('/api/twilio', twilioRouter)
 
 // Serve static files
 app.use(express.static('build'));
