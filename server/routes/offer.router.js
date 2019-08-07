@@ -88,17 +88,14 @@ router.post('/make-new', (req, res) => {
         VALUES ($1, $2, $3, NOW(), '1') RETURNING "id";`, [req.body.waitlistId, req.user.id, req.body.offerPrice])
         .then(result => {
             const newOfferId = result.rows[0].id;
-            console.log(newOfferId);
             // new row inserted into the table. now change the status of the seller
             // get the user_id that owns the waitlist spot we are making an offer on
             pool.query(`SELECT "user_id" FROM "waitlist" WHERE "id"=$1;`, [req.body.waitlistId])
                 .then(result => {
                     const sellerId = result.rows[0];
-                    console.log(sellerId);
                     // now that we have the user_id of the spot owner, lets change their status to pending
                     pool.query(`UPDATE "waitlist" SET "status_code" = 3 WHERE "user_id" = $1 AND "restaurant_id"=$2 AND "status_code"=1;`, [sellerId.user_id, req.body.venueId])
                         .then(result => {
-                            console.log(sellerId);
                             // status changed for that waitlist spot to pending
                             // new offer is now complete on the db side, so lets notify the seller
                             pool.query(`SELECT "phone_number" FROM "user" WHERE "id" = $1;`, [sellerId.user_id])
