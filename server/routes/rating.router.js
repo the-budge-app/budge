@@ -16,6 +16,20 @@ router.get('/:id', (req, res) => {
         })
   });
 
+router.get('/', (req, res) => {
+    pool.query(`SELECT "username" FROM "user"
+    WHERE "user"."id" = $1;`, [req.body])
+        .then(
+            result => {
+                res.send(result.rows);
+                console.log(result.rows)
+            }
+        )
+        .catch(error => {
+            console.log('error with getting username', error);
+        })
+})
+
 router.post('/', (req, res) => {
     const user_id = req.body.user_id
     const given_by = req.user.id
