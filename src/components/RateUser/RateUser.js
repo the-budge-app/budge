@@ -6,7 +6,8 @@ import { Rating, Grid, Icon, Button, Modal, Header } from 'semantic-ui-react'
 class RateUser extends Component {
   state = {
     modalOpen: false,
-    rating: 0
+    rating: 0,
+    user_id: this.props.match.params.id
   }
 
   handleRate = (e, { rating }) => this.setState({ rating })
@@ -89,6 +90,7 @@ const mapStateToProps = reduxState => ({
   selectedVenue: reduxState.selectedVenue,
   selectedSpot: reduxState.selectedSpot,
   userWaitlist: reduxState.userWaitlist,
+  buyerInfo: reduxState.buyerInfo,
 
 });
 export default connect(mapStateToProps)(RateUser);
