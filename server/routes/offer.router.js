@@ -13,7 +13,9 @@ router.get('/user', (req, res) => {
     console.log('Getting offers for user', req.query);
     console.log(req.user.id);
     // get the offer the user has made first
-    pool.query(`SELECT *, "offer"."id" AS "offer_id" FROM "offer"
+    pool.query(`SELECT *, "offer"."id" AS "offer_id",
+        ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60) AS "latest_wait_time"
+        FROM "offer"
         JOIN "waitlist" ON "offer"."waitlist_id" = "waitlist"."id"
         WHERE "buyer_id" = $1
         AND "waitlist"."restaurant_id"=$2
