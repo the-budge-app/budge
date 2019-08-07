@@ -23,6 +23,7 @@ import StatusPage from '../StatusPage/StatusPage'
 import Contact from '../Contact/Contact';
 import SemanticPlayground from '../SemanticPlayground'
 import Activity from '../Activity/Activity';
+import Admin from '../Admin/Admin';
 
 import './App.css';
 import SellerConfirm from '../Confirmation/SellerConfirm';
@@ -78,6 +79,7 @@ class App extends Component {
             <ProtectedRoute exact path="/waitlist-spot/:id" component={WaitlistSpot}/>
             <ProtectedRoute exact path="/seller-offer" component={SellerOffer}/>
             <ProtectedRoute exact path="/join-waitlist/:restaurant_id" component={JoinWaitlist}/>
+            <ProtectedRoute exact path="/admin" component={Admin}/>
             <Route exact path="/activity/:id" component={Activity}/>
             {/* This works the same as the other protected route, except that if the user is logged in,
             they will see the info page instead. */}

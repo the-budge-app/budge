@@ -9,6 +9,7 @@ import userWaitlist from './userWaitlistReducer';
 import selectedSpot from './selectedSpotReducer';
 import sellerConfirmation from './sellerConfirmationReducer';
 import customerRating from './customerRatingReducer';
+import userComments from './adminReducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   selectedSpot, // object of data for the single waitList spot the user is viewing
   sellerConfirmation, //store info one seller confirmation page
   customerRating, //store customer rating for a given customer
+  userComments,
 });
 
 export default rootReducer;

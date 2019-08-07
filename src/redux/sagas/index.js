@@ -9,6 +9,7 @@ import waitlistJoinLeave from './waitlistJoinLeaveSaga';
 import sellerConfirmation from './sellerConfirmationSaga';
 import contactSaga from './contactSaga';
 import customerRating from './customerRatingSaga';
+import commentsSaga from './commentsSaga';
 
 
 // rootSaga is the primary saga.
@@ -30,5 +31,6 @@ export default function* rootSaga() {
     sellerConfirmation(),
     contactSaga(),
     customerRating(),
+    commentsSaga(),
   ]);
 }
