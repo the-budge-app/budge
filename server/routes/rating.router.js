@@ -17,12 +17,11 @@ router.get('/:id', (req, res) => {
   });
 
 router.post('/', (req, res) => {
-    const offer_id = req.body.offer_id
     const user_id = req.body.user_id
-    const given_by = req.body.given_by
+    const given_by = req.user.id
     const rating = req.body.rating
-    pool.query(`INSERT INTO "customer_rating" ("offer_id", "user_id", "given_by", "rating")
-    VALUES ($1, $2, $3, $4);`, [offer_id, user_id, given_by, rating])
+    pool.query(`INSERT INTO "customer_rating" ("user_id", "given_by", "rating")
+    VALUES ($1, $2, $3);`, [user_id, given_by, rating])
     .then(() => res.sendStatus(201))
         .catch(error => {
             console.log('Error in adding rating', error);
