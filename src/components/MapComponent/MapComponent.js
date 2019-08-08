@@ -8,7 +8,7 @@ import {
     Marker,
     InfoWindow,
 } from 'react-google-maps'
-import { Grid, Button } from 'semantic-ui-react'
+import { Grid, Button, Modal, Header, Icon } from 'semantic-ui-react'
 
 const styles = {
     infoWindow: {
@@ -40,7 +40,9 @@ const styles = {
 class Map extends Component {
 
     state = {
-        selectedVenue: {}
+        selectedVenue: {},
+        tooFar: false,
+        tooFarModal: false,
     }
 
     setSelectedVenue = (venue) => {
@@ -67,6 +69,16 @@ class Map extends Component {
 
     viewVenue = () => {
         this.props.history.push(`/venue/${this.state.selectedVenue.id}`);
+    }
+
+    checkDistance = () => {
+        if( this.props.user.distance > 300 ) {
+            this.setState({
+                ...this.state, tooFar: true, tooFarModal: true,
+            })
+        } else {
+            this.viewVenue();
+        }
     }
 
     render() {
@@ -129,7 +141,7 @@ class Map extends Component {
                                             </p>
                                         </Grid.Column>
                                         <Grid.Column style={{ ...styles.infoWindow.gridColumn, textAlign: 'center', paddingTop: '10px' }} width={16}>
-                                            <Button onClick={this.viewVenue} style={styles.viewButton} basic color="green">View Waitlist</Button>
+                                            <Button onClick={this.checkDistance} style={styles.viewButton} basic color="green">View Waitlist</Button>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
@@ -137,6 +149,25 @@ class Map extends Component {
                         }
                     </GoogleMap>
                 }
+
+                {/* Modal for user too far */}
+                <Modal
+                    open={this.state.tooFarModal}
+                    onClose={() => this.setState({...this.state, tooFarModal: false,})}
+                    basic
+                    size='small'
+                >
+                <Header icon='compass outline' content="Oh no! You're too far away" />
+                    <Modal.Content>
+                        <h3>You can still check out the waitlist and activity feed.</h3>
+                        <h3>But you can't join cause you're too far away.</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='green' onClick={() => this.props.history.push(`/venue/${this.state.selectedVenue.id}`)} inverted>
+                            <Icon name='checkmark' />Ok
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
             </>
         )
     }

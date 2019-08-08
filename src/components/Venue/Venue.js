@@ -42,27 +42,16 @@ class Venue extends Component {
         loginModal: false, // modal to display the login 
         singleOfferModal: false, // modal to restrict user to single offer
         loggingIn: false, // state for logging user in
-        tooFar: false, // boolean for if user is too far from restaurant
-        tooFarModal: false, // modal to notify user is too far from 
     }
 
     componentDidMount() {
         console.log('Venue page mounted!');
-        this.checkDistance();
         this.props.dispatch({type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id})
         //refresh every minute
         this.interval = setInterval(() => this.props.dispatch({
             type: 'FETCH_WAITLIST',
             payload: { restaurant_id: this.props.match.params.id, }
         }), 60000)       
-    }
-
-    checkDistance = () => {
-        if( this.props.user.distance > 300 ) {
-            this.setState({
-                ...this.state, tooFar: true, tooFarModal: true,
-            })
-        }
     }
 
     componentWillUnmount() {
@@ -242,7 +231,7 @@ class Venue extends Component {
                             {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ? 
                                 <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
-                                <Button disabled={this.state.tooFar} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
+                                <Button disabled={this.props.user.distance > 300 } className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
                             }
                         </Grid.Column>
                     </Grid.Row>
@@ -322,25 +311,6 @@ class Venue extends Component {
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='green' onClick={()=>this.setState({...this.state, singleOfferModal: false})} inverted>
-                            <Icon name='checkmark' />Ok
-                        </Button>
-                    </Modal.Actions>
-                </Modal>
-
-                 {/* Modal for user too far */}
-                 <Modal
-                    open={this.state.tooFarModal}
-                    onClose={() => this.setState({...this.state, tooFarModal: false,})}
-                    basic
-                    size='small'
-                >
-                <Header icon='compass outline' content="Oh no! You're too far away" />
-                    <Modal.Content>
-                        <h3>You can still check out the waitlist and activity feed.</h3>
-                        <h3>But you can't join cause you're too far away.</h3>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button color='green' onClick={()=>this.setState({...this.state, tooFarModal: false})} inverted>
                             <Icon name='checkmark' />Ok
                         </Button>
                     </Modal.Actions>
