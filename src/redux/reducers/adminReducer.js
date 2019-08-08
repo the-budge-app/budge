@@ -1,4 +1,4 @@
-const adminReducer = (state = {}, action) => {
+const adminReducer = (state = [], action) => {
     switch (action.type) {
         // payload should be single object from db
       case 'SET_COMMENTS':
