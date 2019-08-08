@@ -22,4 +22,14 @@ router.get('/', rejectUnauthenticated, (req, res) => {
             console.log('Error in SELECT query from admin', error)
         })   
 })
+
+router.delete('/:id', (req, res) => {
+    const queryText = 'DELETE FROM "admin" WHERE id=$1';
+    pool.query(queryText, [req.params.id])
+      .then(() => { res.sendStatus(200); })
+      .catch((err) => {
+        console.log('Error completing DELETE comment query', err);
+        res.sendStatus(500);
+      });
+  });
 module.exports = router;
