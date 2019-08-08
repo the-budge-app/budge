@@ -83,6 +83,14 @@ class Map extends Component {
                         defaultZoom={14.25}
                         defaultCenter={{ lat: this.props.defaultLat, lng: this.props.defaultLong }}
                     >
+                        <Marker
+                            key={this.props.user.id}
+                            position={{
+                                lat: Number(this.props.user.latitude),
+                                lng: Number(this.props.user.longitude),
+                            }}
+                            icon='https://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                        />
                         {/* map through the list of venues in redux and put a marker on the map for each one */}
                         {this.props.venues && this.props.venues.map(venue => (
                             <Marker
@@ -92,6 +100,7 @@ class Map extends Component {
                                     lng: Number(venue.longitude),
                                 }}
                                 onClick={() => { this.setSelectedVenue(venue) }}
+                                icon='https://maps.google.com/mapfiles/ms/icons/red-dot.png'
                             />
                         ))}
 
@@ -106,16 +115,16 @@ class Map extends Component {
 
                             >
                                 <Grid>
-                                    <Grid.Row style={{padding: '0'}}>
+                                    <Grid.Row style={{ padding: '0' }}>
                                         <Grid.Column style={styles.infoWindow.gridColumn} textAlign="center" width={16}>
                                             <h3 style={styles.infoWindow.h3Tag}>{this.state.selectedVenue.restaurant_name}</h3>
                                         </Grid.Column>
                                         <Grid.Column style={styles.infoWindow.gridColumn} width={16} textAlign="center">
                                             <p style={styles.infoWindow.pTag}>
                                                 {this.state.selectedVenue.address}
-                                                <br/>
+                                                <br />
                                                 {this.state.selectedVenue.city}
-                                                <br/>
+                                                <br />
                                                 {this.state.selectedVenue.phone_number.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3")}
                                             </p>
                                         </Grid.Column>
