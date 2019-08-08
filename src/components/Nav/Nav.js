@@ -79,6 +79,13 @@ class Nav extends Component {
             <Grid.Column width={3} textAlign="right">
               {this.props.user.id ?
                 <>
+                {/* show a quick link back to the map for easy navigation on ever page except home */}
+                {
+                  this.props.location.pathname !== '/home' && 
+                  <Link to='/home'>
+                    <Icon name="map outline" size="large" inverted/>
+                  </Link>
+                }
                 </>
                 :
                 <h4 style={{ color: 'white' }} onClick={() => this.setState({ ...this.state, loginModal: true })}>Login</h4>
