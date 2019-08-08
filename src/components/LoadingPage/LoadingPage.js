@@ -24,20 +24,33 @@ class LoadingPage extends Component {
 
     // when component mounts, check to see if browser can get user location
     componentDidMount() {
-        this.checkForLocation();
+        setTimeout(this.setPosition, 2500);
+        // this.checkForLocation();
     }
 
+    setPosition = () => {
+        // console.log('set position manually');
+        // if there is no location, set it manually
+            this.setUserLocation({
+                coords: {
+                    latitude: 44.9781305,
+                    longitude: -93.263257,
+                }
+            })
+    }
     // if browser can get location, try to get it
     // if successful, call setUserLocation function, otherwise, call setPositionError function
     checkForLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(this.setUserLocation, this.setPositionError)
-        } else {
-            this.setState({
-                ...this.state,
-                locationErrorMsg: 'Geolocation is not supported by this browser. Unfortunately you will be unable to use Budge.',
-                locationError: true,
-            })
+        if (!this.props.user.latitude) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(this.setUserLocation, this.setPositionError)
+            } else {
+                this.setState({
+                    ...this.state,
+                    locationErrorMsg: 'Geolocation is not supported by this browser. Unfortunately you will be unable to use Budge.',
+                    locationError: true,
+                })
+            }
         }
     }
 
@@ -113,7 +126,7 @@ class LoadingPage extends Component {
                     <Grid.Row textAlign="center">
                         {
                             !this.props.user.latitude &&
-                            <p style={{position: 'absolute'}} id="loadingMessage">Getting your budging location. Please Wait.</p>
+                            <p style={{ position: 'absolute' }} id="loadingMessage">Getting your budging location. Please Wait.</p>
                         }
                     </Grid.Row>
                     <Grid.Row textAlign="center">
