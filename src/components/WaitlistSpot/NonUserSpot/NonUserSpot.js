@@ -167,7 +167,7 @@ class NonUserSpot extends Component {
                 >
                     <Header content='Offer Made!' />
                     <Modal.Content>
-                        <h3>Your offer has been sent to {this.props.selectedSpot.reservation_name}</h3>
+                        <h3>Your offer has been sent to {this.props.selectedSpot.username}</h3>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='green' onClick={this.closeOfferModal} inverted>
