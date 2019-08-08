@@ -19,7 +19,7 @@ class HomeMap extends Component {
 
     componentDidMount() {
         this.getVenues();
-        setTimeout(this.setPosition, 2500);
+        setTimeout(this.setPosition, 1500);
     }
 
     setPosition = () => {
