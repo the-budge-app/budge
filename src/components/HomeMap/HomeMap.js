@@ -19,7 +19,18 @@ class HomeMap extends Component {
 
     componentDidMount() {
         this.getVenues();
-        this.checkUserLocation();
+        setTimeout(this.setPosition, 2500);
+    }
+
+    setPosition = () => {
+        // console.log('set position manually');
+        // if there is no location, set manually
+        this.setUserLocation({
+            coords: {
+                latitude: 44.9781305,
+                longitude: -93.263257,
+            }
+        })
     }
 
     getVenues = () => {
@@ -92,16 +103,19 @@ class HomeMap extends Component {
             <>
                 <SearchVenue />
                 <div className="mapContainer">
-                    <MapComponent
-                        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&v=3.exp&libraries=geometry,drawing,places`}
-                        loadingElement={<div style={{ height: "100%" }} />}
-                        containerElement={<div style={{ height: "100%" }} />}
-                        mapElement={<div style={{ height: "100%" }} />}
-                        defaultLat={Number(this.props.user.latitude)}
-                        defaultLong={Number(this.props.user.longitude)}
-                        history={this.props.history}
-                        className="mapContainer"
-                    />
+                    {
+                        this.props.user.latitude &&
+                        <MapComponent
+                            googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+                            loadingElement={<div style={{ height: "100%" }} />}
+                            containerElement={<div style={{ height: "100%" }} />}
+                            mapElement={<div style={{ height: "100%" }} />}
+                            defaultLat={Number(this.props.user.latitude)}
+                            defaultLong={Number(this.props.user.longitude)}
+                            history={this.props.history}
+                            className="mapContainer"
+                        />
+                    }
                 </div>
 
                 {/* Below is the dialog for error on getting user location */}
