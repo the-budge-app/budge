@@ -8,14 +8,8 @@ import {
 
 import { connect } from 'react-redux';
 
-import Nav from '../Nav/Nav';
-// import Footer from '../Footer/ActivityFooter';
-
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
-
-
-
-
+import Nav from '../Nav/Nav';
 import HomeMap from '../HomeMap/HomeMap'
 import Venue from '../Venue/Venue'
 import LoadingPage from '../LoadingPage/LoadingPage'
@@ -24,8 +18,6 @@ import Contact from '../Contact/Contact';
 import SemanticPlayground from '../SemanticPlayground'
 import Activity from '../Activity/Activity';
 import Admin from '../Admin/Admin';
-
-import './App.css';
 import SellerConfirm from '../Confirmation/SellerConfirm';
 import BuyerConfirm from '../Confirmation/BuyerConfirm';
 import SellerOffer from '../SellerOffer/SellerOffer';
@@ -36,6 +28,8 @@ import WaitlistSpot from '../WaitlistSpot/WaitlistSpot';
 import ErrorPage from '../ErrorPage/ErrorPage'
 import JoinWaitlist from '../JoinWaitlist/JoinWaitlist'
 import Login from '../LoginPage/LoginPage'
+
+import './App.css';
 
 class App extends Component {
   componentDidMount() {

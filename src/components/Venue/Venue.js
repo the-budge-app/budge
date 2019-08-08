@@ -7,7 +7,7 @@ import Login from '../LoginPage/LoginPage'
 import Register from '../RegisterPage/RegisterPage'
 
 // import components from Semantic UI
-import { Button, Icon, Checkbox, Grid, Segment, Modal, Header, Divider } from 'semantic-ui-react';
+import { Button, Icon, Checkbox, Grid, Segment, Modal, Header } from 'semantic-ui-react';
 
 const styles = {
     mainDiv: {
@@ -137,7 +137,6 @@ class Venue extends Component {
                 loginModal: true,
             })
         }
-
     }
 
     //function to toggle between showing all spots or only budgable spots
@@ -238,7 +237,6 @@ class Venue extends Component {
                     </Grid.Row>
                 </Grid>
                 </Segment>
-                {/* <pre>{JSON.stringify(this.state.active)}</pre> */}
             </div>
             <WaitlistFooter />
 

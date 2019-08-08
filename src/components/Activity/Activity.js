@@ -4,105 +4,87 @@ import { Feed, Icon, Grid } from 'semantic-ui-react';
 import ActivityFooter from '../Footer/ActivityFooter';
 
 class Activity extends Component {
+
+    state = {
+        budges: [
+            {
+                id: 1,
+                budger: 'JosephJoestar',
+                budgee: 'Dio',
+                action: 'budged',
+                price: 8,
+                time: 27,
+                wows: 4,
+            },
+            {
+                id: 2,
+                budger: 'SuzyQ',
+                budgee: null,
+                action: 'joined the waitlist!',
+                price: null,
+                time: 67,
+                wows: 4,
+            },
+            {
+                id: 3,
+                budger: 'OwenWowlson',
+                budgee: 'SuzyQ',
+                action: 'budged',
+                price: 18,
+                time: 14,
+                wows: 2,
+            },
+            {
+                id: 4,
+                budger: 'Dio',
+                budgee: 'OwenWowlson',
+                action: 'rejected',
+                price: 5,
+                time: 42,
+                wows: 2,
+            },
+        ]
+    }
+
     render() {
         return (
             <>
                 <Grid>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Feed>
-                                <Feed.Event>
-                                    <Feed.Content>
-                                        <Feed.Summary>
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>JosephJoestar</Feed.User> budged
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>Dio</Feed.User> for $8
-                                            <Feed.Date>1 Hour Ago</Feed.Date>
-                                        </Feed.Summary>
-                                        <Feed.Meta>
-                                            <Feed.Like>
-                                                <Icon name='like' />
-                                                4 Wows
-                                            </Feed.Like>
-                                        </Feed.Meta>
-                                    </Feed.Content>
-                                </Feed.Event>
-                            </Feed>
-                        </Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Feed>
-                                <Feed.Event>
-                                    <Feed.Content>
-                                        <Feed.Summary>
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>SuzyQ</Feed.User> budged joined the waitlist!
-                                            <Feed.Date>20 Minutes Ago</Feed.Date>
-                                        </Feed.Summary>
-                                        <Feed.Meta>
-                                            <Feed.Like>
-                                                <Icon name='like' />
-                                                7 Wows
-                                            </Feed.Like>
-                                        </Feed.Meta>
-                                    </Feed.Content>
-                                </Feed.Event>
-                            </Feed>
-                        </Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Feed>
-                                <Feed.Event>
-                                    <Feed.Content>
-                                        <Feed.Summary>
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>OwenWowlson</Feed.User> budged
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>JosephJoestar</Feed.User> for $18
-                                            <Feed.Date>16 Minutes Ago</Feed.Date>
-                                        </Feed.Summary>
-                                        <Feed.Meta>
-                                            <Feed.Like>
-                                                <Icon name='like' />
-                                                2 Wows
-                                            </Feed.Like>
-                                        </Feed.Meta>
-                                    </Feed.Content>
-                                </Feed.Event>
-                            </Feed>
-                        </Grid.Column>
-                    </Grid.Row>
-
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Feed>
-                                <Feed.Event>
-                                    <Feed.Content>
-                                        <Feed.Summary>
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>Dio</Feed.User> budged 
-                                            <Icon name="user circle" size="large" />
-                                            <Feed.User>JosephJoestar</Feed.User> for $60
-                                            <Feed.Date>20 Minutes Ago</Feed.Date>
-                                        </Feed.Summary>
-                                        <Feed.Meta>
-                                            <Feed.Like>
-                                                <Icon name='like' />
-                                                7 Wows
-                                            </Feed.Like>
-                                        </Feed.Meta>
-                                    </Feed.Content>
-                                </Feed.Event>
-                            </Feed>
-                        </Grid.Column>
-                    </Grid.Row>
+                    {this.state.budges.map(budge => {
+                        return (
+                            <Grid.Row key={budge.id}>
+                                <Grid.Column>
+                                    <Feed>
+                                        <Feed.Event>
+                                            <Feed.Content>
+                                                <Feed.Summary>
+                                                    <Icon name="user circle" size="large" />
+                                                    <Feed.User>{budge.budger}</Feed.User>
+                                                    <span> {budge.action}</span>
+                                                    {
+                                                        budge.budgee &&
+                                                        <>
+                                                            <Icon name="user circle" size="large" />
+                                                            <Feed.User>{budge.budgee}</Feed.User> for ${budge.price}
+                                                        </>
+                                                    }
+                                                </Feed.Summary>
+                                                <Feed.Meta>
+                                                    <Feed.Date style={{marginLeft: '9px', marginTop: '-2px'}}>{budge.time} Minutes Ago</Feed.Date>
+                                                    <Feed.Like>
+                                                        <Icon name='like' />
+                                                        {budge.wows} Wows
+                                                    </Feed.Like>
+                                                </Feed.Meta>
+                                            </Feed.Content>
+                                        </Feed.Event>
+                                    </Feed>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                    })}
                 </Grid>
-            <ActivityFooter/>
+                <ActivityFooter />
             </>
         )
     }

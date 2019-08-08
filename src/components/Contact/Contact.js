@@ -102,9 +102,8 @@ class Contact extends Component {
                         </Grid.Row>
                     </Grid>
                 </Form>
-                {/* <pre>{JSON.stringify(this.state)}, Null, 2</pre> */}
 
-                {/* Below is the dialog for error on getting user location */}
+                {/* Below is the dialog for successfully sending message */}
                 <Modal
                     open={this.state.successModal}
                     basic

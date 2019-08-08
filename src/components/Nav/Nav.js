@@ -28,14 +28,42 @@ class Nav extends Component {
   state = {
     visible: false,
     loginModal: false,
+    menuLinks: [
+      {
+        name: 'Home',
+        to: '/home',
+        onClick: () => this.setState({ ...this.state, visible: !this.state.visible }),
+        icon: 'map marker alternate',
+      },
+      {
+        name: 'Profile',
+        to: '/profile',
+        onClick: () => this.setState({ ...this.state, visible: !this.state.visible }),
+        icon: 'user',
+      },
+      {
+        name: 'Payments',
+        to: '/payment',
+        onClick: () => this.setState({ ...this.state, visible: !this.state.visible }),
+        icon: 'dollar sign',
+      },
+      {
+        name: 'Contact',
+        to: '/contact',
+        onClick: () => this.setState({ ...this.state, visible: !this.state.visible }),
+        icon: 'mail outline',
+      },
+      {
+        name: 'Log Out',
+        to: '/loading',
+        onClick: () => {
+          this.setState({ ...this.state, visible: !this.state.visible });
+          this.props.dispatch({ type: 'LOGOUT' });
+        },
+        icon: 'log out'
+      },
+    ]
   }
-
-  toggleVisible = () => {
-    this.setState({
-      visible: !this.state.visible
-    })
-  }
-
 
   render() {
     return (
@@ -43,7 +71,7 @@ class Nav extends Component {
         <Grid className="nav">
           <Grid.Row verticalAlign='middle'>
             <Grid.Column width={3}>
-              <Icon name='bars' size='big' className='menuIcon' onClick={this.toggleVisible} />
+              <Icon name='bars' size='big' className='menuIcon' onClick={() => this.setState({ ...this.state, visible: !this.state.visible })} />
             </Grid.Column>
             <Grid.Column width={10} textAlign="center">
               <h2 style={styles.logo}>Budge</h2>
@@ -69,43 +97,30 @@ class Nav extends Component {
           width='thin'
         >
           <Menu.Item style={{ textAlign: 'left' }}>
-            <Link to='/payment'>
-              <h3 style={styles.accountBalance}>Account Balance:</h3>
-              <h3 style={styles.accountBalance}>${this.props.user.account_balance}</h3>
-            </Link>
-            <Icon style={styles.closeIcon} inverted size="large" onClick={this.toggleVisible} name='close' />
+            { 
+              this.props.user.id &&
+              <>
+                <Link to='/payment'>
+                  <h3 style={styles.accountBalance}>Account Balance:</h3>
+                  <h3 style={styles.accountBalance}>${this.props.user.account_balance}</h3>
+                </Link>
+              </>
+            }
+            <Icon style={styles.closeIcon} inverted size="large" onClick={() => this.setState({ ...this.state, visible: !this.state.visible })} name='close' />
           </Menu.Item>
-          <Menu.Item style={{ textAlign: 'left' }}>
-            <Link onClick={this.toggleVisible} to='/home'>
-              <Icon name='map marker alternate' />
-              Home/Map
-            </Link>
-          </Menu.Item>
-          <Menu.Item style={{ textAlign: 'left' }}>
-            <Link onClick={this.toggleVisible} to='/profile'>
-              <Icon name='user' />
-              Profile
-            </Link>
-          </Menu.Item>
-          <Menu.Item style={{ textAlign: 'left' }}>
-            <Link onClick={this.toggleVisible} to='/payment'>
-              <Icon name='dollar sign' />
-              Payments
-            </Link>
-          </Menu.Item>
-          <Menu.Item style={{ textAlign: 'left' }}>
-            <Link onClick={this.toggleVisible} to="/contact">
-              <Icon name='mail outline' />
-              Contact
-            </Link>
-          </Menu.Item>
-          <Menu.Item style={{ textAlign: 'left' }}>
-            <Link to="/loading" onClick={() => this.props.dispatch({ type: 'LOGOUT' })}>
-              <Icon onClick={this.toggleVisible} name='log out' />
-              Log Out
-            </Link>
-          </Menu.Item>
+          {/* map through the array of menu items */}
+          {this.state.menuLinks.map((link, index) => {
+            return (
+              <Menu.Item style={{ textAlign: 'left' }} key={index}>
+                <Link onClick={link.onClick} to={link.to}>
+                  <Icon name={link.icon} />
+                  {link.name}
+                </Link>
+              </Menu.Item>
+            )
+          })}
         </Sidebar>
+
         {/* Modal for login */}
         <Modal
           open={this.state.loginModal}
@@ -122,8 +137,6 @@ class Nav extends Component {
               :
               <Register closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
             }
-
-
           </Modal.Content>
         </Modal>
       </>

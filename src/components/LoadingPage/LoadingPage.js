@@ -35,7 +35,7 @@ class LoadingPage extends Component {
         } else {
             this.setState({
                 ...this.state,
-                locationErrorMsg: 'Geolocation is not supported by this browser.',
+                locationErrorMsg: 'Geolocation is not supported by this browser. Unfortunately you will be unable to use Budge.',
                 locationError: true,
             })
         }
@@ -122,7 +122,6 @@ class LoadingPage extends Component {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-
 
                 {/* Below is the dialog for error on getting user location */}
                 <Modal
