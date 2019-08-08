@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Card, Image, Input, Button, Icon, Grid, Modal, Header, Segment } from 'semantic-ui-react';
+import { Card, Image, Input, Button, Icon, Grid, Modal, Header, Segment, Rating } from 'semantic-ui-react';
 import './Profile.css';
 
 class Profile extends Component {
@@ -15,6 +15,7 @@ class Profile extends Component {
 
 componentDidMount(){
     this.props.dispatch({ type: 'FETCH_USER' });
+    this.props.dispatch({ type: 'FETCH_RATING', payload: this.props.user.id });
 }
 
     toggleEditMode = () => {
@@ -78,6 +79,9 @@ componentDidMount(){
                             <Grid.Column width={16} className="profileCard">
                                 <Card>
                                     <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSduvWS9MKk0X6lxZBGRiw5hAhtiACpKFrwk9f_wxA47sxuuQq9DQ' wrapped ui={false} />
+                                    <br />
+                                    <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
+                                    <h5>{this.props.customerRating.rating && this.props.customerRating.rating.substring(0,3)}</h5>
                                     <Card.Content>
                                         <Card.Header>{this.state.EditModeOn === false ?
                                             this.props.user.username
@@ -164,7 +168,8 @@ componentDidMount(){
 }
 
 
-const mapStateToProps = state => ({
-    user: state.user,
+const mapStateToProps = reduxState => ({
+    user: reduxState.user,
+    customerRating: reduxState.customerRating,
 });
 export default connect(mapStateToProps)(Profile);
