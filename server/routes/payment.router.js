@@ -1,20 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-
-// // get request for all participating venues in db
-// router.get('/', (req, res) => {
-//     pool.query(`SELECT * FROM "restaurant"`)
-//         .then( response => {
-//             res.send(response.rows);
-//         }) 
-//         .catch( error => {
-//             console.log('Error in SELECT query from restaurant:', error)
-//         })   
-// })
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 //deduct the offer price from account balance after seller accepts the offer
-router.put('/offer-accepted', (req, res) => {
+router.put('/offer-accepted', rejectUnauthenticated, (req, res) => {
   console.log('inside update account credit route');
   console.log('buyer id', req.body.buyerId, 'price', req.body.offerPrice, 'seller', req.user.id);
   //update seller's account
@@ -46,8 +36,8 @@ router.put('/offer-accepted', (req, res) => {
   
 })
 
-//get request to get the single restaurant + waitlist information that the user selected
-router.put('/:id', (req, res) => {
+//post route to add funds
+router.put('/:id', rejectUnauthenticated, (req, res) => {
     const updateBalance = req.body;
     console.log(req.body);
     

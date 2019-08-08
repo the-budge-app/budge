@@ -1,8 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 // get request for all participating venues in db
+//this route is open to unauthenticated users
 router.get('/', (req, res) => {
     console.log('getting all venues.')
     pool.query(`SELECT * FROM "restaurant"`)
@@ -15,6 +17,7 @@ router.get('/', (req, res) => {
 })
 
 // get request to get the single restaurant info that the user clicked to view
+//this route is unauthenticated
 router.get('/selected/:id', (req, res) => {
     // console.log('Getting info for restaurant', req.params.id);
     pool.query(`SELECT * from "restaurant" WHERE "id" = $1 LIMIT 1;`, [req.params.id])
@@ -27,7 +30,7 @@ router.get('/selected/:id', (req, res) => {
 })
 
 //get request to get only the budgable waitlist
-router.get('/budgable/:restaurant_id', (req, res) => {
+router.get('/budgable/:restaurant_id', rejectUnauthenticated, (req, res) => {
     console.log('in budgable wl', req.params.restaurant_id);
     pool.query(`SELECT "party_size" FROM "waitlist"
         WHERE "user_id" = $1
@@ -59,6 +62,7 @@ router.get('/budgable/:restaurant_id', (req, res) => {
 
 
 //get request to get waitlist information for the restaurant that the user selected
+//this route is open to unauthenticated users
 router.get('/waitlist/:restaurant_id', (req, res) => {
     pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."status_code" AS "waitlist_status_code", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price", ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
     AS "latest_wait_time"
@@ -80,7 +84,7 @@ router.get('/waitlist/:restaurant_id', (req, res) => {
 })
 
 //get request to get the user's waitlist for one restaurant
-router.get(`/user_waitlist/:restaurant_id`, (req, res) => {
+router.get(`/user_waitlist/:restaurant_id`, rejectUnauthenticated, (req, res) => {
     // console.log(req.user);
     if(req.user) {
         pool.query(`SELECT * FROM "waitlist"
