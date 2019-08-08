@@ -1,11 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 
 //post customer feedback to database
-router.post('/', rejectUnauthenticated, (req, res) => {
+router.post('/', (req, res) => {
     const newEntry = req.body;
     console.log(req.body);
     
