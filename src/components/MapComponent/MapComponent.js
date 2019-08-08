@@ -45,7 +45,6 @@ class Map extends Component {
 
     setSelectedVenue = (venue) => {
         // when one venue is clicked, set the data for that venue in local state
-        // move this to redux later
         this.setState({
             ...this.state,
             selectedVenue: venue,

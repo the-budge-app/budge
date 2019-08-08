@@ -10,9 +10,6 @@ const panes = [
   ]
 
 class PaymentPage extends Component {
-
-
-
     render() {
         return (
             <div  >

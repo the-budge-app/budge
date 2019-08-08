@@ -43,17 +43,6 @@ class HomeMap extends Component {
         })
     }
 
-    // function to set user location in the user object in redux
-    setUserLocation = (position) => {
-        this.props.dispatch({
-            type: 'SET_USER_LOCATION', payload: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-            }
-        })
-
-    }
-
     // set local state error data if there was an error with retrieving location
     setPositionError = (error) => {
         switch (error.code) {

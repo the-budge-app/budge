@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 
-
 // import Semantic UI Component 
 import { Grid, Segment, Button, Icon, Rating, Input, Modal, Header } from 'semantic-ui-react'
 
@@ -60,7 +59,6 @@ class NonUserSpot extends Component {
                     lastRejected: response.data.offer_price,
                 })
             })
-
     }
 
     handleInput = (event) => {
@@ -75,8 +73,6 @@ class NonUserSpot extends Component {
         // check user account balance
         // load modal if user doesn't have enough
         // otherwise, fire off make offer saga probably 
-
-        // TODO - maybe add a server side check for account balance
 
         if (this.props.user.account_balance >= this.state.offerPrice) {
             axios.post('/api/offers/make-new', {
@@ -120,16 +116,6 @@ class NonUserSpot extends Component {
                                             <h2 style={styles.headingTwo}>{this.props.selectedSpot.username}</h2>
                                         </Grid.Column>
                                     </Grid.Row>
-                                    {/* <Grid.Row style={styles.gridRow}>
-                                        <Grid.Column width={8}>
-                                            <Icon className="bump-up" size="large" name="user" />
-                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.party_size}</h4>
-                                        </Grid.Column>
-                                        <Grid.Column width={8}>
-                                            <Icon className="bump-up" size="large" name="clock" />
-                                            <h4 style={{ display: 'inline-block' }}>{this.props.selectedSpot.latest_wait_time}</h4>
-                                        </Grid.Column>
-                                    </Grid.Row> */}
                                     <Grid.Row style={styles.gridRow}>
                                         <Grid.Column width={16}>
                                             <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0, 1)} maxRating={5} disabled size='large' />
@@ -141,11 +127,9 @@ class NonUserSpot extends Component {
                         </Grid.Row>
                         <Grid.Row style={styles.gridRow}>
                             <Grid.Column width={16}>
-                                {/* <Icon className="bump-up" size="large" name="user" /> */}
                                 <h5 style={{ ...styles.headingFive, display: 'inline-block' }}>Party Size: {this.props.selectedSpot.party_size}</h5>
                             </Grid.Column>
                             <Grid.Column width={16}>
-                                {/* <Icon className="bump-up" size="large" name="clock" /> */}
                                 <h5 style={{ ...styles.headingFive, display: 'inline-block' }}>Wait Time: {this.props.selectedSpot.latest_wait_time} mins</h5>
                             </Grid.Column>
                         </Grid.Row>
@@ -161,7 +145,7 @@ class NonUserSpot extends Component {
                                     type="number"
                                     label="$"
                                     value={this.state.offerPrice}
-                                    // placeholder={this.state.lastRejected + 1}
+                                    placeholder= 'Enter Offer'
                                     onChange={this.handleInput}
                                 />
                             </Grid.Column>
