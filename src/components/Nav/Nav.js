@@ -53,16 +53,13 @@ class Nav extends Component {
         onClick: () => this.setState({ ...this.state, visible: !this.state.visible }),
         icon: 'mail outline',
       },
-      {
-        name: 'Log Out',
-        to: '/loading',
-        onClick: () => {
-          this.setState({ ...this.state, visible: !this.state.visible });
-          this.props.dispatch({ type: 'LOGOUT' });
-        },
-        icon: 'log out'
-      },
     ]
+  }
+
+
+  logout = () => {
+    this.setState({ ...this.state, visible: !this.state.visible });
+    this.props.dispatch({ type: 'LOGOUT' });
   }
 
   render() {
@@ -79,13 +76,13 @@ class Nav extends Component {
             <Grid.Column width={3} textAlign="right">
               {this.props.user.id ?
                 <>
-                {/* show a quick link back to the map for easy navigation on ever page except home */}
-                {
-                  this.props.location.pathname !== '/home' && 
-                  <Link to='/home'>
-                    <Icon name="map outline" size="large" inverted/>
-                  </Link>
-                }
+                  {/* show a quick link back to the map for easy navigation on ever page except home */}
+                  {
+                    this.props.location.pathname !== '/home' &&
+                    <Link to='/home'>
+                      <Icon name="map outline" size="large" inverted />
+                    </Link>
+                  }
                 </>
                 :
                 <h4 style={{ color: 'white' }} onClick={() => this.setState({ ...this.state, loginModal: true })}>Login</h4>
@@ -103,8 +100,8 @@ class Nav extends Component {
           visible={this.state.visible}
           width='thin'
         >
-          <Menu.Item style={{ textAlign: 'left' }}>
-            { 
+          <Menu.Item style={{ textAlign: 'left', minHeight: '40px' }}>
+            {
               this.props.user.id &&
               <>
                 <Link to='/payment'>
@@ -126,6 +123,30 @@ class Nav extends Component {
               </Menu.Item>
             )
           })}
+          <Menu.Item style={{ textAlign: 'left' }}>
+            {this.props.user.id ?
+              <Link onClick={this.logout} to={'/loading'}>
+                <Icon name='sign-out' />
+                Log Out
+              </Link>
+              :
+              <Link onClick={() => this.setState({ ...this.state, loginModal: true })}>
+                <Icon name='sign-in' />
+                Login
+              </Link>
+            }
+          </Menu.Item>
+          {this.props.user.admin &&
+            <Menu.Item style={{ textAlign: 'left' }}>
+              <Link to='/admin'>
+                <Icon name='user secret'/>
+                Admin
+              </Link>
+            </Menu.Item>
+          }
+
+
+
         </Sidebar>
 
         {/* Modal for login */}
