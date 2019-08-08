@@ -68,7 +68,6 @@ class Map extends Component {
     }
 
     viewVenue = () => {
-        this.checkDistance()
         this.props.history.push(`/venue/${this.state.selectedVenue.id}`);
     }
 
