@@ -217,7 +217,7 @@ class Venue extends Component {
                                     //secondary color if it is not the spot of current user  
                                     secondary={venue.user_id !== this.props.user.id}
                                     //button disabled if there is an active offer on this spot (waitlist status code = 3) 
-                                    disabled={venue.waitlist_status_code === 3 && venue.user_id !== this.props.user.id}
+                                    disabled={(venue.waitlist_status_code === 3 && venue.user_id !== this.props.user.id) || (this.props.userWaitlist.party_size && venue.party_size !== this.props.userWaitlist.party_size) }
                                     onClick={() => this.handleSelectSpot(venue)}>
                                     <Icon name="user" />{venue.party_size}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
             
