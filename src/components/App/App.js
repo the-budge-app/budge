@@ -13,9 +13,7 @@ import Nav from '../Nav/Nav';
 import HomeMap from '../HomeMap/HomeMap'
 import Venue from '../Venue/Venue'
 import LoadingPage from '../LoadingPage/LoadingPage'
-import StatusPage from '../StatusPage/StatusPage'
 import Contact from '../Contact/Contact';
-import SemanticPlayground from '../SemanticPlayground'
 import Activity from '../Activity/Activity';
 import Admin from '../Admin/Admin';
 import SellerConfirm from '../Confirmation/SellerConfirm';
@@ -51,7 +49,6 @@ class App extends Component {
             <Route exact path="/loading" component={LoadingPage} />
 
             {/* route to test any semantic ui components on */}
-            <Route exact path="/semantic-playground" component={SemanticPlayground} />
             <Route exact path="/login" component={Login}/>
 
             {/* route for the map component  */}
@@ -64,7 +61,6 @@ class App extends Component {
             If the user is not logged in, the ProtectedRoute will show the 'Login' or 'Register' page.
             Even though it seems like they are different pages, the user is always on localhost:3000/home */}
 
-            <ProtectedRoute exact path="/status" component={StatusPage}/>
             <ProtectedRoute exact path="/buyer-confirm" component={BuyerConfirm}/>
             <ProtectedRoute exact path="/seller-confirm/:offerId/:buyerId" component={SellerConfirm}/>
             <ProtectedRoute exact path="/payment" component={PaymentPage}/>
