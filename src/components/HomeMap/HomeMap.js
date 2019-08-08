@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MapComponent from '../MapComponent/MapComponent'
+import SearchVenue from '../SearchVenue/SearchVenue';
 
 // import Semantic UI Components 
 import { Modal, Button, Icon, Header } from 'semantic-ui-react'
@@ -89,6 +90,7 @@ class HomeMap extends Component {
     render() {
         return (
             <>
+                <SearchVenue />
                 <div className="mapContainer">
                     <MapComponent
                         googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${MAPS_KEY}&v=3.exp&libraries=geometry,drawing,places`}
