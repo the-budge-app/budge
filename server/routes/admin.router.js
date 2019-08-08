@@ -4,11 +4,18 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
     console.log('getting all contact.')
-    pool.query(`SELECT * FROM "admin" JOIN "user" ON "user"."admin"
-    WHERE "admin" = 'true';`)
-        .then( response => {
-            res.send(response.rows);
-        }) 
+    pool.query(`SELECT "admin" FROM "user" WHERE "id" = $1;`, [req.user.id])
+        .then(result => {
+            if(result.rows[0].admin) {
+                pool.query(`SELECT * FROM "admin"`)
+                    .then( result => {
+                        console.log('admin table',result.rows);
+                        res.send(result.rows);
+                    }) 
+            } else {
+                res.send([]);
+            }
+        } )
         .catch( error => {
             console.log('Error in SELECT query from admin', error)
         })   
