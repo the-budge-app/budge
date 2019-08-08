@@ -1,8 +1,10 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+
 //get route to get buyer waitlist information for seller receive offer page
-router.get('/buyer/:venueId/:waitlistId/:buyerId', (req, res) => {
+router.get('/buyer/:venueId/:waitlistId/:buyerId', rejectUnauthenticated, (req, res) => {
     console.log('user id', req.user.id);
     console.log('waitlist id', req.params.waitlistId);
     console.log('venue', req.params.venueId);
@@ -37,7 +39,7 @@ router.get('/buyer/:venueId/:waitlistId/:buyerId', (req, res) => {
 })
 
 //get route to get seller waitlist information for seller receive offer page
-router.get(`/seller/:waitlist_id`, (req, res) => {
+router.get(`/seller/:waitlist_id`, rejectUnauthenticated, (req, res) => {
     console.log('in seller route, waitlist id is', req.params.waitlist_id);
     pool.query(`SELECT *, ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
         AS "latest_wait_time" FROM "waitlist"

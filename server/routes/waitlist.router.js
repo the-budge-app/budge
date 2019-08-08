@@ -1,10 +1,9 @@
-
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-
-router.get('/singleSpot/:id', (req, res) => {
+router.get('/singleSpot/:id', rejectUnauthenticated, (req, res) => {
     // console.log('getting the data for waitList spot', req.params.id);
     pool.query(`SELECT *, "waitlist"."id" AS "id", ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
     AS "latest_wait_time" 
@@ -23,7 +22,7 @@ router.get('/singleSpot/:id', (req, res) => {
 
 
 // route to check whether the user is currently active on a waitlist
-router.get('/check-waitlist-status', (req, res) => {
+router.get('/check-waitlist-status', rejectUnauthenticated, (req, res) => {
     pool.query(`SELECT * FROM "waitlist"
     WHERE "user_id" = $1 AND "status_code" = 1;`, [req.user.id])
         .then( result => {
@@ -42,7 +41,7 @@ router.get('/check-waitlist-status', (req, res) => {
         })
 })
 
-router.post('/join', (req, res) => {
+router.post('/join', rejectUnauthenticated, (req, res) => {
     const user_id = req.body.user_id
     const id = req.body.id
     const reservation_name = req.body.reservation_name
@@ -59,7 +58,7 @@ router.post('/join', (req, res) => {
 });
 
 //put route to swap spots after seller accepts the offer
-router.put('/swap', (req, res) => {
+router.put('/swap', rejectUnauthenticated, (req, res) => {
     console.log('in swap');
     console.log('buyer_waitlist', req.query.buyerWaitlist);
     console.log('seller_waitlist', req.query.sellerWaitlist);
@@ -81,7 +80,7 @@ router.put('/swap', (req, res) => {
 })
 
 //put route to update waitlist status from pending to active after seller rejects offer
-router.put('/reject/:waitlistId', (req, res) => {
+router.put('/reject/:waitlistId', rejectUnauthenticated, (req, res) => {
     pool.query(`UPDATE "waitlist" SET "status_code" = 1
     WHERE "id" = $1
     AND "user_id" = $2;`, [req.params.waitlistId, req.user.id])
@@ -93,7 +92,7 @@ router.put('/reject/:waitlistId', (req, res) => {
         })
 })
 
-router.put('/leave/:id', (req, res) => {
+router.put('/leave/:id', rejectUnauthenticated, (req, res) => {
     pool.query(`UPDATE "waitlist" SET "status_code" = 2 
     WHERE "id" =$1 AND "user_id" =$2;`, [req.params.id, req.user.id])
     .then(

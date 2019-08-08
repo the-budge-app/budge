@@ -1,9 +1,11 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+
 
 //get request to calculate the rating for one given user
-router.get('/getrating/:id', (req, res) => {
+router.get('/getrating/:id', rejectUnauthenticated, (req, res) => {
     pool.query(`SELECT AVG("rating") AS "rating" FROM "customer_rating" WHERE "user_id" = $1;`, [req.params.id])
         .then(
             result => {
@@ -17,7 +19,7 @@ router.get('/getrating/:id', (req, res) => {
         })
   });
 
-router.get('/getusername/:id', (req, res) => {
+router.get('/getusername/:id', rejectUnauthenticated, (req, res) => {
     console.log(req.params)
     pool.query(`SELECT "username" FROM "user"
     WHERE "user"."id" = $1;`, [req.params.id])
@@ -32,7 +34,7 @@ router.get('/getusername/:id', (req, res) => {
         })
 })
 
-router.post('/', (req, res) => {
+router.post('/', rejectUnauthenticated, (req, res) => {
     const user_id = req.body.user_id
     const given_by = req.user.id
     const rating = req.body.rating

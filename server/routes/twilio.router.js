@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 // import twilio keys
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -9,7 +10,7 @@ const client = require('twilio')(accountSid, authToken);
 
 // notify the buyer that the seller has accepted their offer
 // takes data object that includes the buyer id and preferably the offerId
-router.post('/accept-offer', (req, res) => {
+router.post('/accept-offer', rejectUnauthenticated, (req, res) => {
     // get the phone number for the buyer
     pool.query(`SELECT "phone_number" FROM "user" WHERE "id" = $1;`, [req.body.buyerId])
         .then(result => {

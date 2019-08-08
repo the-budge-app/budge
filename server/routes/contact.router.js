@@ -1,20 +1,11 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-// // get request for all participating venues in db
-// router.get('/', (req, res) => {
-//     pool.query(`SELECT * FROM "restaurant"`)
-//         .then( response => {
-//             res.send(response.rows);
-//         }) 
-//         .catch( error => {
-//             console.log('Error in SELECT query from restaurant:', error)
-//         })   
-// })
 
-//get request to get the single restaurant + waitlist information that the user selected
-router.post('/', (req, res) => {
+//post customer feedback to database
+router.post('/', rejectUnauthenticated, (req, res) => {
     const newEntry = req.body;
     console.log(req.body);
     

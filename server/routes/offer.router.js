@@ -2,6 +2,7 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -9,7 +10,7 @@ const client = require('twilio')(accountSid, authToken);
 
 // get request to get offers for a single user
 // id is the waitlist id for the user
-router.get('/user', (req, res) => {
+router.get('/user', rejectUnauthenticated, (req, res) => {
     console.log('Getting offers for user', req.query);
     console.log(req.user.id);
     // get the offer the user has made first
@@ -43,7 +44,7 @@ router.get('/user', (req, res) => {
         })
 })
 
-router.put('/update', (req, res) => {
+router.put('/update', rejectUnauthenticated, (req, res) => {
     console.log('updating offer', req.body.offerId, 'to code', req.body.statusCode)
     pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
         .then(result => {
@@ -56,7 +57,7 @@ router.put('/update', (req, res) => {
 
 // to retract an offer, we have to change the status of the offer
 // and then get the waitlist id to update to waitlist status back to active
-router.put('/buyer-retract', (req, res) => {
+router.put('/buyer-retract', rejectUnauthenticated, (req, res) => {
     console.log('Updating offer', req.body.offerId, 'to status', req.body.statusCode);
     pool.query(`UPDATE "offer" SET "status_code" = $1, "status_time"=NOW() WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
         .then(result => {
@@ -78,7 +79,7 @@ router.put('/buyer-retract', (req, res) => {
         })
 })
 
-router.post('/make-new', (req, res) => {
+router.post('/make-new', rejectUnauthenticated, (req, res) => {
 
     // TODO research async/await
 
@@ -137,7 +138,7 @@ router.post('/make-new', (req, res) => {
 })
 
 // route to check for any active offers by current user
-router.get('/check-offers', (req, res) => {
+router.get('/check-offers', rejectUnauthenticated, (req, res) => {
     pool.query(`SELECT * FROM "offer" WHERE "buyer_id"=$1 AND "status_code"=1;`, [req.user.id])
         .then(result => {
             // if we get something back, user has an active offer
