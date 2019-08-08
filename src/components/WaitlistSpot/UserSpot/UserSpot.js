@@ -114,7 +114,7 @@ class UserSpot extends Component {
                             {this.state.offerMade ?
                                 <>
                                     <Grid.Column width={16}>
-                                        <h3 style={styles.headingThree}>To: {this.state.offerMade.user_id}</h3>
+                                        {/* <h3 style={styles.headingThree}>To: {this.state.offerMade.user_id}</h3> */}
                                         <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerMade.latest_wait_time} min</h3>
                                         <h3 style={styles.headingThree}>Amount: ${this.state.offerMade.offer_price}</h3>
                                     </Grid.Column>
@@ -140,7 +140,7 @@ class UserSpot extends Component {
                             {this.state.offerReceived ?
                                 <>
                                     <Grid.Column width={16}>
-                                        <h3 style={styles.headingThree}>From: {this.state.offerReceived.buyer_id}</h3>
+                                        {/* <h3 style={styles.headingThree}>From: {this.state.offerReceived.buyer_id}</h3> */}
                                         <h3 style={styles.headingThree}>Est. Wait Time: {this.state.offerReceived.latest_wait_time} min</h3>
                                         <h3 style={styles.headingThree}>Amount: ${this.state.offerReceived.offer_price}</h3>
                                     </Grid.Column>
