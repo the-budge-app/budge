@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 //semantic ui
 import { Button, Input } from 'semantic-ui-react';
@@ -28,7 +29,19 @@ class SearchVenue extends Component {
     }
     //function to run the search
     handleSearch = () => {
-        console.log(this.state)
+        axios.get(`/api/search/venue?name=${this.state.venueName}`)
+            .then(response => {
+                //store the search result in reducer
+                this.props.dispatch({type: 'SET_VENUE_LIST', payload: response.data});
+                //clear input box
+                this.setState({
+                    venueName: '',
+                })
+            })
+    }
+    //function to reset the map -> display all venues
+    handleReset = () => {
+        this.props.dispatch({ type: 'FETCH_VENUE_LIST' });
     }
 
     render() {
@@ -36,7 +49,7 @@ class SearchVenue extends Component {
             <div style={styles.search}>
                 <Input placeholder="Search a venue" onChange={this.handleInput} value={this.state.venueName}/>
                 <Button primary style={styles.button} onClick={this.handleSearch}>Go</Button>
-                <Button secondary style={styles.button}>Reset</Button>
+                <Button secondary style={styles.button} onClick={this.handleReset}>Reset</Button>
             </div>
         )
     }
