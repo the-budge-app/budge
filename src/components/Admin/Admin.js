@@ -10,6 +10,14 @@ class Admin extends Component {
 
     }
 
+    deleteComment = (id) =>{ 
+        this.props.dispatch({
+            type: 'DELETE_COMMENT',
+            payload: id
+        })
+        
+    }
+
     render() {
         return (
             <div>
@@ -26,7 +34,7 @@ class Admin extends Component {
                                 <h4>{comments.first_name} {comments.last_name}</h4>
                                 <h4>{comments.email_address}</h4>
                                 <h4>{comments.phone_number}</h4>
-                                <Button style={{float: 'right'}}>Delete</Button>
+                                <Button onClick={() => this.deleteComment(comments.id)} style={{float: 'right'}}>Delete</Button>
                                 <br/>
                                 <h4>Customer Comments</h4>
                                 <h4>{comments.comments}</h4>
