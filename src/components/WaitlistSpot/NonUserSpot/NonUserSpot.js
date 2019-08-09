@@ -59,6 +59,10 @@ class NonUserSpot extends Component {
                     lastRejected: response.data.offer_price,
                 })
             })
+        axios.get({
+            type: 'FETCH_RATING',
+            payload: this.props.history.location,
+        })
     }
 
     handleInput = (event) => {
