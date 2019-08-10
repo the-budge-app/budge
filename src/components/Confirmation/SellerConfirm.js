@@ -25,7 +25,7 @@ class SellerConfirm extends Component {
   }
 
   handleAccept = () => {
-    this.props.history.push(`/rate-user/${this.props.match.params.buyerId}`)
+    this.props.history.push(`/rate-user/${this.props.match.params.venueId}/${this.props.match.params.buyerId}`)
   }
   render() {
     return (
