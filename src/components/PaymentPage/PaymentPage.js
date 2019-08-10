@@ -5,7 +5,7 @@ import SelectPaymentTab from './SelectPaymentTab'
 import AddPaymentTab from './AddPaymentTab'
 
 const panes = [
-    { menuItem: 'Select Payment', render: (props) => <Tab.Pane> <SelectPaymentTab />  </Tab.Pane> },
+    { menuItem: 'Select Payment', render: () => <Tab.Pane> <SelectPaymentTab/> </Tab.Pane> },
     { menuItem: 'Add Payment Method', render: () => <Tab.Pane> <AddPaymentTab/></Tab.Pane> },
   ]
 
