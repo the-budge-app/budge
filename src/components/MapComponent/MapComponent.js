@@ -141,7 +141,7 @@ class Map extends Component {
                                             </p>
                                         </Grid.Column>
                                         <Grid.Column style={{ ...styles.infoWindow.gridColumn, textAlign: 'center', paddingTop: '10px' }} width={16}>
-                                            <Button onClick={this.checkDistance} style={styles.viewButton} basic color="green">View Waitlist</Button>
+                                            <Button onClick={this.checkDistance} style={styles.viewButton} color="green">View Waitlist</Button>
                                         </Grid.Column>
                                     </Grid.Row>
                                 </Grid>
