@@ -13,6 +13,7 @@ const styles = {
     button: {
         margin: "5px",
         width: "20%",
+        padding: '10px 0px',
     }
 }
 

@@ -215,6 +215,7 @@ class Venue extends Component {
                                         <Button key={venue.waitlist_id} style={{ padding: '0', marginBottom: '15px', marginTop: '15px' }} fluid
                                             // primary color if it is the spot of current user
                                             color={venue.user_id === this.props.user.id ? 'green' : 'grey'}
+                                            size={venue.user_id === this.props.user.id ? 'big' : 'medium'}
                                             //secondary color if it is not the spot of current user  
                                             //secondary={venue.user_id !== this.props.user.id}
                                             //button disabled if there is an active offer on this spot (waitlist status code = 3) 
