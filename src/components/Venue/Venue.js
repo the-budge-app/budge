@@ -46,12 +46,12 @@ class Venue extends Component {
 
     componentDidMount() {
         console.log('Venue page mounted!');
-        this.props.dispatch({type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id})
+        this.props.dispatch({ type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id })
         //refresh every minute
         this.interval = setInterval(() => this.props.dispatch({
             type: 'FETCH_WAITLIST',
             payload: { restaurant_id: this.props.match.params.id, }
-        }), 60000)       
+        }), 60000)
     }
 
     componentWillUnmount() {
@@ -68,40 +68,40 @@ class Venue extends Component {
         })
         console.log(this.state)
     }
-    
+
     //function to join waitlist
     joinWL = () => {
         // first thing if user tries to join waitlist is make sure they aren't active on another waitlist
         // only check if user is logged in
-        if ( this.props.user.id ) {
+        if (this.props.user.id) {
             axios.get('/api/waitlist/check-waitlist-status')
-            .then( response => {
-                // if user is not active on a waitlist, let them join
-                if ( !response.data.isActiveOnWaitlist ) {
-                    this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
-                    this.props.dispatch({
-                        type: 'FETCH_SELECTED_VENUE',
-                        payload: this.props.match.params.id,
-                    })
-                    //need to check if this user has successfully joined the WL
-                    //then update the local state
-                    this.setState({
-                        active: !this.state.active,
-                    })
-                }
-                // otherwise, open the error modal
-                else {
-                    this.setState({
-                        ...this.state, 
-                        joinErrorModal: true,
-                    })
-                }
-            })
-            .catch( error => console.log(error))
+                .then(response => {
+                    // if user is not active on a waitlist, let them join
+                    if (!response.data.isActiveOnWaitlist) {
+                        this.props.history.push(`/join-waitlist/${this.props.match.params.id}`)
+                        this.props.dispatch({
+                            type: 'FETCH_SELECTED_VENUE',
+                            payload: this.props.match.params.id,
+                        })
+                        //need to check if this user has successfully joined the WL
+                        //then update the local state
+                        this.setState({
+                            active: !this.state.active,
+                        })
+                    }
+                    // otherwise, open the error modal
+                    else {
+                        this.setState({
+                            ...this.state,
+                            joinErrorModal: true,
+                        })
+                    }
+                })
+                .catch(error => console.log(error))
         }
         else {
             this.setState({
-                ...this.state, 
+                ...this.state,
                 loginModal: true,
             })
         }
@@ -110,26 +110,26 @@ class Venue extends Component {
     // function to other waitlist spot info page where user can make an offer on that spot
     handleSelectSpot = (venue) => {
         // if user is logged in, check to see if the user has an active offer out already
-        if ( this.props.user.id ) {
+        if (this.props.user.id) {
             axios.get('/api/offers/check-offers')
-            .then(response => {
-                if( response.data.hasActiveOffer ) {
-                    // here, we don't want to allow user to view another waitlist spot
-                    // unless that spot is theirs, then its ok
-                    if ( venue.user_id === this.props.user.id){
-                        this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
-                    } else {
-                        this.setState({
-                            ...this.state, 
-                            singleOfferModal: true,
-                        })
+                .then(response => {
+                    if (response.data.hasActiveOffer) {
+                        // here, we don't want to allow user to view another waitlist spot
+                        // unless that spot is theirs, then its ok
+                        if (venue.user_id === this.props.user.id) {
+                            this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
+                        } else {
+                            this.setState({
+                                ...this.state,
+                                singleOfferModal: true,
+                            })
+                        }
                     }
-                }
-                else {
-                    // if user doesn't have an active offer, allow navigation
-                    this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
-                }
-            })
+                    else {
+                        // if user doesn't have an active offer, allow navigation
+                        this.props.history.push(`/waitlist-spot/${venue.waitlist_id}`);
+                    }
+                })
         }
         else {
             this.setState({
@@ -165,83 +165,95 @@ class Venue extends Component {
             this.setState({
                 ...this.state, loggingIn: false, loginModal: false,
             })
-            this.props.dispatch({type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id})
+            this.props.dispatch({ type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id })
         }, 1500)
     }
 
     render() {
         return (
             <>
-            <div style={styles.mainDiv}>
-                <Segment style={{overflow: 'auto', maxHeight: 500 }}>
-                <Grid>
-                    <Grid.Row style={{padding: '0'}}>
-                        <Grid.Column width={6}>
-                            <h1 style={styles.restaurantName}>{this.props.selectedVenue.restaurant_name}</h1>
-                        </Grid.Column>
-                        <Grid.Column width={10}>
-                            <h4 style={styles.restaurantDetails}>
-                                {this.props.selectedVenue.address}
-                                <br/>
-                                {this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}
-                                <br />
-                                ({this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)}) {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)}
-                            </h4>                           
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-                {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
-                {this.props.user.id && this.props.userWaitlist.id &&
-                    <Grid>
-                        <Grid.Column width={16} textAlign="center">
-                            <label style={{marginRight: '10px', ...styles.toggleLabel}}>All Parties</label>
-                            <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
-                            <label style={{marginLeft: '10px', ...styles.toggleLabel}}>Budgable</label>
-                        </Grid.Column>
-                    </Grid>
-                }
-                <Grid centered>
-                    <Grid.Row style={{padding: '0', marginTop: '20px'}}>
-                        <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
-                        <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
-                        <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
-                    </Grid.Row>
-                </Grid>
-                <Grid style={{marginTop: '0'}}>
-                    <Grid.Row>
-                        <Grid.Column>
-                            {this.props.venueInfo && this.props.venueInfo.map(venue =>
-                                <Button key={venue.waitlist_id} style={{ marginBottom: '15px', }} fluid 
-                                    // primary color if it is the spot of current user
-                                    primary={venue.user_id === this.props.user.id}
-                                    //secondary color if it is not the spot of current user  
-                                    secondary={venue.user_id !== this.props.user.id}
-                                    //button disabled if there is an active offer on this spot (waitlist status code = 3) 
-                                    disabled={(venue.waitlist_status_code === 3 && venue.user_id !== this.props.user.id) || (this.props.userWaitlist.party_size && venue.party_size !== this.props.userWaitlist.party_size) }
-                                    onClick={() => this.handleSelectSpot(venue)}>
-                                    <Icon name="user" />{venue.party_size}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            
-                                    <Icon name="clock" />{venue.latest_wait_time} min&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-            
-                                    <Icon name="dont" />&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                                    &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                                    $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                                </Button>
-                            )}
-                            {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ? 
-                                <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
-                                :
-                                <Button disabled={this.props.user.distance > 300 } className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
-                            }
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-                </Segment>
-            </div>
-            <WaitlistFooter />
+                <div style={styles.mainDiv}>
+                    <Segment style={{ overflow: 'auto', maxHeight: 500 }}>
+                        <Grid>
+                            <Grid.Row style={{ padding: '0' }}>
+                                <Grid.Column width={6}>
+                                    <h1 style={styles.restaurantName}>{this.props.selectedVenue.restaurant_name}</h1>
+                                </Grid.Column>
+                                <Grid.Column width={10}>
+                                    <h4 style={styles.restaurantDetails}>
+                                        {this.props.selectedVenue.address}
+                                        <br />
+                                        {this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}
+                                        <br />
+                                        ({this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)}) {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)}
+                                    </h4>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
+                        {this.props.user.id && this.props.userWaitlist.id &&
+                            <Grid>
+                                <Grid.Column width={16} textAlign="center">
+                                    <label style={{ marginRight: '10px', ...styles.toggleLabel }}>All Parties</label>
+                                    <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
+                                    <label style={{ marginLeft: '10px', ...styles.toggleLabel }}>Budgable</label>
+                                </Grid.Column>
+                            </Grid>
+                        }
+                        <Grid centered>
+                            <Grid.Row style={{ padding: '0', marginTop: '20px' }}>
+                                <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
+                                <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
+                                <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        <Grid style={{ marginTop: '0' }}>
+                            <Grid.Row>
+                                <Grid.Column style={{ padding: '0' }}>
+                                    {this.props.venueInfo && this.props.venueInfo.map(venue =>
+                                        <Button key={venue.waitlist_id} style={{ padding: '0', marginBottom: '15px', }} fluid
+                                            // primary color if it is the spot of current user
+                                            primary={venue.user_id === this.props.user.id}
+                                            //secondary color if it is not the spot of current user  
+                                            secondary={venue.user_id !== this.props.user.id}
+                                            //button disabled if there is an active offer on this spot (waitlist status code = 3) 
+                                            disabled={(venue.waitlist_status_code === 3 && venue.user_id !== this.props.user.id) || (this.props.userWaitlist.party_size && venue.party_size !== this.props.userWaitlist.party_size)}
+                                            onClick={() => this.handleSelectSpot(venue)}>
+                                            <Grid>
+                                                <Grid.Column width={4}>
+                                                    <Icon name="user" />{venue.party_size}
+                                                </Grid.Column>
+                                                <Grid.Column width={7}>
+                                                    <Icon name="clock" />{venue.latest_wait_time} min
+                                                </Grid.Column>
+                                                <Grid.Column width={5}>
+                                                    {venue.rejected_price[0] ?
+                                                        <>
+                                                        $ {venue.rejected_price[0]}
+                                                        </>
+                                                        :
+                                                        <>
+                                                        none
+                                                        </>
+                                                    }
+                                                </Grid.Column>
+                                            </Grid>
+                                        </Button>
+                                    )}
+                                    {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ?
+                                        <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
+                                        :
+                                        <Button disabled={this.props.user.distance > 300} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
+                                    }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Segment>
+                </div>
+                <WaitlistFooter />
 
-            {/* Below is the dialog for error on getting user location */}
-            <Modal
+                {/* Below is the dialog for error on getting user location */}
+                <Modal
                     open={this.state.joinErrorModal}
                     basic
                     size='small'
@@ -252,7 +264,7 @@ class Venue extends Component {
                         <h3>Please leave other waitlist if you want to join this waitlist.</h3>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button color='green' onClick={()=>this.setState({...this.state, joinErrorModal: false})} inverted>
+                        <Button color='green' onClick={() => this.setState({ ...this.state, joinErrorModal: false })} inverted>
                             <Icon name='checkmark' />Ok
                         </Button>
                     </Modal.Actions>
@@ -261,38 +273,38 @@ class Venue extends Component {
                 {/* Modal for login */}
                 <Modal
                     open={this.state.loginModal}
-                    onClose={() => this.setState({...this.state, loginModal: false,})}
+                    onClose={() => this.setState({ ...this.state, loginModal: false, })}
                     basic
                     size='small'
-                >   
-                {this.props.loginMode === 'login' && !this.state.loggingIn &&
-                    <>              
-                        <Modal.Actions>
-                            <Icon name='close' onClick={() => this.setState({...this.state, loginModal: false,})}/>
-                        </Modal.Actions>
-                        <Header style={{textAlign: 'center'}} content='Please Log In' />
-                    </>
+                >
+                    {this.props.loginMode === 'login' && !this.state.loggingIn &&
+                        <>
+                            <Modal.Actions>
+                                <Icon name='close' onClick={() => this.setState({ ...this.state, loginModal: false, })} />
+                            </Modal.Actions>
+                            <Header style={{ textAlign: 'center' }} content='Please Log In' />
+                        </>
                     }
                     <Modal.Content>
-                        {this.state.loggingIn ? 
-                        <>
-                            <Grid centered>
-                                <Grid.Column width={12} textAlign="center">
-                                    <h2>Logging in...</h2>
-                                </Grid.Column>
-                                <Grid.Column width={12} textAlign="center">
-                                    <Icon name="spinner" size="huge" loading={this.state.loggingIn} />
-                                </Grid.Column>
-                            </Grid>
-                        </>
-                        :
-                        <>
-                        {this.props.loginMode === 'login' ?
-                        <Login closeLoginModal={this.closeLoginRegisterModal}/>
-                        :
-                        <Register closeLoginModal={this.closeLoginRegisterModal} />
-                        }
-                    </>
+                        {this.state.loggingIn ?
+                            <>
+                                <Grid centered>
+                                    <Grid.Column width={12} textAlign="center">
+                                        <h2>Logging in...</h2>
+                                    </Grid.Column>
+                                    <Grid.Column width={12} textAlign="center">
+                                        <Icon name="spinner" size="huge" loading={this.state.loggingIn} />
+                                    </Grid.Column>
+                                </Grid>
+                            </>
+                            :
+                            <>
+                                {this.props.loginMode === 'login' ?
+                                    <Login closeLoginModal={this.closeLoginRegisterModal} />
+                                    :
+                                    <Register closeLoginModal={this.closeLoginRegisterModal} />
+                                }
+                            </>
                         }
                     </Modal.Content>
                 </Modal>
@@ -300,17 +312,17 @@ class Venue extends Component {
                 {/* Modal for single offer */}
                 <Modal
                     open={this.state.singleOfferModal}
-                    onClose={() => this.setState({...this.state, singleOfferModal: false,})}
+                    onClose={() => this.setState({ ...this.state, singleOfferModal: false, })}
                     basic
                     size='small'
                 >
-                <Header icon='ban' content='Cannot Make Multiple Offers' />
+                    <Header icon='ban' content='Cannot Make Multiple Offers' />
                     <Modal.Content>
                         <h3>You already have an active offer pending.</h3>
                         <h3>Please wait for seller to respond OR retract your offer before making another offer.</h3>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button color='green' onClick={()=>this.setState({...this.state, singleOfferModal: false})} inverted>
+                        <Button color='green' onClick={() => this.setState({ ...this.state, singleOfferModal: false })} inverted>
                             <Icon name='checkmark' />Ok
                         </Button>
                     </Modal.Actions>
