@@ -53,7 +53,7 @@ class SellerOffer extends Component {
     //swap the user id of the spots
     axios.put(`/api/waitlist/swap?buyerWaitlist=${this.props.buyerInfo.waitlist_id}&sellerWaitlist=${this.state.waitlistId}&buyer=${this.state.buyerId}`)
     .then(
-      result => this.props.history.push(`/seller-confirm/${this.state.offerId}/${this.state.buyerId}`)
+      result => this.props.history.push(`/seller-confirm/${this.state.venueId}/${this.state.offerId}/${this.state.buyerId}`)
     )
     .catch(error => console.log('error with handle accept', error))
   }
