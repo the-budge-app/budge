@@ -9,16 +9,43 @@ class Activity extends Component {
         budges: [
             {
                 id: 1,
-                budger: 'JosephJoestar',
-                budgee: 'Dio',
+                budger: 'Michael',
+                budgee: 'Jeff',
                 action: 'budged',
                 price: 8,
                 time: 27,
                 wows: 4,
             },
             {
+                id: 3,
+                budger: 'Kaeti',
+                budgee: 'Michael',
+                action: 'budged',
+                price: 18,
+                time: 14,
+                wows: 2,
+            },
+            {
                 id: 2,
-                budger: 'SuzyQ',
+                budger: 'Weizhen',
+                budgee: null,
+                action: 'joined the waitlist!',
+                price: null,
+                time: 67,
+                wows: 4,
+            },
+            {
+                id: 4,
+                budger: 'Weizhen',
+                budgee: 'Jeff',
+                action: 'rejected',
+                price: 15,
+                time: 42,
+                wows: 2,
+            },
+            {
+                id: 2,
+                budger: 'Kyle',
                 budgee: null,
                 action: 'joined the waitlist!',
                 price: null,
@@ -27,22 +54,14 @@ class Activity extends Component {
             },
             {
                 id: 3,
-                budger: 'OwenWowlson',
-                budgee: 'SuzyQ',
+                budger: 'Kyle',
+                budgee: 'Weizhen',
                 action: 'budged',
-                price: 18,
+                price: 20,
                 time: 14,
                 wows: 2,
             },
-            {
-                id: 4,
-                budger: 'Dio',
-                budgee: 'OwenWowlson',
-                action: 'rejected',
-                price: 5,
-                time: 42,
-                wows: 2,
-            },
+            
         ]
     }
 

@@ -78,7 +78,7 @@ componentDidMount(){
                         <Grid.Row>
                             <Grid.Column width={16} className="profileCard">
                                 <Card>
-                                    <Image src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSduvWS9MKk0X6lxZBGRiw5hAhtiACpKFrwk9f_wxA47sxuuQq9DQ' wrapped ui={false} />
+                                    <Image src='https://scontent.ffcm1-1.fna.fbcdn.net/v/t31.0-8/134945_2036705478615_2093923519_o.jpg?_nc_cat=111&_nc_oc=AQkCEgvpbHbgdZEc62r_ldUG746jRostcMTFcGZwdfasat2FtV-AwD3QMG5Z15o7ttw&_nc_ht=scontent.ffcm1-1.fna&oh=8236b533cda69c32544d175eb180ba86&oe=5DE64BDB' wrapped ui={false} />
                                     <br />
                                     <Rating rating={this.props.customerRating.rating && this.props.customerRating.rating.substring(0,1)} maxRating={5} disabled size='large' />
                                     <h5>{this.props.customerRating.rating && this.props.customerRating.rating.substring(0,3)}</h5>
