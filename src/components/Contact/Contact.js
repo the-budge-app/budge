@@ -57,11 +57,23 @@ class Contact extends Component {
         })
     }
 
+    autoFillForm = () => {
+        this.setState({
+            newEntry: {
+                first_name: 'Kaeti',
+                last_name: 'G',
+                email_address: 'kaeti@icloud.com',
+                phone_number: '555-867-5309',
+                comments: 'Budge is awesome. I have enjoyed using it!',
+            }
+        })
+    }
+
     render() {
         return (
             <div style={styles.mainDiv}>
                 <Segment>
-                    <h2>Contact Us at Budge!</h2>
+                    <h2 onClick={this.autoFillForm}>Contact Us at Budge!</h2>
                     <h4>Complete the form below</h4>
                 </Segment>
                 <Form>
