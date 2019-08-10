@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Grid, Button, Input } from 'semantic-ui-react'
+import { Grid, Button, Input, Header, Modal, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 const styles = {
     mainDiv: {
@@ -18,6 +19,7 @@ class AddPaymentTab extends Component {
         expiration: '',
         cvv: '',
         zip: '',
+        successModal: false
     }
 
     autofillPayment = () => {
@@ -38,15 +40,14 @@ class AddPaymentTab extends Component {
 
     handleSubmit = () => {
         // add modal here for success
-        console.log(this.state)
         this.setState({
             name: '',
             number: '',
             expiration: '',
             cvv: '',
             zip: '',
+            successModal: true,
         })
-
     }
 
     render() {
@@ -119,6 +120,25 @@ class AddPaymentTab extends Component {
                         <Button onClick={this.handleSubmit} fluid color="green">Add Payment Method</Button>
                     </Grid.Column>
                 </Grid>
+
+                {/* Below is the dialog successful payment addition */}
+                <Modal
+                    open={this.state.successModal}
+                    basic
+                    size='small'
+                >
+                    <Header icon='check circle outline' content='Payment method added!' />
+                    <Modal.Content>
+                        <h3>Payment Method Successfully Added.</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Link to="/home">
+                            <Button color='green' onClick={() => this.setState({ ...this.state, successModal: false })} inverted>
+                                <Icon name='checkmark' />Ok
+                            </Button>
+                        </Link>
+                    </Modal.Actions>
+                </Modal>
             </div>
         )
     }
