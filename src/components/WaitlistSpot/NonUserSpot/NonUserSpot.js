@@ -39,6 +39,8 @@ const styles = {
         fontSize: '1.5rem',
         textTransform: 'uppercase',
         letterSpacing: '2px',
+        borderRadius: '0',
+        boxSizing: 'border-box',
     }
 }
 
@@ -158,7 +160,7 @@ class NonUserSpot extends Component {
                     </Grid>
 
                 </Segment>
-                <Button style={styles.backButton} fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
+                <Button color="grey" style={styles.backButton} fluid onClick={() => this.props.history.push(`/venue/${this.props.selectedVenue.id}`)}>Back to Wait List</Button>
 
                 <Modal
                     open={this.state.offerModal}

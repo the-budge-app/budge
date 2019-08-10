@@ -14,7 +14,8 @@ const styles = {
         marginTop: '4%',
         maxWidth: '900px',
         marginLeft: 'auto',
-        marginRight: 'auto'
+        marginRight: 'auto',
+        paddingBottom: '75px',
     },
     restaurantName: {
         fontWeight: '300',
@@ -173,49 +174,49 @@ class Venue extends Component {
         return (
             <>
                 <div style={styles.mainDiv}>
+                    <Grid>
+                        <Grid.Row style={{ padding: '0' }}>
+                            <Grid.Column width={6}>
+                                <h1 style={styles.restaurantName}>{this.props.selectedVenue.restaurant_name}</h1>
+                            </Grid.Column>
+                            <Grid.Column width={10}>
+                                <h4 style={styles.restaurantDetails}>
+                                    {this.props.selectedVenue.address}
+                                    <br />
+                                    {this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}
+                                    <br />
+                                    ({this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)}) {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)}
+                                </h4>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                     <Segment style={{ overflow: 'auto', maxHeight: 500 }}>
-                        <Grid>
-                            <Grid.Row style={{ padding: '0' }}>
-                                <Grid.Column width={6}>
-                                    <h1 style={styles.restaurantName}>{this.props.selectedVenue.restaurant_name}</h1>
-                                </Grid.Column>
-                                <Grid.Column width={10}>
-                                    <h4 style={styles.restaurantDetails}>
-                                        {this.props.selectedVenue.address}
-                                        <br />
-                                        {this.props.selectedVenue.city} {this.props.selectedVenue.state}, {this.props.selectedVenue.zip}
-                                        <br />
-                                        ({this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(0, 3)}) {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(3, 3)} - {this.props.selectedVenue.phone_number && this.props.selectedVenue.phone_number.substr(6, 4)}
-                                    </h4>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
                         {/* conditional rendering - non log in user or logged in but not joined user will not see the toggle button */}
                         {this.props.user.id && this.props.userWaitlist.id &&
-                            <Grid>
-                                <Grid.Column width={16} textAlign="center">
+                            <Grid style={{ marginTop: '0' }}>
+                                <Grid.Column width={16} textAlign="center" style={{ paddingBottom: '0' }}>
                                     <label style={{ marginRight: '10px', ...styles.toggleLabel }}>All Parties</label>
                                     <Checkbox toggle onChange={this.handleSwitch} ></Checkbox>
                                     <label style={{ marginLeft: '10px', ...styles.toggleLabel }}>Budgable</label>
                                 </Grid.Column>
                             </Grid>
                         }
-                        <Grid centered>
+                        <Grid centered style={{ marginTop: '0' }}>
                             <Grid.Row style={{ padding: '0', marginTop: '20px' }}>
-                                <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
-                                <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
-                                <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
+                                <Grid.Column width={5} textAlign='center'><h4 style={{ display: 'inline-block', borderBottom: '1px solid black' }}>Party Size</h4></Grid.Column>
+                                <Grid.Column width={6} textAlign='center'><h4 style={{ display: 'inline-block', borderBottom: '1px solid black' }}>Wait Time</h4></Grid.Column>
+                                <Grid.Column width={5} textAlign='center'><h4 style={{ display: 'inline-block', borderBottom: '1px solid black' }}>Last Offer</h4></Grid.Column>
                             </Grid.Row>
                         </Grid>
                         <Grid style={{ marginTop: '0' }}>
-                            <Grid.Row>
-                                <Grid.Column style={{ padding: '0' }}>
+                            <Grid.Row style={{ padding: '0' }}>
+                                <Grid.Column>
                                     {this.props.venueInfo && this.props.venueInfo.map(venue =>
-                                        <Button key={venue.waitlist_id} style={{ padding: '0', marginBottom: '15px', }} fluid
+                                        <Button key={venue.waitlist_id} style={{ padding: '0', marginBottom: '15px', marginTop: '15px' }} fluid
                                             // primary color if it is the spot of current user
-                                            primary={venue.user_id === this.props.user.id}
+                                            color={venue.user_id === this.props.user.id ? 'green' : 'grey'}
                                             //secondary color if it is not the spot of current user  
-                                            secondary={venue.user_id !== this.props.user.id}
+                                            //secondary={venue.user_id !== this.props.user.id}
                                             //button disabled if there is an active offer on this spot (waitlist status code = 3) 
                                             disabled={(venue.waitlist_status_code === 3 && venue.user_id !== this.props.user.id) || (this.props.userWaitlist.party_size && venue.party_size !== this.props.userWaitlist.party_size)}
                                             onClick={() => this.handleSelectSpot(venue)}>
@@ -229,26 +230,31 @@ class Venue extends Component {
                                                 <Grid.Column width={5}>
                                                     {venue.rejected_price[0] ?
                                                         <>
-                                                        $ {venue.rejected_price[0]}
+                                                            $ {venue.rejected_price[0]}
                                                         </>
                                                         :
                                                         <>
-                                                        none
+                                                            none
                                                         </>
                                                     }
                                                 </Grid.Column>
                                             </Grid>
                                         </Button>
                                     )}
-                                    {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ?
-                                        <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
-                                        :
-                                        <Button disabled={this.props.user.distance > 300} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
-                                    }
                                 </Grid.Column>
                             </Grid.Row>
                         </Grid>
                     </Segment>
+                    <Grid centered>
+                        <Grid.Column width={12}>
+                            {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ?
+                                <Button style={{ fontWeight: '300', textTransform: 'uppercase', letterSpacing: '2px' }} className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
+                                :
+                                <Button style={{ fontWeight: '300', textTransform: 'uppercase', letterSpacing: '2px' }} disabled={this.props.user.distance > 300} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
+                            }
+                        </Grid.Column>
+                    </Grid>
+
                 </div>
                 <WaitlistFooter />
 
