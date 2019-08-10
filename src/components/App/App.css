@@ -11,7 +11,8 @@ div.modals.active {
     height: 100%;
 }
 .app {
-    height: 100%;
+    min-height: 100vh;
+    position: relative;
 }
 .alert {
     background-color: #ff4545;
