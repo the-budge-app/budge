@@ -166,4 +166,11 @@ router.get('/last-rejected/:waitlistId', (req, res) => {
         }) 
 })
 
+//route to update last rejected offer status to expired
+router.put('/expire-last-rejected/:waitlistId', rejectUnauthenticated, (req, res) => {
+    console.log('last rejected waitlist id is', req.params.waitlistId )
+    pool.query(`UPDATE "offer" SET "status_code" = 5 WHERE "waitlist_id" = $1 AND "status_code" = 2;`, [req.params.waitlistId])
+        .then(() => res.sendStatus(201))
+})
+
 module.exports = router;
