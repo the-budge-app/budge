@@ -31,7 +31,7 @@ class SellerOffer extends Component {
 
   handleAccept = () => {
     console.log('in handleAccept, venue', this.state.venueId);
-    // //update offer status code to accepted by seller
+    //update offer status code to accepted by seller
     axios.put('/api/offers/update', {
       offerId: this.state.offerId,
       statusCode: 4,
@@ -56,6 +56,9 @@ class SellerOffer extends Component {
       result => this.props.history.push(`/seller-confirm/${this.state.venueId}/${this.state.offerId}/${this.state.buyerId}`)
     )
     .catch(error => console.log('error with handle accept', error))
+
+    //update last reject offer status to expired
+    axios.put(`/api/offers/expire-last-rejected/${this.state.waitlistId}`)
   }
 
   handleReject = () => {
