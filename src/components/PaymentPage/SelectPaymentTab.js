@@ -83,7 +83,7 @@ class SelectPaymentTab extends Component {
                     </Grid.Row>
                     <Grid.Row style={{marginTop: '25px'}}>
                         <Grid.Column>
-                            <Link to={`/waitlist-spot/${this.props.reduxState.selectedSpot.id}`}><Button fluid style={{ backgroundColor: 'green', color: 'white' }} onClick={this.updateBalance}>Add Funds to Account</Button></Link>
+                            <Link to={`/waitlist-spot/${this.props.reduxState.selectedSpot.id}`}><Button fluid color="green" onClick={this.updateBalance}>Add Funds to Account</Button></Link>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
