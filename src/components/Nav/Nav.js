@@ -28,6 +28,7 @@ class Nav extends Component {
   state = {
     visible: false,
     loginModal: false,
+    loggingIn: false,
     menuLinks: [
       {
         name: 'Home',
@@ -62,11 +63,22 @@ class Nav extends Component {
     this.props.dispatch({ type: 'LOGOUT' });
   }
 
+  closeLoginRegisterModal = () => {
+    this.setState({
+      ...this.state, loggingIn: true,
+    })
+    setTimeout(() => {
+      this.setState({
+        ...this.state, loggingIn: false, loginModal: false,
+      })
+    }, 1500)
+  }
+
   render() {
     return (
       <>
         <Grid className="nav">
-          <Grid.Row verticalAlign='middle'>
+          <Grid.Row verticalAlign='middle' style={{ padding: '0' }}>
             <Grid.Column width={3}>
               <Icon name='bars' size='big' className='menuIcon' onClick={() => this.setState({ ...this.state, visible: !this.state.visible })} />
             </Grid.Column>
@@ -89,6 +101,15 @@ class Nav extends Component {
               }
             </Grid.Column>
           </Grid.Row>
+          {this.props.user.id &&
+            <Grid.Row centered style={{ padding: '0', backgroundColor: 'white' }}>
+              <Grid.Column width={16}>
+                <p style={{ textTransform: 'capitalize', paddingTop: '5px', fontSize: '16px' }}>
+                  Hi, {this.props.user.username}
+                </p>
+              </Grid.Column>
+            </Grid.Row>
+          }
         </Grid>
 
         <Sidebar
@@ -125,12 +146,12 @@ class Nav extends Component {
           })}
           <Menu.Item style={{ textAlign: 'left' }}>
             {this.props.user.id ?
-              <Link onClick={this.logout} to={'/loading'}>
+              <Link onClick={this.logout} to='/loading'>
                 <Icon name='sign-out' />
                 Log Out
               </Link>
               :
-              <Link onClick={() => this.setState({ ...this.state, loginModal: true })}>
+              <Link to={this.props.history.location.pathname} onClick={() => { this.setState({ ...this.state, loginModal: true, visible: !this.state.visible }) }}>
                 <Icon name='sign-in' />
                 Login
               </Link>
@@ -139,12 +160,11 @@ class Nav extends Component {
           {this.props.user.admin &&
             <Menu.Item style={{ textAlign: 'left' }}>
               <Link to='/admin'>
-                <Icon name='user secret'/>
+                <Icon name='user secret' />
                 Admin
               </Link>
             </Menu.Item>
           }
-
 
 
         </Sidebar>
@@ -156,14 +176,33 @@ class Nav extends Component {
           basic
           size='small'
         >
-          <Modal.Actions>
-            <Icon name='close' onClick={() => this.setState({ ...this.state, loginModal: false, })} />
-          </Modal.Actions>
+          {this.props.loginMode === 'login' && !this.state.loggingIn &&
+            <>
+              <Modal.Actions>
+                <Icon name='close' size="large" onClick={() => this.setState({ ...this.state, loginModal: false, })} />
+              </Modal.Actions>
+            </>
+          }
           <Modal.Content>
-            {this.props.loginMode === 'login' ?
-              <Login closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
+            {this.state.loggingIn ?
+              <>
+                <Grid centered>
+                  <Grid.Column width={12} textAlign="center">
+                    <h2>Logging in...</h2>
+                  </Grid.Column>
+                  <Grid.Column width={12} textAlign="center">
+                    <Icon name="spinner" size="huge" loading={this.state.loggingIn} />
+                  </Grid.Column>
+                </Grid>
+              </>
               :
-              <Register closeLoginModal={() => this.setState({ ...this.state, loginModal: false, })} />
+              <>
+                {this.props.loginMode === 'login' ?
+                  <Login closeLoginModal={this.closeLoginRegisterModal} />
+                  :
+                  <Register closeLoginModal={this.closeLoginRegisterModal} />
+                }
+              </>
             }
           </Modal.Content>
         </Modal>

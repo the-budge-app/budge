@@ -201,17 +201,17 @@ class Venue extends Component {
                     </Grid>
                 }
                 <Grid centered>
-                    <Grid.Row style={{padding: '0', marginTop: '20px'}}>
-                        <Grid.Column width={5}><h4>Party Size</h4></Grid.Column>
-                        <Grid.Column width={5}><h4>Wait Time</h4></Grid.Column>
-                        <Grid.Column width={5}><h4>Last Offer</h4></Grid.Column>
+                    <Grid.Row style={{padding: '0', marginTop: '20px'}} >
+                        <Grid.Column width={5}><h4 style={{borderBottom: '1px solid black', textAlign: 'center'}}>Party Size</h4></Grid.Column>
+                        <Grid.Column width={5}><h4 style={{borderBottom: '1px solid black', textAlign: 'center'}}>Wait Time</h4></Grid.Column>
+                        <Grid.Column width={5}><h4 style={{borderBottom: '1px solid black', textAlign: 'center'}}>Last Offer</h4></Grid.Column>
                     </Grid.Row>
                 </Grid>
                 <Grid style={{marginTop: '0'}}>
-                    <Grid.Row>
+                    <Grid.Row style={{padding: '0'}}>
                         <Grid.Column>
                             {this.props.venueInfo && this.props.venueInfo.map(venue =>
-                                <Button key={venue.waitlist_id} style={{ marginBottom: '15px', }} fluid 
+                                <Button key={venue.waitlist_id} style={{ marginTop: '15px', marginBottom: '15px', }} fluid 
                                     // primary color if it is the spot of current user
                                     primary={venue.user_id === this.props.user.id}
                                     //secondary color if it is not the spot of current user  
@@ -228,15 +228,20 @@ class Venue extends Component {
                                     $ {venue.rejected_price[0]}&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
                                 </Button>
                             )}
-                            {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ? 
-                                <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
-                                :
-                                <Button disabled={this.props.user.distance > 300 } className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
-                            }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
                 </Segment>
+                <Grid centered>
+                    <Grid.Column width={12}>
+                    {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ? 
+                        <Button className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
+                        :
+                        <Button disabled={this.props.user.distance > 300 } className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
+                    }  
+                    </Grid.Column>
+                </Grid>
+                
             </div>
             <WaitlistFooter />
 
