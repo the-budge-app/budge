@@ -121,7 +121,7 @@ class Contact extends Component {
                     basic
                     size='small'
                 >
-                    <Header icon='ban' content='Feedback sent' />
+                    <Header icon='comments outline' content='Feedback sent' />
                     <Modal.Content>
                         <h3>Thanks for your comments! </h3>
                     </Modal.Content>
