@@ -42,11 +42,11 @@ class Venue extends Component {
         joinErrorModal: false, // state for modal for join error
         loginModal: false, // modal to display the login 
         singleOfferModal: false, // modal to restrict user to single offer
-        loggingIn: false, // state for logging user in
+        loggingIn: false, // state for logging user in,
+        leaveModal: false,
     }
 
     componentDidMount() {
-        console.log('Venue page mounted!');
         this.props.dispatch({ type: 'FETCH_ALL_VENUE_DATA', payload: this.props.match.params.id })
         //refresh every minute
         this.interval = setInterval(() => this.props.dispatch({
@@ -65,9 +65,9 @@ class Venue extends Component {
         this.props.dispatch({ type: 'LEAVE_WAITLIST', payload: this.props.userWaitlist })
         //then update the local state to the wording on the button
         this.setState({
-            active: !this.state.active
+            active: !this.state.active,
+            leaveModal: true,
         })
-        console.log(this.state)
     }
 
     //function to join waitlist
@@ -330,6 +330,23 @@ class Venue extends Component {
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='green' onClick={() => this.setState({ ...this.state, singleOfferModal: false })} inverted>
+                            <Icon name='checkmark' />Ok
+                        </Button>
+                    </Modal.Actions>
+                </Modal>
+
+                 {/* Modal for leave waitlist */}
+                 <Modal
+                    open={this.state.leaveModal}
+                    onClose={() => this.setState({ ...this.state, singleOfferModal: false, })}
+                    basic
+                    size='small'
+                >
+                    <Modal.Content>
+                        <h3>You are no longer on this waitlist.</h3>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='green' onClick={() => this.setState({ ...this.state, leaveModal: false })} inverted>
                             <Icon name='checkmark' />Ok
                         </Button>
                     </Modal.Actions>
