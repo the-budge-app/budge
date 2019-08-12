@@ -14,7 +14,7 @@ class Activity extends Component {
                 action: 'budged',
                 price: 8,
                 time: 27,
-                wows: 4,
+                
             },
             {
                 id: 3,
@@ -23,7 +23,7 @@ class Activity extends Component {
                 action: 'budged',
                 price: 18,
                 time: 14,
-                wows: 2,
+                
             },
             {
                 id: 2,
@@ -32,7 +32,7 @@ class Activity extends Component {
                 action: 'joined the waitlist!',
                 price: null,
                 time: 67,
-                wows: 4,
+                
             },
             {
                 id: 4,
@@ -41,7 +41,7 @@ class Activity extends Component {
                 action: 'rejected',
                 price: 15,
                 time: 42,
-                wows: 2,
+                
             },
             {
                 id: 2,
@@ -50,7 +50,7 @@ class Activity extends Component {
                 action: 'joined the waitlist!',
                 price: null,
                 time: 67,
-                wows: 4,
+                
             },
             {
                 id: 3,
@@ -59,7 +59,7 @@ class Activity extends Component {
                 action: 'budged',
                 price: 20,
                 time: 14,
-                wows: 2,
+                
             },
             
         ]
@@ -90,10 +90,6 @@ class Activity extends Component {
                                                 </Feed.Summary>
                                                 <Feed.Meta>
                                                     <Feed.Date style={{marginLeft: '9px', marginTop: '-2px'}}>{budge.time} Minutes Ago</Feed.Date>
-                                                    <Feed.Like>
-                                                        <Icon name='like' />
-                                                        {budge.wows} Wows
-                                                    </Feed.Like>
                                                 </Feed.Meta>
                                             </Feed.Content>
                                         </Feed.Event>
