@@ -251,7 +251,7 @@ class Venue extends Component {
                             {this.props.user.id && this.props.userWaitlist.id && (this.props.userWaitlist.status_code === 1 || this.props.userWaitlist.status_code === 3) ?
                                 <Button style={{ fontWeight: '750', fontSize: '1.125rem', textTransform: 'uppercase', letterSpacing: '2px' }} className="joinButton" fluid color="red" onClick={this.leaveWL}>Leave Waitlist</Button>
                                 :
-                                <Button style={{ fontWeight: '750', fontSize: '1.125rem', textTransform: 'uppercase', letterSpacing: '2px' }} disabled={this.props.user.distance > 300} className="joinButton" color="green" fluid onClick={this.joinWL}>Join Waitlist</Button>
+                                <Button style={{ fontWeight: '750', fontSize: '1.125rem', textTransform: 'uppercase', letterSpacing: '2px' }} disabled={this.props.user.distance > 300} className="joinButton" color="blue" fluid onClick={this.joinWL}>Join Waitlist</Button>
                             }
                         </Grid.Column>
                     </Grid>

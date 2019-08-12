@@ -15,8 +15,12 @@ div.modals.active {
     position: relative;
 }
 .alert {
-    background-color: #ff4545;
-    margin: 50px;
+    text-align: center;
+    border: 2px solid red;
+    padding: 20px 10px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .log-in, .log-out, .register {
