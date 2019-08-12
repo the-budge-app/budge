@@ -4,11 +4,17 @@ import MapComponent from '../MapComponent/MapComponent'
 import SearchVenue from '../SearchVenue/SearchVenue';
 
 // import Semantic UI Components 
-import { Modal, Button, Icon, Header } from 'semantic-ui-react'
+import { Modal, Button, Icon, Header, Grid } from 'semantic-ui-react'
 
 import './HomeMap.css'
 // import Google Maps API key
 const MAPS_KEY = `${process.env.REACT_APP_GOOGLE_MAPS_KEY}`;
+
+const styles={
+    headingFour: {
+        display: 'inline-block',
+    }
+}
 
 class HomeMap extends Component {
 
@@ -117,6 +123,16 @@ class HomeMap extends Component {
                         />
                     }
                 </div>
+                <Grid>
+                    <Grid.Column width={8}>
+                        <img alt="green marker - has meetup" src="https://maps.google.com/mapfiles/ms/icons/green-dot.png" />
+                        <h4 style={styles.headingFour}>Your Location</h4>
+                    </Grid.Column>
+                    <Grid.Column width={8}>
+                        <img alt="red marker - doesn't have meetup" src="https://maps.google.com/mapfiles/ms/icons/red-dot.png" />
+                        <h4 style={styles.headingFour}>Restaurant</h4>
+                    </Grid.Column>
+                </Grid>
 
                 {/* Below is the dialog for error on getting user location */}
                 <Modal
