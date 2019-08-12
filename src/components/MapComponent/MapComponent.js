@@ -160,7 +160,7 @@ class Map extends Component {
                 <Header icon='compass outline' content="Oh no! You're too far away" />
                     <Modal.Content>
                         <h3>You can still check out the waitlist and activity feed.</h3>
-                        <h3>But you can't join cause you're too far away.</h3>
+                        <h3>But you can't join until you're closer to the restaurant.</h3>
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='green' onClick={() => this.props.history.push(`/venue/${this.state.selectedVenue.id}`)} inverted>

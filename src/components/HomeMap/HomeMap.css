@@ -1,7 +1,7 @@
 .mapContainer {
     width: 90%;
     height: 60vh;
-    margin: 35px auto;
+    margin: 35px auto 0px auto;
     border: 1px solid rgba(34, 34, 34, .5);
     border-radius: 5px;
     overflow: hidden;
