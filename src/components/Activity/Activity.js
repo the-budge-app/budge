@@ -68,7 +68,7 @@ class Activity extends Component {
     render() {
         return (
             <>
-                <Grid>
+                <Grid style={{paddingBottom: '65px'}}>
                     {this.state.budges.map(budge => {
                         return (
                             <Grid.Row key={budge.id}>

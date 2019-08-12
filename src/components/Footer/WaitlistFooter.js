@@ -6,10 +6,10 @@ import { withRouter } from 'react-router';
 
 const styles = {
   headingTwo: {
-    fontWeight: '300',
+    fontWeight: 'bold',
     fontSize: '1.5rem',
     textTransform: 'uppercase',
-    letterSpacing: '2px',
+    letterSpacing: '3px',
   }
 }
 
