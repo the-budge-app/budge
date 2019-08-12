@@ -109,7 +109,7 @@ class Contact extends Component {
                         </Grid.Row>
                         <Grid.Row style={styles.gridRow}>
                             <Grid.Column width={14}>
-                                <Button onClick={this.addEntry} style={{ color: "white", backgroundColor: "green" }} fluid>Submit</Button>
+                                <Button onClick={this.addEntry} color="green" fluid>Submit</Button>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

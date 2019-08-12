@@ -73,8 +73,6 @@ componentDidMount(){
                                 </Icon>
                             </Grid.Column>
                         </Grid.Row>
-
-                        <br />
                         <Grid.Row>
                             <Grid.Column width={16} className="profileCard">
                                 <Card>
