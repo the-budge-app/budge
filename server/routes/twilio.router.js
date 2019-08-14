@@ -14,7 +14,7 @@ router.post('/accept-offer', rejectUnauthenticated, (req, res) => {
     // get the phone number for the buyer
     pool.query(`SELECT "phone_number" FROM "user" WHERE "id" = $1;`, [req.body.buyerId])
         .then(result => {
-            comment out the twilio bit for heroku deployment
+            // comment out the twilio bit for heroku deployment
             const buyerPhone = result.rows[0].phone_number;
             console.log(buyerPhone);
             client.messages
