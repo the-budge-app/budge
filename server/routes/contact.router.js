@@ -6,7 +6,6 @@ const router = express.Router();
 //post customer feedback to database
 router.post('/', (req, res) => {
     const newEntry = req.body;
-    console.log(req.body);
     
     const queryText = `INSERT INTO "admin"("first_name","last_name","email_address","phone_number","comments")
     VALUES

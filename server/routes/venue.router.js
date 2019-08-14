@@ -6,7 +6,6 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 // get request for all participating venues in db
 //this route is open to unauthenticated users
 router.get('/', (req, res) => {
-    console.log('getting all venues.')
     pool.query(`SELECT * FROM "restaurant"`)
         .then( response => {
             res.send(response.rows);
@@ -19,7 +18,6 @@ router.get('/', (req, res) => {
 // get request to get the single restaurant info that the user clicked to view
 //this route is unauthenticated
 router.get('/selected/:id', (req, res) => {
-    // console.log('Getting info for restaurant', req.params.id);
     pool.query(`SELECT * from "restaurant" WHERE "id" = $1 LIMIT 1;`, [req.params.id])
         .then(result => {
             res.send(result.rows[0]);
@@ -37,7 +35,6 @@ router.get('/budgable/:restaurant_id', rejectUnauthenticated, (req, res) => {
         AND "restaurant_id" = $2;`, [req.user.id, req.params.restaurant_id])
         .then(
             result => {
-                // console.log(result.rows);
                 pool.query(`SELECT "waitlist"."id" AS "waitlist_id", "waitlist"."status_code" AS "waitlist_status_code", "waitlist"."quote_time", "waitlist"."party_size", "waitlist"."user_id", 
                 ARRAY_AGG("rejected_offer"."offer_price" ORDER BY "rejected_offer"."status_time" DESC ) AS "rejected_price", 
                 ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
@@ -85,7 +82,6 @@ router.get('/waitlist/:restaurant_id', (req, res) => {
 
 //get request to get the user's waitlist for one restaurant
 router.get(`/user_waitlist/:restaurant_id`, rejectUnauthenticated, (req, res) => {
-    // console.log(req.user);
     if(req.user) {
         pool.query(`SELECT * FROM "waitlist"
         WHERE "restaurant_id" = $1

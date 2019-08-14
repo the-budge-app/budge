@@ -9,7 +9,6 @@ router.get('/getrating/:id', rejectUnauthenticated, (req, res) => {
     pool.query(`SELECT AVG("rating") AS "rating" FROM "customer_rating" WHERE "user_id" = $1;`, [req.params.id])
         .then(
             result => {
-                // console.log(result.rows);
                 res.send(result.rows[0]);
             }
         )
@@ -20,13 +19,11 @@ router.get('/getrating/:id', rejectUnauthenticated, (req, res) => {
   });
 
 router.get('/getusername/:id', rejectUnauthenticated, (req, res) => {
-    console.log(req.params)
     pool.query(`SELECT "username" FROM "user"
     WHERE "user"."id" = $1;`, [req.params.id])
         .then(
             result => {
                 res.send(result.rows[0]);
-                console.log(result.rows)
             }
         )
         .catch(error => {
