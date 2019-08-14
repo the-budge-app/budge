@@ -40,6 +40,22 @@ For full functionality, you will need to create a local database and tables usin
 
 ## Authors: 
 
-Kyle Henderson, Michael Ferlis, Kaeti Gust, Weizhen Wang - Frontend UI, server routing, and database queries
+Frontend UI, server routing, and database queries:
+
+Kyle Henderson
+
+Michael Ferlis
+
+    https://github.com/michaelferlis
+
+Kaeti Gust
+
+    https://github.com/KaetiG
+
+Weizhen Wang
+
+    https://github.com/weizhenw
+
+
 
 Prime Academy Staff - Register, Login, and Authentication
