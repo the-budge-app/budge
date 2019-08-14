@@ -7,7 +7,7 @@
 ## Project can be found running on Heroku at
 
 ```
-https://thebudgeapp.herokuapp.com/#/home
+https://the-budge-app.herokuapp.com/#/home
 ```
 
 ## Setup

@@ -4,9 +4,9 @@ const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
-// const accountSid = process.env.TWILIO_ACCOUNT_SID;
-// const authToken = process.env.TWILIO_AUTH_TOKEN;
-// const client = require('twilio')(accountSid, authToken);
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
 
 // get request to get offers for a single user
 // id is the waitlist id for the user
@@ -96,15 +96,14 @@ router.post('/make-new', rejectUnauthenticated, (req, res) => {
                             // new offer is now complete on the db side, so lets notify the seller
                             pool.query(`SELECT "phone_number" FROM "user" WHERE "id" = $1;`, [sellerId.user_id])
                                 .then(result => {
-                                    // comment out the twilio bit for heroku deployment
-                                    // const sellerPhone = result.rows[0].phone_number;
-                                    // client.messages
-                                    //     .create({
-                                    //         body: `Someone's trying Budge you! View it: http://thebudgeapp.herokuapp.com/seller-offer?offerId=${newOfferId}&buyer=${req.user.id}&venue=${req.body.venueId}&waitlist=${req.body.waitlistId}`,
-                                    //         from: '+16125025504',
-                                    //         to: `+1${sellerPhone}`
-                                    //     })
-                                    //     .then(message => console.log(message.sid));
+                                    const sellerPhone = result.rows[0].phone_number;
+                                    client.messages
+                                        .create({
+                                            body: `Someone's trying Budge you! View it: http://thebudgeapp.herokuapp.com/seller-offer?offerId=${newOfferId}&buyer=${req.user.id}&venue=${req.body.venueId}&waitlist=${req.body.waitlistId}`,
+                                            from: '+16125025504',
+                                            to: `+1${sellerPhone}`
+                                        })
+                                        .then(message => console.log(message.sid));
                                         res.sendStatus(200);
                                 })
                                 .catch(error => {
