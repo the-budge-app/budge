@@ -12,7 +12,7 @@ const passport = require('./strategies/user.strategy');
 // Route includes
 const userRouter = require('./routes/user.router');
 const venueRouter = require('./routes/venue.router');
-const waitListRouter = require('./routes/waitList.router')
+const waitListRouter = require('./routes/waitlist.router')
 const paymentRouter = require('./routes/payment.router');
 const sellerConfirmation = require('./routes/sellerConfirmation.router');
 const offerRouter = require('./routes/offer.router');
