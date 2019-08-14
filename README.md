@@ -16,7 +16,7 @@ To run the project locally, follow the instructions below.
 
 Clone the git repo
 
-    https://github.com/kylethenderson/cleanup-meetup.git
+    https://github.com/the-budge-app/budge.git
 
 Install all dependencies for the project
 
