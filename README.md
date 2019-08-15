@@ -18,15 +18,21 @@ Clone the git repo
 
 Install all dependencies for the project
 
-    npm install
+```
+npm install
+```
 
 Start the server
 
-    npm run server
+```
+npm run server
+```
 
 Now that the server is running, start the react client side app
 
-    npm run client
+```
+npm run client
+```
 
 For full functionality, you will need to create a local database and tables using the provided `database.sql` file. 
 
