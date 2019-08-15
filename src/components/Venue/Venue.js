@@ -284,12 +284,23 @@ class Venue extends Component {
                     basic
                     size='small'
                 >
-                    {this.props.loginMode === 'login' && !this.state.loggingIn &&
+                    {this.props.loginMode === 'login' ?
+                        <>
+                            {!this.state.loggingIn &&
+                                <>
+                                    <Modal.Actions>
+                                        <Icon name='close' onClick={() => this.setState({ ...this.state, loginModal: false, })} />
+                                    </Modal.Actions>
+                                    <Header style={{ textAlign: 'center' }} content='Please Log In' />
+                                </>
+                            }
+                        </>
+                        :
                         <>
                             <Modal.Actions>
                                 <Icon name='close' onClick={() => this.setState({ ...this.state, loginModal: false, })} />
                             </Modal.Actions>
-                            <Header style={{ textAlign: 'center' }} content='Please Log In' />
+                            <Header style={{ textAlign: 'center' }} content='Register' />
                         </>
                     }
                     <Modal.Content>
@@ -335,8 +346,8 @@ class Venue extends Component {
                     </Modal.Actions>
                 </Modal>
 
-                 {/* Modal for leave waitlist */}
-                 <Modal
+                {/* Modal for leave waitlist */}
+                <Modal
                     open={this.state.leaveModal}
                     onClose={() => this.setState({ ...this.state, singleOfferModal: false, })}
                     basic

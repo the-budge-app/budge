@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import './Nav.css';
-import { Sidebar, Menu, Icon, Grid, Modal } from 'semantic-ui-react';
+import { Sidebar, Menu, Icon, Grid, Modal, Header } from 'semantic-ui-react';
 
 import Login from '../LoginPage/LoginPage'
 import Register from '../RegisterPage/RegisterPage'
@@ -83,7 +83,7 @@ class Nav extends Component {
               <Icon name='bars' size='big' className='menuIcon' onClick={() => this.setState({ ...this.state, visible: !this.state.visible })} />
             </Grid.Column>
             <Grid.Column width={10} textAlign="center">
-              <h2 style={styles.logo}>Budge</h2>
+              <h2 style={styles.logo} onClick={() => this.history.push('/home')}>Budge</h2>
             </Grid.Column>
             <Grid.Column width={3} textAlign="right">
               {this.props.user.id ?
@@ -176,11 +176,23 @@ class Nav extends Component {
           basic
           size='small'
         >
-          {this.props.loginMode === 'login' && !this.state.loggingIn &&
+          {this.props.loginMode === 'login' ?
+            <>
+              {!this.state.loggingIn &&
+                <>
+                  <Modal.Actions>
+                    <Icon name='close' onClick={() => this.setState({ ...this.state, loginModal: false, })} />
+                  </Modal.Actions>
+                  <Header style={{ textAlign: 'center' }} content='Please Log In' />
+                </>
+              }
+            </>
+            :
             <>
               <Modal.Actions>
-                <Icon name='close' size="large" onClick={() => this.setState({ ...this.state, loginModal: false, })} />
+                <Icon name='close' onClick={() => this.setState({ ...this.state, loginModal: false, })} />
               </Modal.Actions>
+              <Header style={{ textAlign: 'center' }} content='Register' />
             </>
           }
           <Modal.Content>
