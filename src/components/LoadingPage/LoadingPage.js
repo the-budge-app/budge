@@ -19,25 +19,13 @@ class LoadingPage extends Component {
     state = {
         locationErrorMsg: '',
         locationError: false,
-
     }
 
     // when component mounts, check to see if browser can get user location
     componentDidMount() {
-        setTimeout(this.setPosition, 2500);
-        // this.checkForLocation();
+        this.checkForLocation();
     }
 
-    setPosition = () => {
-        // console.log('set position manually');
-        // if there is no location, set it manually
-            this.setUserLocation({
-                coords: {
-                    latitude: 44.9781305,
-                    longitude: -93.263257,
-                }
-            })
-    }
     // if browser can get location, try to get it
     // if successful, call setUserLocation function, otherwise, call setPositionError function
     checkForLocation = () => {

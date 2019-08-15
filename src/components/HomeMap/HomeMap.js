@@ -25,18 +25,7 @@ class HomeMap extends Component {
 
     componentDidMount() {
         this.getVenues();
-        setTimeout(this.setPosition, 1500);
-    }
-
-    setPosition = () => {
-        // console.log('set position manually');
-        // if there is no location, set manually
-        this.setUserLocation({
-            coords: {
-                latitude: 44.9781305,
-                longitude: -93.263257,
-            }
-        })
+        this.checkUserLocation();
     }
 
     getVenues = () => {
