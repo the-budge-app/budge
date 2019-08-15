@@ -5,7 +5,6 @@ const router = express.Router();
 //fetch restaurant with user input
 //this route is not checking user authentication -> not logged in user can also view the info
 router.get('/venue', (req,res) => {
-    console.log('search venue', req.query.name);
     pool.query(`SELECT * FROM "restaurant" WHERE "restaurant_name" iLIKE $1;`, [`%${req.query.name}%`] )
         .then(result => {
             res.send(result.rows);

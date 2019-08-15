@@ -6,15 +6,17 @@
 
 ## Project can be found running on Heroku at
 
-    https://the-budge-app.herokuapp.com/#/home
+```
+https://the-budge-app.herokuapp.com/#/home
+```
 
 ## Setup
 
 To run the project locally, follow the instructions below.
 
-Clone the git repo
+Clone the git repository
 
-    https://github.com/kylethenderson/cleanup-meetup.git
+    https://github.com/the-budge-app/budge.git
 
 Install all dependencies for the project
 
@@ -55,6 +57,7 @@ Kaeti Gust
 Weizhen Wang
 
     https://github.com/weizhenw
+
 
 
 Prime Academy Staff - Register, Login, and Authentication

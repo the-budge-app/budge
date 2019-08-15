@@ -4,14 +4,12 @@ const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 
 router.get('/singleSpot/:id', rejectUnauthenticated, (req, res) => {
-    // console.log('getting the data for waitList spot', req.params.id);
     pool.query(`SELECT *, "waitlist"."id" AS "id", ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60)
     AS "latest_wait_time" 
     FROM "waitlist" 
     JOIN "user" ON "user"."id" = "waitlist"."user_id"
     WHERE "waitlist"."id" = $1;`, [req.params.id])
         .then(result => {
-            console.log(result.rows)
             res.send(result.rows[0])
         })
         .catch(error => {
@@ -59,9 +57,6 @@ router.post('/join', rejectUnauthenticated, (req, res) => {
 
 //put route to swap spots after seller accepts the offer
 router.put('/swap', rejectUnauthenticated, (req, res) => {
-    console.log('in swap');
-    console.log('buyer_waitlist', req.query.buyerWaitlist);
-    console.log('seller_waitlist', req.query.sellerWaitlist);
     pool.query(`UPDATE "waitlist" SET "user_id" = $1, "status_code" = 1 
         WHERE "id" = $2
         AND "user_id" = $3;`,

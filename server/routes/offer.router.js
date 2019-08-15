@@ -11,8 +11,6 @@ const client = require('twilio')(accountSid, authToken);
 // get request to get offers for a single user
 // id is the waitlist id for the user
 router.get('/user', rejectUnauthenticated, (req, res) => {
-    console.log('Getting offers for user', req.query);
-    console.log(req.user.id);
     // get the offer the user has made first
     pool.query(`SELECT *, "offer"."id" AS "offer_id",
         ROUND("quote_time" - EXTRACT(EPOCH FROM (NOW() - "waitlist"."join_waitlist_time"))/60) AS "latest_wait_time"
@@ -22,7 +20,6 @@ router.get('/user', rejectUnauthenticated, (req, res) => {
         AND "waitlist"."restaurant_id"=$2
         AND "offer"."status_code"=1;`, [req.user.id, req.query.venue])
         .then(result => {
-            console.log('offerMade:', result.rows[0]);
             let offers = { offerMade: result.rows[0], }
             // we have the offer that was made, 
             // now lets get any offer received
@@ -34,7 +31,6 @@ router.get('/user', rejectUnauthenticated, (req, res) => {
                 AND "offer"."status_code"=1
                 AND "waitlist"."user_id"=$2;`, [req.query.waitlist, req.user.id])
                 .then(result => {
-                    console.log('offerReceived:', result.rows[0]);
                     offers = {
                         ...offers,
                         offerReceived: result.rows[0],
@@ -45,7 +41,6 @@ router.get('/user', rejectUnauthenticated, (req, res) => {
 })
 
 router.put('/update', rejectUnauthenticated, (req, res) => {
-    console.log('updating offer', req.body.offerId, 'to code', req.body.statusCode)
     pool.query(`UPDATE "offer" SET "status_code" = $1 WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
         .then(result => {
             res.sendStatus(200)
@@ -58,16 +53,12 @@ router.put('/update', rejectUnauthenticated, (req, res) => {
 // to retract an offer, we have to change the status of the offer
 // and then get the waitlist id to update to waitlist status back to active
 router.put('/buyer-retract', rejectUnauthenticated, (req, res) => {
-    console.log('Updating offer', req.body.offerId, 'to status', req.body.statusCode);
     pool.query(`UPDATE "offer" SET "status_code" = $1, "status_time"=NOW() WHERE "id" = $2;`, [req.body.statusCode, req.body.offerId])
         .then(result => {
-            console.log('Getting the id for the waitlist');
             pool.query(`SELECT "waitlist_id" from "offer" WHERE "id" = $1;`, [req.body.offerId])
                 .then(result => {
-                    console.log('updating waitlist spot', result.rows[0].waitlist_id)
                     pool.query(`UPDATE "waitlist" SET "status_code" = 1 WHERE id=$1;`, [result.rows[0].waitlist_id])
                         .then(result => {
-                            console.log('all done!');
                             res.sendStatus(200);
                         })
                         .catch(error => console.log('Error updating waitlist status on retract offer', error))
